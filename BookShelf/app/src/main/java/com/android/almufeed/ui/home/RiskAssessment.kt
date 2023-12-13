@@ -50,13 +50,17 @@ class RiskAssessment : AppCompatActivity() {
                 (binding.checkBoxTool1.isChecked || binding.checkBoxTool2.isChecked)){
                 if(binding.checkBoxCheck1.isChecked && binding.checkBoxTool1.isChecked &&
                     !binding.checkBoxCheck2.isChecked && !binding.checkBoxTool2.isChecked){
-                    pd = Dialog(this, android.R.style.Theme_Black)
-                    val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-                    pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
-                    pd.setContentView(view)
-                    pd.show()
-                    addEventsViewModel.saveForEvent(taskId,"comments","Risk Assessment Completed")
+                    if(binding.message.text.toString().isEmpty()){
+                        Toast.makeText(this@RiskAssessment,"Add Comments", Toast.LENGTH_SHORT).show()
+                    }else{
+                        pd = Dialog(this, android.R.style.Theme_Black)
+                        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+                        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
+                        pd.setContentView(view)
+                        pd.show()
+                        addEventsViewModel.saveForEvent(taskId,binding.message.text.toString(),"Risk Assessment Completed")
+                    }
                 }else{
                     Toast.makeText(this@RiskAssessment,"Not safe to continue", Toast.LENGTH_SHORT).show()
                 }

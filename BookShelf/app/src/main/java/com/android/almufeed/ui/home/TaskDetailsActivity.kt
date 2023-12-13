@@ -202,34 +202,34 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                                     toolbar.aboutus.text = "Task :  $taskId"
                                     txtTaskid.text = "Task Id : $taskId"
                                     txtShortNote?.text = "Task Description : ${dataState.data.task[i].Notes}"
-                                    txtpro?.text = "Priority : ${dataState.data.task[i].Priority}"
-                                    txtsceduleDate?.text = "Reported Date : " + dateFormater(dataState.data.task[i].scheduledDate)
-                                    txtContactname?.text = "Name : ${dataState.data.task[i].CustName}"
-                                    txtNumber?.text = "Mobile Number : ${dataState.data.task[i].Phone}"
-                                    txtBuilding?.text = "Building : ${dataState.data.task[i].Building}"
-                                    txtLocation?.text = "Location : ${dataState.data.task[i].Location}"
-                                    txtDate?.text = "Due Date :  " + dateFormater(dataState.data.task[i].attendDate)
+                                    txtpro.text = "Priority : ${dataState.data.task[i].Priority}"
+                                    txtsceduleDate.text = "Reported Date : " + dateFormater(dataState.data.task[i].scheduledDate)
+                                    txtContactname.text = "Name : ${dataState.data.task[i].CustName}"
+                                    txtNumber.text = "Mobile Number : ${dataState.data.task[i].Phone}"
+                                    txtBuilding.text = "Building : ${dataState.data.task[i].Building}"
+                                    txtLocation.text = "Location : ${dataState.data.task[i].Location}"
+                                    txtDate.text = "Due Date :  " + dateFormater(dataState.data.task[i].attendDate)
 
                                     if(dataState.data.task[i].LOC.equals("Risk Assessment Completed")){
-                                        txtAction?.text = dataState.data.task[i].LOC
+                                        txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Start"
                                     }else if(dataState.data.task[i].LOC.equals("Accepted")){
-                                        txtAction?.text = dataState.data.task[i].LOC
+                                        txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Start Risk Assessment"
                                     }else if(dataState.data.task[i].LOC.equals("Instruction set completed")){
-                                        txtAction?.text = dataState.data.task[i].LOC
+                                        txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Add Pictures"
                                     }else if(dataState.data.task[i].LOC.equals("Started")){
-                                        txtAction?.text = dataState.data.task[i].LOC
+                                        txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Continue"
                                     }else if(dataState.data.task[i].LOC.equals("Before Task")){
-                                        txtAction?.text = "Before Task Pictures Added"
+                                        txtAction.text = "Before Task Pictures Added"
                                         btnAccept.text = "Add Pictures"
                                     }else if(dataState.data.task[i].LOC.equals("After Task")){
-                                        txtAction?.text = "After Task Pictures Added"
+                                        txtAction.text = "After Task Pictures Added"
                                         btnAccept.text = "Complete Task"
                                     }else{
-                                        txtAction?.text = dataState.data.task[i].LOC
+                                        txtAction.text = dataState.data.task[i].LOC
                                     }
                                 }
                             }

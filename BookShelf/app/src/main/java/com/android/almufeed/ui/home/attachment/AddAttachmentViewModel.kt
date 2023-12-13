@@ -37,15 +37,15 @@ class AddAttachmentViewModel @Inject constructor(
     private val _myImageDataSTate: MutableLiveData<DataState<AttachmentResponseModel>> = MutableLiveData()
     val myImageDataSTate: LiveData<DataState<AttachmentResponseModel>> get() = _myImageDataSTate
 
-    fun requestForImage(image1 : String, image2 : String, image3 : String, imageType : Int,imageDetail : String,taskId : String) = viewModelScope.launch {
+    fun requestForImage(image1 : String, image2 : String, image3 : String,image4 : String,image5 : String, image6 : String,imageType : Int,imageDetail : String,taskId : String) = viewModelScope.launch {
         val userName = basePreferencesManager.getUserName().first()
         val imageRequest = AttachmentData(
             Image1 = image1,
             Image2 = image2,
             Image3 = image3,
-            Image4 = "",
-            Image5 = "",
-            Image6 = "",
+            Image4 = image4,
+            Image5 = image5,
+            Image6 = image6,
             type = imageType,
             description = imageDetail,
             taskId = taskId,

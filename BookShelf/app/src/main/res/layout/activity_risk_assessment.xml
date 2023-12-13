@@ -119,29 +119,26 @@
                 android:layout_marginBottom="@dimen/dp5"
                 app:fontFamily="@font/montserrat"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/et_message"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/message"
+                style="@style/Widget.book.TextInputEditText"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
+                android:gravity="start"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/dp10"
+                android:textSize="@dimen/dp18"
+                android:layout_marginHorizontal="@dimen/dp18"
+                android:layout_marginStart="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
-                app:fontFamily="@font/montserrat"
-                android:background="@drawable/rectangle"
-                android:padding="4dp"
-                app:boxBackgroundMode="none">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint=""
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="@android:color/transparent"
-                    android:textColorHint="@color/black"
-                    android:textSize="14dp"
-                    app:fontFamily="@font/montserrat"
-                    android:layout_below="@+id/text_contactus"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:layout_marginEnd="@dimen/dp10"
+                android:layout_marginBottom="@dimen/dp10"
+                android:hint=""
+                android:background="@drawable/layout_border"
+                android:imeOptions="actionDone"
+                android:maxLength="300"
+                android:singleLine="false"
+                android:elevation="0dp"/>
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtAttendDate"
                 style="@style/TextAppearance.MaterialComponents.Body1"

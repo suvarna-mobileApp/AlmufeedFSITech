@@ -2,7 +2,6 @@ package com.android.almufeed.ui.home.instructionSet
 
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,20 +10,25 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Database
+import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
+import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityCheckListBinding
-import com.android.almufeed.ui.home.TaskDetailsActivity
+import com.android.almufeed.datasource.cache.database.BookDatabase
+import com.android.almufeed.datasource.cache.database.BookDatabase.Companion.DATABASE_NAME
+import com.android.almufeed.datasource.cache.models.offlineDB.InstructionSetEntity
+import com.android.almufeed.datasource.network.models.updateInstruction.UpdateInstructionData
 import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.events.AddEventsActivity
 import com.android.almufeed.ui.home.events.AddEventsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_task.recyclerTask
-import kotlinx.android.synthetic.main.recycler_instructionadapter.view.checklist
 
 @AndroidEntryPoint
 class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemClickListener{
@@ -34,6 +38,8 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
     private lateinit var instructionRecyclerAdapter: InstructionRecyclerAdapter
     private lateinit var taskId : String
     private lateinit var pd : Dialog
+    private lateinit var db :BookDatabase
+
     companion object {
         var btnPressed: Boolean = false
     }
@@ -44,6 +50,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
         setContentView(binding.root)
         val intent = getIntent()
         taskId = intent.getStringExtra("taskid").toString()
+        db = Room.databaseBuilder(this, BookDatabase::class.java, DATABASE_NAME).allowMainThreadQueries().build()
 
         setSupportActionBar(binding.toolbar.incToolbarWithCenterLogoToolbar)
         val actionBar = supportActionBar
@@ -97,7 +104,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 if(viewHolder.binding.etMessage.visibility == View.VISIBLE){
                     if(btnPressed && viewHolder.binding.etMessage.text.toString().isNotEmpty()){
 
-                        addEventsViewModel.saveForEvent(taskId,"comments","Instruction set completed")
+                        addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
@@ -105,7 +112,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 }else{
                     if(btnPressed){
 
-                        addEventsViewModel.saveForEvent(taskId,"comments","Instruction set completed")
+                        addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
@@ -158,7 +165,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                         startActivity(intent)
                         finish()
                     }else{
-                        Toast.makeText(this@CheckListActivity,"please try later", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CheckListActivity,"Some error, please try later", Toast.LENGTH_SHORT).show()
                     }
                 }
             }.exhaustive
@@ -200,7 +207,18 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
 
     override fun onItemClick(refId: Long, feedBackType: Int, answer: String) {
         pd.show()
-        checkListViewModel.updateForStep(refId,feedBackType,answer,taskId)
-        subscribeObserversUpdate()
+        if(isOnline(this@CheckListActivity)){
+            checkListViewModel.updateForStep(refId,feedBackType,answer,taskId)
+            subscribeObserversUpdate()
+        }else{
+            val taskRequest = InstructionSetEntity(
+                id = 0,
+                Refrecid = refId,
+                FeedbackType = feedBackType,
+                AnswerSet = answer,
+                taskId = taskId
+            )
+            db.bookDao().insertSet(taskRequest)
+        }
     }
 }

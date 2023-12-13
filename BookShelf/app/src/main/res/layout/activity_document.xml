@@ -70,11 +70,11 @@ tools:context=".ui.home.DocumentActivity">
 
         </androidx.appcompat.widget.AppCompatTextView>
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="@color/purple_500">
-        </View>
+        </View>-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_doc2"
@@ -88,14 +88,13 @@ tools:context=".ui.home.DocumentActivity">
             android:text="TBT on customer service during PPM"
             android:background="@drawable/nav_background"
             app:fontFamily="@font/montserrat_medium">
-
         </androidx.appcompat.widget.AppCompatTextView>
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="@color/purple_500">
-        </View>
+        </View>-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_doc3"

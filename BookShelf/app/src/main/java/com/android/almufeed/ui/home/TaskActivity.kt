@@ -17,6 +17,7 @@ import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
+import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.business.domain.utils.toast
 import com.android.almufeed.databinding.ActivityTaskBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
@@ -45,6 +46,7 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
     private lateinit var snack: Snackbar
     private lateinit var taskListResponse: TaskListResponse
     private lateinit var bookEntity : BookEntity
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskBinding.inflate(layoutInflater)
@@ -144,13 +146,15 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
 
     override fun onResume() {
         super.onResume()
-        pd = Dialog(this, android.R.style.Theme_Black)
-        val view: View = LayoutInflater.from(this).inflate(com.android.almufeed.R.layout.remove_border, null)
-        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pd.window!!.setBackgroundDrawableResource(com.android.almufeed.R.color.transparent)
-        pd.setContentView(view)
-        pd.show()
-        homeViewModel.requestForTask()
+        if(isOnline(this@TaskActivity)){
+            pd = Dialog(this, android.R.style.Theme_Black)
+            val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+            pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            pd.window!!.setBackgroundDrawableResource(R.color.transparent)
+            pd.setContentView(view)
+            pd.show()
+            homeViewModel.requestForTask()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

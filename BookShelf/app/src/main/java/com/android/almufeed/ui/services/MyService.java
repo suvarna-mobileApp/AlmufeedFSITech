@@ -63,7 +63,7 @@ public class MyService extends Service  {
         SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         String s1 = sh.getString("token", "");
         Call<TaskListResponse> getToken = APIServices.Companion.notcreate(this).getTaskListForNotification(s1,taskRequest);
-        BookDatabase db = Room.databaseBuilder(this, BookDatabase.class, BookDatabase.Companion.getDATABASE_NAME()).allowMainThreadQueries().build();
+        BookDatabase db = Room.databaseBuilder(this, BookDatabase.class, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build();
 
         try {
             getToken.enqueue(new Callback<TaskListResponse>() {
@@ -97,7 +97,7 @@ public class MyService extends Service  {
 
                 @Override
                 public void onFailure(Call<TaskListResponse> call, Throwable t) {
-                    Log.d("failure", t.getMessage());
+                   // Log.d("failure", t.getMessage());
                     //Toast.makeText(LoginActivity.this, "onFailure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

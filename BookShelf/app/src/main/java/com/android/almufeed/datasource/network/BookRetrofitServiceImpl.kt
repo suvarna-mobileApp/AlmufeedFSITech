@@ -31,6 +31,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.EOFException
 
 class BookRetrofitServiceImpl constructor(
     private val bookWebServices: BookWebServices,
@@ -73,7 +74,7 @@ class BookRetrofitServiceImpl constructor(
                     emit(DataState.Loading(false))
                 } else {
                     Log.e("Task::", "API NOT isSuccessful: ")
-                    Log.e("Task::", "ERROR : " + response.errorBody()?.string())
+                    Log.e("Task::", "ERROR : " + response.code())
                     emit(DataState.Loading(false))
                     if(response.code() == 401){
                         emit(DataState.Error(CancellationException("Authentication failed")))
@@ -81,7 +82,12 @@ class BookRetrofitServiceImpl constructor(
                         emit(DataState.Error(CancellationException("Some Error. Please try again later")))
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: EOFException) {
+                Log.e("Task::", "Exception: $e.")
+                emit(DataState.Loading(false))
+                emit(DataState.Error(CancellationException("Authentication failed")))
+                //emit(DataState.Error(CancellationException("unknown")))
+            }catch (e: Exception) {
                 Log.e("Task::", "Exception: $e.")
                 emit(DataState.Loading(false))
                 emit(DataState.Error(CancellationException("unknown")))

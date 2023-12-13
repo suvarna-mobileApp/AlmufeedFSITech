@@ -56,7 +56,7 @@ class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
                     context.startActivity(intent)
                 }
 
-                txtTaskid.text = "Task ID " + currentItem.TaskId
+                txtTaskid.text = "Task ID - " + currentItem.TaskId
                 txtscheduledate.text = "Reported Date :  " + dateFormater(currentItem.scheduledDate)
                 txtAttendDate.text = "Due Date :  " + dateFormater(currentItem.attendDate)
                 txtbuilding.text = "Building :  " + currentItem.Building

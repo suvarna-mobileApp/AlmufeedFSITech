@@ -50,9 +50,15 @@ class AddAttachmentActivity : AppCompatActivity() {
     private var convertedImage1 : String = ""
     private var convertedImage2 : String = ""
     private var convertedImage3 : String = ""
+    private var convertedImage4 : String = ""
+    private var convertedImage5 : String = ""
+    private var convertedImage6 : String = ""
     private var Image1 : Boolean = false
     private var Image2 : Boolean = false
     private var Image3 : Boolean = false
+    private var Image4 : Boolean = false
+    private var Image5 : Boolean = false
+    private var Image6 : Boolean = false
     private var selectedImageType : Int = -1
     private lateinit var taskId : String
 
@@ -136,7 +142,7 @@ class AddAttachmentActivity : AppCompatActivity() {
                 }else if(binding.spinnerType.selectedItem.equals("After")){
                     addEventsViewModel.saveForEvent(taskId,"comments","After Task")
                 }
-                addAttachmentViewModel.requestForImage(convertedImage1,convertedImage2,convertedImage3,selectedImageType,binding.etDescription.text.toString(),taskId)
+                addAttachmentViewModel.requestForImage(convertedImage1,convertedImage2,convertedImage3,convertedImage4,convertedImage5,convertedImage6,selectedImageType,binding.etDescription.text.toString(),taskId)
             }
             /*val intent = Intent(this@AddAttachmentActivity, RatingActivity::class.java)
             intent.putExtra("taskid", taskId)
@@ -167,6 +173,24 @@ class AddAttachmentActivity : AppCompatActivity() {
             Image1 = false
             Image2 = false
             Image3 = true
+        }else if(Image3){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = true
+        }else if(Image4){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = false
+            Image5 = true
+        }else if(Image5){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = false
+            Image5 = false
+            Image6 = true
         }else{
             Image1 = true
         }
@@ -185,8 +209,26 @@ class AddAttachmentActivity : AppCompatActivity() {
             Image1 = false
             Image2 = false
             Image3 = true
+        }else if(Image3){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = true
+        }else if(Image4){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = false
+            Image5 = true
+        }else if(Image5){
+            Image1 = false
+            Image2 = false
+            Image3 = false
+            Image4 = false
+            Image5 = false
+            Image6 = true
         }else{
-           Image1 = true
+            Image1 = true
         }
         Intent(Intent.ACTION_GET_CONTENT).also { intent ->
             intent.type = "image/*"
@@ -223,6 +265,33 @@ class AddAttachmentActivity : AppCompatActivity() {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
                     val byteArrayImage: ByteArray = baos.toByteArray()
                     convertedImage3 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
+                }else if(Image4){
+                    binding.linImage2.visibility = View.VISIBLE
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    binding.captureImage4.setImageBitmap(bitmap)
+
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
+                    val byteArrayImage: ByteArray = baos.toByteArray()
+                    convertedImage4 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
+                }else if(Image5){
+                    binding.linImage2.visibility = View.VISIBLE
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    binding.captureImage5.setImageBitmap(bitmap)
+
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
+                    val byteArrayImage: ByteArray = baos.toByteArray()
+                    convertedImage5 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
+                }else if(Image6){
+                    binding.linImage2.visibility = View.VISIBLE
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    binding.captureImage6.setImageBitmap(bitmap)
+
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
+                    val byteArrayImage: ByteArray = baos.toByteArray()
+                    convertedImage6 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
                 }
             }
             else if (requestCode == REQUEST_PICK_IMAGE) {
@@ -262,6 +331,33 @@ class AddAttachmentActivity : AppCompatActivity() {
                     bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, baos1) // bm is the bitmap object
                     val byteArrayImage1: ByteArray = baos1.toByteArray()
                     convertedImage3 = Base64.encodeToString(byteArrayImage1, Base64.DEFAULT)
+                }else if(Image4){
+                    val uri = data?.getData()
+                    binding.captureImage4.setImageURI(uri)
+
+                    val bitmap1 = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                    val baos1 = ByteArrayOutputStream()
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, baos1) // bm is the bitmap object
+                    val byteArrayImage1: ByteArray = baos1.toByteArray()
+                    convertedImage4 = Base64.encodeToString(byteArrayImage1, Base64.DEFAULT)
+                }else if(Image5){
+                    val uri = data?.getData()
+                    binding.captureImage5.setImageURI(uri)
+
+                    val bitmap1 = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                    val baos1 = ByteArrayOutputStream()
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, baos1) // bm is the bitmap object
+                    val byteArrayImage1: ByteArray = baos1.toByteArray()
+                    convertedImage5 = Base64.encodeToString(byteArrayImage1, Base64.DEFAULT)
+                }else if(Image6){
+                    val uri = data?.getData()
+                    binding.captureImage6.setImageURI(uri)
+
+                    val bitmap1 = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                    val baos1 = ByteArrayOutputStream()
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, baos1) // bm is the bitmap object
+                    val byteArrayImage1: ByteArray = baos1.toByteArray()
+                    convertedImage6 = Base64.encodeToString(byteArrayImage1, Base64.DEFAULT)
                 }
             }
         }
