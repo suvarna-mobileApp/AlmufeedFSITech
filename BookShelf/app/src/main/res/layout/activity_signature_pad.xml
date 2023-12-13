@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".ui.home.SignaturePadActivity">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+<LinearLayout
+    android:id="@+id/lin_signature"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:layout_margin="5dp"
+    android:layout_below="@+id/toolbar"
+    android:background="@drawable/layout_border">
+
+    <com.kyanogen.signatureview.SignatureView
+        xmlns:sign="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/signature_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sign:penSize="5dp"
+        sign:backgroundColor="#ffffff"
+        sign:penColor="#000"
+        sign:enableSignature="true"
+        android:layout_margin="4dp"/>
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_margin="5dp"
+    android:orientation="horizontal"
+    android:layout_below="@+id/lin_signature"
+    android:gravity="center">
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:text="Save"
+        android:textColor="#FFF"
+        android:backgroundTint="#298B28 "
+        android:layout_margin="10dp"
+        android:id="@+id/btnSave"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:text="Clear"
+        android:textColor="#FFF"
+        android:backgroundTint="#FF0000"
+        android:layout_margin="10dp"
+        android:id="@+id/btnClear"/>
+</LinearLayout>
+</RelativeLayout>

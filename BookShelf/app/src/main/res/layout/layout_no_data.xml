@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/dp12"
+    android:gravity="center"
+    android:layout_gravity="center_vertical"
+    android:orientation="vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_no_data"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No Data Available"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/sp14" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_message"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:gravity="center"
+        android:text="Currently there are no data available!"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/sp14" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

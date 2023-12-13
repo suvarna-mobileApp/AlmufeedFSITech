@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    android:background="@color/purple_500"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".ui.home.DocumentActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarapp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            app:contentInsetStartWithNavigation="0dp"
+            app:titleTextColor="@color/white">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aboutus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Documents"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/dp10"
+                android:textSize="20dp"
+                app:fontFamily="@font/montserrat_semibold"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <com.google.android.material.card.MaterialCardView
+    style="@style/Widget.book.CardView.Background"
+    android:id="@+id/card1"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/toolbarapp"
+    android:padding="10dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/toolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_doc1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:layout_margin="8dp"
+            android:textColor="@color/black"
+            android:background="@drawable/nav_background"
+            android:text="TBT on how to look professional at the workplace"
+            android:padding="@dimen/dp10"
+            app:fontFamily="@font/montserrat_medium">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/purple_500">
+        </View>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_doc2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:padding="@dimen/dp10"
+            android:layout_margin="8dp"
+            android:text="TBT on customer service during PPM"
+            android:background="@drawable/nav_background"
+            app:fontFamily="@font/montserrat_medium">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/purple_500">
+        </View>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_doc3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:padding="@dimen/dp10"
+            android:layout_margin="8dp"
+            android:text="PPM training"
+            android:background="@drawable/nav_background"
+            app:fontFamily="@font/montserrat_medium">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

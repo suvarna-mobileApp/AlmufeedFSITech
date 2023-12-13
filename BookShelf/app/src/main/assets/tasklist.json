@@ -1,0 +1,40 @@
+{
+  "status": "0",
+  "message": "success",
+  "task": [
+    {
+      "id": "TST:385",
+      "scheduledDate": "10/12/2023 08:30 AM",
+      "attendDate": "10/12/2023 01:30 PM",
+      "building": "Test building",
+      "location": "Test location",
+      "type": "breakdown",
+      "priority": "routine",
+      "problem": "AC not cooling(FCU)",
+      "category": "HVAC"
+    },
+    {
+      "id": "TST:386",
+      "scheduledDate": "MM/dd/yyyy hh:mm:ss",
+      "attendDate": "MM/dd/yyyy hh:mm:ss",
+      "building": "Test building",
+      "location": "Test location",
+      "type": "breakdown",
+      "priority": "routine",
+      "problem": "AC not cooling(FCU)",
+      "category": "HVAC"
+    },
+    {
+      "id": "TST:387",
+      "scheduledDate": "MM/dd/yyyy hh:mm:ss",
+      "attendDate": "MM/dd/yyyy hh:mm:ss",
+      "building": "Test building",
+      "location": "Test location",
+      "type": "breakdown",
+      "priority": "routine",
+      "problem": "AC not cooling(FCU)",
+      "category": "HVAC"
+    }
+  ]
+}
+

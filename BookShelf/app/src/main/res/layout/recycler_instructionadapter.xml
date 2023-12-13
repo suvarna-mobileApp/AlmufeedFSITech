@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp10"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtProblem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp20"
+            android:text="1. Check power supply"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:fontFamily="@font/montserrat_semibold"
+            android:textSize="@dimen/dp14"/>
+
+        <include
+            layout="@layout/dailog_yesno"
+            android:id="@+id/checklist"
+            android:layout_below="@+id/txtProblem"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_message"
+            style="@style/Widget.book.TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/txtProblem"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:padding="@dimen/dp10"
+            android:textSize="@dimen/dp16"
+            android:layout_marginHorizontal="@dimen/dp18"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp10"
+            android:hint=""
+            android:background="@drawable/layout_border"
+            android:imeOptions="actionDone"
+            android:maxLength="300"
+            android:singleLine="false"
+            android:elevation="0dp"/>
+</RelativeLayout>

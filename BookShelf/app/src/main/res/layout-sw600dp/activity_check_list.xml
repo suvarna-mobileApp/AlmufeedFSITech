@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".ui.home.instructionSet.CheckListActivity">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.book.CardView.Background"
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/btn_accept"
+        android:padding="30dp"
+        app:strokeWidth="0dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10"
+            android:layout_below="@+id/toolbar">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/inst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instruction Steps"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp18"
+                app:fontFamily="@font/montserrat_medium">
+            </androidx.appcompat.widget.AppCompatTextView>
+
+            <View
+                android:id="@+id/view_divide_target"
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:layout_below="@+id/inst"
+                android:layout_gravity="start"
+                android:background="@color/purple_500"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerTask"
+                android:layout_below="@+id/view_divide_target"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_accept"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp20"
+        android:textAllCaps="false"
+        android:background="@drawable/nav_background_button"
+        android:text="Save and Next">
+    </androidx.appcompat.widget.AppCompatButton>
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llFavContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp10"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dateTime"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp10"
+                android:text="10/12/2023 8:51 AM"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp16"
+                app:fontFamily="@font/montserrat_semibold" />
+
+            <RelativeLayout
+                android:id="@+id/rel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtImageType"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: Test location"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/dp14"
+                    app:fontFamily="@font/montserrat_medium" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/txtarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/icon_fwd" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rel"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image1"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image2"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image3"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- <RelativeLayout
+             android:id="@+id/rel_button"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:visibility="gone"
+             android:layout_marginBottom="@dimen/dp10"
+             android:layout_below="@+id/llFavContent"
+             android:orientation="horizontal">
+
+             <androidx.appcompat.widget.AppCompatButton
+                 android:id="@+id/btn_accept"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentStart="true"
+                 android:text="Accept"
+                 android:textColor="@color/white"
+                 android:layout_margin="@dimen/dp10"
+                 android:background="@drawable/nav_background_button">
+             </androidx.appcompat.widget.AppCompatButton>
+
+             <androidx.appcompat.widget.AppCompatButton
+                 android:id="@+id/btn_open"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentEnd="true"
+                 android:layout_margin="@dimen/dp10"
+                 android:textColor="@color/white"
+                 android:text="Open"
+                 android:background="@drawable/nav_background_button">
+             </androidx.appcompat.widget.AppCompatButton>
+
+         </RelativeLayout>-->
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

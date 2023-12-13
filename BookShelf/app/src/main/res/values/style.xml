@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.book.CardView.Background" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/light_gray</item>
+        <item name="cardElevation">@dimen/dp4</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
+    </style>
+
+    <style name="Widget.book.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">@dimen/dp12</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.book.CardView.elevation" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">@dimen/dp12</item>
+        <item name="cardElevation">@dimen/dp6</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/dp36</item>
+        <item name="cornerSizeTopLeft">@dimen/dp36</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="Widget.book.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">@color/secondary</item>
+        <item name="android:max">100</item>
+        <item name="android:elevation">@dimen/dp4</item>
+    </style>
+
+    <style name="Widget.book.TextInputEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:textSize">@dimen/dp16</item>
+        <item name="elevation">4dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    </style>
+    <style name="MaterialAlertDialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MaterialAlertDialog.Rounded
+        </item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Rounded" parent="">
+        <item name="cornerSize">30dp</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="background">?colorOnPrimary</item>
+        <item name="strokeColor">@color/buttonBackground</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@color/buttonBackground</item>
+        <item name="cornerRadius">@dimen/dp28</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="itemTextAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="background">@color/buttonBackground</item>
+        <item name="backgroundTint">@color/buttonBackground</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="cornerRadius">@dimen/dp28</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="itemTextAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+    <style name="Widget.book.TextInputLayoutOutlinedWhiteBg" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dp36</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dp36</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dp36</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/dp36</item>
+        <item name="elevation">4dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/text_input_layout_stroke_color</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="hintTextColor">@color/black</item>
+        <item name="android:clipChildren">false</item>
+    </style>
+    <style name="Widget.book.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/dp36</item>
+        <item name="android:textColor">?colorSecondary</item>
+        <item name="strokeColor">?colorSecondary</item>
+        <item name="itemTextAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">58dp</item>
+    </style>
+    <style name="Widget.book.Button" parent="Widget.MaterialComponents.Button">
+        <item name="background">@color/primary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="cornerRadius">@dimen/dp36</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="itemTextAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">58dp</item>
+        <item name="paddingStart">@dimen/dp24</item>
+        <item name="paddingEnd">@dimen/dp24</item>
+    </style>
+
+    <style name="Widget.book.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dp36</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dp36</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dp36</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/dp36</item>
+        <item name="elevation">4dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="minHeight">58dp</item>
+    </style>
+
+    <style name="Widget.book.CardView.outline" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="strokeColor">@color/purple_500</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+</resources>

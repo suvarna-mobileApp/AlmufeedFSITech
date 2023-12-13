@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.RiskAssessment">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:id="@+id/lin_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp14"
+            android:layout_marginEnd="@dimen/dp14"
+            android:layout_marginBottom="@dimen/dp14"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:text="Risk Assessment"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp24"
+                android:layout_marginBottom="@dimen/dp10"
+                app:fontFamily="@font/montserrat_semibold">
+            </androidx.appcompat.widget.AppCompatTextView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTaskid"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:text="Please ensure that all questions are completed, before continue"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp18"
+                android:layout_marginBottom="@dimen/dp10"
+                app:fontFamily="@font/montserrat_medium"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtscheduledate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"
+                android:text="Do you have the right tools for the job?"
+                android:textAlignment="center"
+                android:textSize="@dimen/dp18"
+                android:layout_marginBottom="@dimen/dp10"
+                app:fontFamily="@font/montserrat"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_tool1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:textSize="18sp"
+                android:padding="7dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_tool2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textSize="18sp"
+                android:padding="7dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtbuilding"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Have you performed all neccessary safety checks?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp18"
+                android:layout_marginBottom="@dimen/dp10"
+                app:fontFamily="@font/montserrat"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_check1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:textSize="18sp"
+                android:padding="7dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_check2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textSize="18sp"
+                android:padding="7dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtlocation"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please record any additional comments"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp18"
+                android:layout_marginBottom="@dimen/dp5"
+                app:fontFamily="@font/montserrat"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="@dimen/dp10"
+                app:fontFamily="@font/montserrat"
+                android:background="@drawable/rectangle"
+                android:padding="4dp"
+                app:boxBackgroundMode="none">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:textColorHint="@color/black"
+                    android:textSize="14dp"
+                    app:fontFamily="@font/montserrat"
+                    android:layout_below="@+id/text_contactus"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtAttendDate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp14"
+                android:text="Is it safe to continue and complete this task, without risk to youself or others?"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="@dimen/dp18"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_safe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp14"
+        android:textAllCaps="false"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_above="@+id/btn_unsafe"
+        android:background="@drawable/nav_background_button"
+        android:text="Safe To Continue"
+        app:fontFamily="@font/montserrat_semibold">
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_unsafe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp14"
+        android:textAllCaps="false"
+        android:background="@color/red"
+        android:text="Not Safe"
+        app:fontFamily="@font/montserrat_semibold">
+    </androidx.appcompat.widget.AppCompatButton>
+</RelativeLayout>

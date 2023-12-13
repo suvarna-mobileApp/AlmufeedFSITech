@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llFavContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp10"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTaskid"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/montserrat_medium"
+                android:text="Task ID : TST:385"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp10"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtscheduledate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"
+                android:text="Scheduled Date: 10/12/2023 8:51 AM"
+                android:textAlignment="center"
+                android:textSize="@dimen/dp16"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtAttendDate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attend Date: 10/12/2023 8:51 AM"
+                android:textAlignment="center"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/dp16" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtbuilding"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Building: Test Building"
+                android:textAlignment="center"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/dp16" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtlocation"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: Test location"
+                    android:textAlignment="center"
+                    app:fontFamily="@font/montserrat_medium"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/dp16" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/txtarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/icon_fwd" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txttype"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type: BREAKDOWN"
+                android:visibility="gone"
+                app:fontFamily="@font/montserrat"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dp16" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtpriority"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Priority: Routine"
+                android:textAlignment="center"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/dp16" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtproblem"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problem: AC not cooling(FCU)"
+                android:textAlignment="center"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/dp16" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtcategory"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category: HVAC"
+                android:textAlignment="center"
+                app:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/dp16"/>
+
+        </LinearLayout>
+
+       <!-- <RelativeLayout
+            android:id="@+id/rel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_below="@+id/llFavContent"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Accept"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/dp10"
+                android:background="@drawable/nav_background_button">
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/dp10"
+                android:textColor="@color/white"
+                android:text="Open"
+                android:background="@drawable/nav_background_button">
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </RelativeLayout>-->
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

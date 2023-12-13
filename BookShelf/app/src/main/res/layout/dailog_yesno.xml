@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="2"
+    android:background="@color/light_gray"
+    android:id="@+id/lin_yesno"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:layout_margin="@dimen/dp10"
+        android:background="@color/white"
+        android:text="Yes"
+        android:textAllCaps="false"
+        app:fontFamily="@font/montserrat_medium">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:layout_margin="@dimen/dp10"
+        android:background="@color/white"
+        android:text="No"
+        android:textAllCaps="false"
+        app:fontFamily="@font/montserrat_medium">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+</LinearLayout>

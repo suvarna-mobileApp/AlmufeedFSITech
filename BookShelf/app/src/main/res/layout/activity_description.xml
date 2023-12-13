@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.DescriptionActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/apptoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:elevation="0dp"
+        android:theme="@style/Theme.BookShelf.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            app:popupTheme="@style/Theme.BookShelf.PopupOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStartWithNavigation="0dp"
+            app:titleTextColor="@color/white"
+            android:background="@color/primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@id/apptoolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10"
+            android:layout_below="@+id/apptoolbar">
+
+            <LinearLayout
+                android:id="@+id/llcontent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp140"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgDescBookImage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:padding="@dimen/dp5"
+                    android:src="@mipmap/ic_launcher" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.3">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtDescBookName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:text="@string/name"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dp16"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtDescBookAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtDescBookName"
+                        android:text="@string/author"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtDescBookPubliser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtDescBookAuthor"
+                        android:text="@string/app_name"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtDescBookPublishDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtDescBookPubliser"
+                        android:text="@string/menu_description"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp14"
+                        style="@style/TextAppearance.MaterialComponents.Body1" />
+
+                </RelativeLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp4"
+                    android:backgroundTint="#0EBF55"
+                    android:drawableRight="@drawable/ic_listing_item_rating"
+                    android:drawablePadding="@dimen/dp8"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:singleLine="true"
+                    android:text="3.8"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp10"
+                    android:visibility="visible"
+                    app:cornerRadius="@dimen/dp16" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/llcontent"
+                android:layout_marginTop="@dimen/dp10">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtAboutBookStatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:padding="@dimen/dp6"
+                    android:text="@string/about_book"
+                    android:textSize="@dimen/sp16"
+                    style="@style/TextAppearance.MaterialComponents.Body1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtDescBookDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtAboutBookStatic"
+                    android:layout_margin="@dimen/dp5"
+                    android:padding="6dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp14"
+                    style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddtoFav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primary"
+        android:text="@string/add_to_favourites"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp16"
+        android:layout_gravity="bottom"
+        style="@style/Widget.book.Button"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

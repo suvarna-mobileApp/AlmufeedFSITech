@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name" translatable="false">Al Mufeed Group</string>
+    <string name="text_network_not_available" translatable="false">Network not available</string>
+    <string name="text_network_connected" translatable="false">Network Connected</string>
+    <string name="text_welcome" translatable="false">Welcome</string>
+    <string name="text_task" translatable="false">No Task</string>
+    <string name="mobile_number" translatable="false">Mobile Number</string>
+    <string name="user_id" translatable="false">User Name</string>
+    <string name="text_signin" translatable="false">Login</string>
+    <string name="activity_login" translatable="false">Login</string>
+    <string name="text_verification" translatable="false">Verification</string>
+    <string name="text_basic_details" translatable="false">Basic Details</string>
+    <string name="camera_permission_denied" translatable="false">Camera Permissions denied. Please enable from settings</string>
+    <string name="permissions_denied" translatable="false">Permissions denied. Please enable from settings</string>
+    <string name="text_select_image_description" translatable="false">Capture an image using your camera or select one from gallery</string>
+    <string name="text_do_not_show_again" translatable="false">Do not show again</string>
+    <string name="camera" translatable="false">Camera</string>
+    <string name="gallery" translatable="false">Gallery</string>
+    <string name="text_next" translatable="false">Next</string>
+    <string name="name" translatable="false">Name</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="menu_launchpad" translatable="false">Dashboard</string>
+    <string name="author" translatable="false">Author</string>
+    <string name="detail" translatable="false">Additional info</string>
+    <string name="sample_author" translatable="false">Sample Author</string>
+    <string name="sample_cost" translatable="false">Rs. 499</string>
+    <string name="sample_book_name" translatable="false">Book Name</string>
+    <string name="email_address" translatable="false">Email Address</string>
+    <string name="first_name" translatable="false">First Name</string>
+    <string name="last_name" translatable="false">Last Name</string>
+    <string name="text_enter_a_valid_name" translatable="false">Enter a valid name</string>
+    <string name="text_enter_a_valid_email" translatable="false">Enter a valid email</string>
+    <string name="text_select_image" translatable="false">Select Image</string>
+    <string name="retake_image" translatable="false">Retake Image</string>
+    <string name="accept" translatable="false">Accept</string>
+    <string name="theSelectedImageIs" translatable="false">The selected image is of GIF file type. Please select another image.</string>
+    <string name="add_to_favourites" translatable="false">Add to Favourites</string>
+    <string name="remove_to_favourites" translatable="false">Remove from Favourites</string>
+    <string name="add" translatable="false">Book added to favourites</string>
+    <string name="remove" translatable="false">Book removed from favourites</string>
+    <string name="menu_profile" translatable="false">Profile</string>
+    <string name="menu_description" translatable="false">Book Shelf</string>
+    <string name="about_book" translatable="false">About the Book</string>
+    <string name="dialog_message" translatable="false">Please sign to confirm that all the works has been explained, carried out and completed by our technician to your satisfaction. Also please give your feedback by rating us to help improve our service delivery. Thank you!</string>
+</resources>

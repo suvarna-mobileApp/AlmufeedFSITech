@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.ProofOfAttendence">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginHorizontal="@dimen/dp18"
+        android:text="Customer Details"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/dp18">
+    </androidx.appcompat.widget.AppCompatTextView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:clipChildren="false">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".08"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_first_name"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp14"
+            android:text="Customer Name"
+            app:fontFamily="@font/montserrat"
+            app:layout_constraintTop_toBottomOf="@id/guideline_top"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_first_name"
+            style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginEnd="@dimen/dp14"
+            app:hintEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_first_name">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_first_name"
+                style="@style/Widget.book.CardView.elevation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp2"
+                app:cardCornerRadius="@dimen/dp36">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/icon_profile"
+                    app:endIconMode="custom"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nameInput"
+                        style="@style/Widget.book.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/first_name"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ."
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName|textCapWords"
+                        android:maxLines="1"
+                        android:maxLength="120"
+                        android:lines="1"
+                        android:singleLine="true"
+                        android:elevation="0dp"
+                        android:nextFocusDown="@id/nameInputLast"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_last_name"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp16"
+            android:text="Mobile"
+            app:fontFamily="@font/montserrat"
+            app:layout_constraintTop_toBottomOf="@id/ed_first_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_last_name"
+            style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginEnd="@dimen/dp14"
+            app:hintEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_last_name">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_last_name"
+                style="@style/Widget.book.CardView.elevation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp2"
+                app:cardCornerRadius="@dimen/dp36">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="+971  | "
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/mobileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mobile number"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:textSize="16sp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+
+               <!-- <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/icon_profile"
+                    app:endIconMode="custom"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nameInputLast"
+                        style="@style/Widget.book.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/last_name"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ."
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName|textCapWords"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:maxLength="120"
+                        android:singleLine="true"
+                        android:elevation="0dp"
+                        android:nextFocusDown="@id/emailInput"/>
+
+                </com.google.android.material.textfield.TextInputLayout>-->
+            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_email"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp16"
+            android:text="@string/email_address"
+            app:fontFamily="@font/montserrat"
+            app:layout_constraintTop_toBottomOf="@id/ed_last_name"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_email"
+            style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginEnd="@dimen/dp14"
+            app:hintEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_email">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_email"
+                style="@style/Widget.book.CardView.elevation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp2"
+                app:cardCornerRadius="@dimen/dp36">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.book.TextInputLayoutOutlinedWhiteBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/ic_outline_email"
+                    app:endIconMode="custom"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailInput"
+                        style="@style/Widget.book.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:background="@color/white"
+                        android:imeOptions="actionDone"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:maxLength="120"
+                        android:singleLine="true"
+                        android:elevation="0dp"
+                        android:inputType="textEmailAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:text="Submit"
+            android:textSize="@dimen/dp20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:fontFamily="@font/montserrat_medium"
+            app:textAllCaps="false"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

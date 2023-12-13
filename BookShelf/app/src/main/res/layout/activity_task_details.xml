@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.TaskDetailsActivity">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.book.CardView.Background"
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp"
+        app:strokeWidth="0dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/btn_accept">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.book.CardView"
+                android:id="@+id/card_details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10"
+                android:padding="30dp"
+                app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/lin_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp18"
+                android:layout_marginEnd="@dimen/dp14"
+                android:layout_marginBottom="@dimen/dp14"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar"
+                    android:text="Task Details"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp16"
+                    app:fontFamily="@font/montserrat_medium">
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <View
+                    android:id="@+id/view_divide"
+                    android:layout_width="80dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="@color/purple_500"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtTaskid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:text="Task ID : TST:385"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/montserrat"
+                    android:textSize="@dimen/dp14"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtscheduledate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="Task Seq : 183040"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    app:fontFamily="@font/montserrat"
+                    android:textSize="@dimen/dp14"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtShortNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Short Description : AC not cooling"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    app:fontFamily="@font/montserrat"
+                    android:textSize="@dimen/dp14"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtpro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Priority: Routine"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/montserrat"
+                    android:textSize="@dimen/dp14"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtsceduleDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reported Date : 10/10/2023 08:51 AM"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/montserrat"
+                    android:textSize="@dimen/dp14"/>
+            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.book.CardView"
+                android:id="@+id/card_contact"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/card_details"
+                android:layout_marginTop="@dimen/dp10"
+                android:padding="30dp"
+                app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/lin_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14"
+                android:layout_marginEnd="@dimen/dp14"
+                android:layout_marginBottom="@dimen/dp14"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Details"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/montserrat_medium"
+                    android:textSize="@dimen/dp16">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <View
+                    android:id="@+id/view_divide_contact"
+                    android:layout_width="80dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="@color/purple_500"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_contactname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:text="Name : test name"
+                    app:fontFamily="@font/montserrat"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp14" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:textColor="@color/black"
+                    android:text="Mobile: 0552347623"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/dp14"
+                    app:fontFamily="@font/montserrat"/>
+
+            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.book.CardView"
+                android:id="@+id/card_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/card_contact"
+                android:layout_marginTop="@dimen/dp10"
+                android:padding="30dp"
+                app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/lin_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp14"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    app:fontFamily="@font/montserrat_medium"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp16"
+                    android:layout_below="@+id/toolbar">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <View
+                    android:id="@+id/view_divide_address"
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="@color/purple_500"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_building"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Building : Test building"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:textAllCaps="false"
+                    app:fontFamily="@font/montserrat"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp14"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="Location : Test location"
+                    app:fontFamily="@font/montserrat"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/dp14"
+                    style="@style/TextAppearance.MaterialComponents.Body1"/>
+            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.book.CardView"
+                android:id="@+id/card_attenddate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/card_address"
+                android:layout_marginTop="@dimen/dp10"
+                android:padding="30dp"
+                app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/lin_attenddate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14"
+                android:layout_marginEnd="@dimen/dp14"
+                android:layout_marginBottom="@dimen/dp14"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar"
+                    android:text="SLA Targets"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp16"
+                    app:fontFamily="@font/montserrat_medium">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <View
+                    android:id="@+id/view_divide_target"
+                    android:layout_width="80dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="@color/purple_500"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:text="Attened Date : 10/10/2023 08:51 AM"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp14"
+                    app:fontFamily="@font/montserrat" />
+
+            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.book.CardView"
+                android:id="@+id/card_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/card_attenddate"
+                android:layout_marginTop="@dimen/dp10"
+                android:padding="30dp"
+                app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/lin_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp14"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar"
+                    android:text="Current Status"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp16"
+                    app:fontFamily="@font/montserrat_medium">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <View
+                    android:id="@+id/view_divide_status"
+                    android:layout_width="80dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="@color/purple_500"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@color/dark_gray"
+                    app:fontFamily="@font/montserrat_medium"
+                    android:textSize="@dimen/dp16"/>
+
+            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_accept"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp14"
+        android:textAllCaps="false"
+        android:background="@drawable/nav_background_button"
+        android:text="Accept"
+        app:fontFamily="@font/montserrat_semibold">
+    </androidx.appcompat.widget.AppCompatButton>
+</RelativeLayout>
