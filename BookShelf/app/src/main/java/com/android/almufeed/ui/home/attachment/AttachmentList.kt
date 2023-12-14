@@ -12,10 +12,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
+import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityAttachmentListBinding
+import com.android.almufeed.datasource.cache.database.BookDatabase
+import com.android.almufeed.datasource.cache.models.offlineDB.AttachmentEntity
 import com.android.almufeed.ui.base.BaseViewModel
 import com.android.almufeed.ui.home.TaskDetailsActivity
 import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
@@ -32,7 +36,8 @@ class AttachmentList : AppCompatActivity() {
     private val viewModel: GetAttachmentViewModel by viewModels()
     private lateinit var pd : Dialog
     private val baseViewModel: BaseViewModel by viewModels()
-
+    private lateinit var attachmentEntity : AttachmentEntity
+    private lateinit var db:BookDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAttachmentListBinding.inflate(layoutInflater)
@@ -66,14 +71,32 @@ class AttachmentList : AppCompatActivity() {
             startActivity(intent)
         })
 
+        db = Room.databaseBuilder(this@AttachmentList, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
         pd = Dialog(this, android.R.style.Theme_Black)
         val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
         pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
         pd.setContentView(view)
         pd.show()
-        viewModel.requestForImage(taskId)
-        subscribeObservers()
+        if(isOnline(this@AttachmentList)){
+            viewModel.requestForImage(taskId)
+            subscribeObservers()
+        }else{
+            val attachmentList = db.bookDao().getAllAttachment(taskId)
+            pd.dismiss()
+            if(attachmentList.size > 0){
+                binding.recyclerAttach.visibility = View.VISIBLE
+                binding.noDataFoundTv.visibility = View.GONE
+             /*   binding.recyclerAttach.apply {
+                    attachmentRecyclerAdapter = AttachmentRecyclerAdapter(attachmentList,this@AttachmentList)
+                    layoutManager = LinearLayoutManager(this@AttachmentList)
+                    binding.recyclerAttach.adapter = attachmentRecyclerAdapter
+                }*/
+            }else{
+                binding.recyclerAttach.visibility = View.GONE
+                binding.noDataFoundTv.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun subscribeObservers() {

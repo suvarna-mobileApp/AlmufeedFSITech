@@ -46,10 +46,10 @@ object NetworkModule {
             .addInterceptor(logging)
             .build()
 
-        val BASE_URL = "https://almdevb0bb67faa678fcfadevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
-        val BASE_URL_UAT = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        //val BASE_URL = "https://almdevb0bb67faa678fcfadevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        val BASE_URL = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
         return Retrofit.Builder()
-            .baseUrl(BASE_URL_UAT)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
     }

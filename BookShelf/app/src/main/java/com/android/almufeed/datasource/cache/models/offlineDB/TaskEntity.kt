@@ -4,53 +4,55 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Task")
+@Entity(tableName = "TaskList")
 data class TaskEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Int,
 
-    @ColumnInfo(name = "id") var tid: String,
+    @ColumnInfo(name = "tid") var tid: String?,
 
-    @ColumnInfo(name = "scheduledDate") var scheduledDate: String,
+    @ColumnInfo(name = "hazard") var hazard: Boolean,
 
-    @ColumnInfo(name = "attendDate") var attendDate: String,
+    @ColumnInfo(name = "scheduledDate") var scheduledDate: String?,
 
-    @ColumnInfo(name = "TaskId") var TaskId: String,
+    @ColumnInfo(name = "attendDate") var attendDate: String?,
 
-    @ColumnInfo(name = "ServiceType") var ServiceType: String,
+    @ColumnInfo(name = "TaskId") var TaskId: String?,
 
-    @ColumnInfo(name = "CustAccount") var CustAccount: String,
+    @ColumnInfo(name = "ServiceType") var ServiceType: Int,
 
-    @ColumnInfo(name = "Email") var Email: String,
+    @ColumnInfo(name = "CustAccount") var CustAccount: String?,
 
-    @ColumnInfo(name = "Building") var Building: String,
+    @ColumnInfo(name = "Email") var Email: String?,
 
-    @ColumnInfo(name = "CustId") var CustId: String,
+    @ColumnInfo(name = "Building") var Building: String?,
 
-    @ColumnInfo(name = "CustName") var CustName: String,
+    @ColumnInfo(name = "CustId") var CustId: String?,
 
-    @ColumnInfo(name = "Location") var Location: String,
+    @ColumnInfo(name = "CustName") var CustName: String?,
 
-    @ColumnInfo(name = "Problem") var Problem: String,
+    @ColumnInfo(name = "Location") var Location: String?,
 
-    @ColumnInfo(name = "Notes") var Notes: String,
+    @ColumnInfo(name = "Problem") var Problem: String?,
 
-    @ColumnInfo(name = "LOC") var LOC: String,
+    @ColumnInfo(name = "Notes") var Notes: String?,
 
-    @ColumnInfo(name = "Priority") var Priority: String,
+    @ColumnInfo(name = "LOC") var LOC: String?,
 
-    @ColumnInfo(name = "Contract") var Contract: String,
+    @ColumnInfo(name = "Priority") var Priority: String?,
 
-    @ColumnInfo(name = "Category") var Category: String,
+    @ColumnInfo(name = "Contract") var Contract: String?,
 
-    @ColumnInfo(name = "Phone") var Phone: String,
+    @ColumnInfo(name = "Category") var Category: String?,
 
-    @ColumnInfo(name = "Discipline") var Discipline: String,
+    @ColumnInfo(name = "Phone") var Phone: String?,
 
-    @ColumnInfo(name = "CostCenter") var CostCenter: String,
+    @ColumnInfo(name = "Discipline") var Discipline: String?,
 
-    @ColumnInfo(name = "Source") var Source: String,
+    @ColumnInfo(name = "CostCenter") var CostCenter: String?,
 
-    @ColumnInfo(name = "Asset") var Asset: String,
+    @ColumnInfo(name = "Source") var Source: String?,
+
+    @ColumnInfo(name = "Asset") var Asset: String?,
 )

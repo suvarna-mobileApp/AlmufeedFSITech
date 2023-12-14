@@ -8,6 +8,10 @@ data class BookData(
     @Expose
     val id: String?,
 
+    @SerializedName("hazard")
+    @Expose
+    val hazard: Boolean,
+
     @SerializedName("scheduledDate")
     @Expose
     val scheduledDate: String?,

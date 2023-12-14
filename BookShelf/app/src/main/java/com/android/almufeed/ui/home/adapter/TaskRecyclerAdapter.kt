@@ -12,13 +12,14 @@ import com.android.almufeed.business.domain.utils.getDate
 import com.android.almufeed.databinding.RecyclerTaskadapterBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.models.book.BookEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity
 import com.android.almufeed.datasource.network.models.bookList.BookData
 import com.android.almufeed.datasource.network.models.bookList.BookListNetworkResponse
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
 import com.android.almufeed.ui.home.RiskAssessment
 import com.android.almufeed.ui.home.TaskDetailsActivity
 
-class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
+class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
 ) : RecyclerView.Adapter<TaskRecyclerAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -31,7 +32,7 @@ class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val currentItem = taskList.task.get(position)
+        val currentItem = taskList.get(position)
         if (currentItem != null) {
             holder.bind(currentItem)
         }
@@ -39,7 +40,7 @@ class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
 
     inner class ItemViewHolder(private val binding: RecyclerTaskadapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(currentItem: BookData) {
+        fun bind(currentItem: TaskEntity) {
             binding.apply {
                 itemView.setOnClickListener {
                     val intent = Intent(context, TaskDetailsActivity::class.java)
@@ -69,6 +70,6 @@ class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
     }
 
     override fun getItemCount(): Int {
-        return taskList.task.size
+        return taskList.size
     }
 }

@@ -22,11 +22,14 @@ import com.android.almufeed.business.domain.utils.toast
 import com.android.almufeed.databinding.ActivityTaskBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.models.book.BookEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.GetInstructionSetEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity
 import com.android.almufeed.datasource.network.models.bookList.BookListNetworkResponse
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
 import com.android.almufeed.ui.base.BaseInterface
 import com.android.almufeed.ui.base.BaseViewModel
 import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
+import com.android.almufeed.ui.home.instructionSet.CheckListViewModel
 import com.android.almufeed.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -42,10 +45,13 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
     private lateinit var taskRecyclerAdapter : TaskRecyclerAdapter
     private val homeViewModel: HomeViewModel by viewModels()
     private val baseViewModel: BaseViewModel by viewModels()
+    private val checkListViewModel: CheckListViewModel by viewModels()
     private lateinit var pd : Dialog
     private lateinit var snack: Snackbar
     private lateinit var taskListResponse: TaskListResponse
     private lateinit var bookEntity : BookEntity
+    private lateinit var taskEntity : TaskEntity
+    private lateinit var getInstructionSetEntity : GetInstructionSetEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,16 +121,77 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                         taskListResponse = dataState.data
                         val db = Room.databaseBuilder(this@TaskActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
                         //db.bookDao().deleteBook(bookEntity)
+
                         val taskId = db.bookDao().getAllBooks()
+                        val taskList = db.bookDao().getAllTask()
                         for (i in dataState.data.task.indices) {
+                            if(taskList.size > 0){
+                                if(taskList[i].TaskId != dataState.data.task[i].TaskId) {
+                                    taskEntity = TaskEntity(
+                                        0,
+                                        dataState.data.task[i].id,
+                                        dataState.data.task[i].hazard,
+                                        dataState.data.task[i].scheduledDate,
+                                        dataState.data.task[i].attendDate,
+                                        dataState.data.task[i].TaskId,
+                                        dataState.data.task[i].ServiceType,
+                                        dataState.data.task[i].CustAccount,
+                                        dataState.data.task[i].Email,
+                                        dataState.data.task[i].Building,
+                                        dataState.data.task[i].CustId,
+                                        dataState.data.task[i].CustName,
+                                        dataState.data.task[i].Location,
+                                        dataState.data.task[i].Problem,
+                                        dataState.data.task[i].Notes,
+                                        dataState.data.task[i].LOC,
+                                        dataState.data.task[i].Priority,
+                                        dataState.data.task[i].Contract,
+                                        dataState.data.task[i].Category,
+                                        dataState.data.task[i].Phone,
+                                        dataState.data.task[i].Discipline,
+                                        dataState.data.task[i].CostCenter,
+                                        dataState.data.task[i].Source,
+                                        dataState.data.task[i].Asset
+                                    )
+                                    db.bookDao().insertTask(taskEntity)
+                                }
+                            }else{
+                                taskEntity = TaskEntity(0,dataState.data.task[i].id,
+                                    dataState.data.task[i].hazard,
+                                    dataState.data.task[i].scheduledDate,
+                                    dataState.data.task[i].attendDate,
+                                    dataState.data.task[i].TaskId,
+                                    dataState.data.task[i].ServiceType,
+                                    dataState.data.task[i].CustAccount,
+                                    dataState.data.task[i].Email,
+                                    dataState.data.task[i].Building,
+                                    dataState.data.task[i].CustId,
+                                    dataState.data.task[i].CustName,
+                                    dataState.data.task[i].Location,
+                                    dataState.data.task[i].Problem,
+                                    dataState.data.task[i].Notes,
+                                    dataState.data.task[i].LOC,
+                                    dataState.data.task[i].Priority,
+                                    dataState.data.task[i].Contract,
+                                    dataState.data.task[i].Category,
+                                    dataState.data.task[i].Phone,
+                                    dataState.data.task[i].Discipline,
+                                    dataState.data.task[i].CostCenter,
+                                    dataState.data.task[i].Source,
+                                    dataState.data.task[i].Asset)
+                                db.bookDao().insertTask(taskEntity)
+                            }
+
                             if(taskId.isEmpty()){
                                 bookEntity = BookEntity(0,dataState.data.task[i].TaskId.toString())
                                 db.bookDao().insertBook(bookEntity)
                             }
                         }
                         db.close()
+
                         binding.recyclerTask.apply {
-                            taskRecyclerAdapter = TaskRecyclerAdapter(dataState.data,this@TaskActivity)
+                            val taskList = db.bookDao().getAllTask()
+                            taskRecyclerAdapter = TaskRecyclerAdapter(taskList,this@TaskActivity)
                             layoutManager = LinearLayoutManager(this@TaskActivity)
                             recyclerTask.adapter = taskRecyclerAdapter
                         }

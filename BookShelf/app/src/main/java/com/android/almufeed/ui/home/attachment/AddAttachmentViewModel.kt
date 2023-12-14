@@ -8,6 +8,7 @@ import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.repository.BookInfoRepository
+import com.android.almufeed.datasource.cache.models.offlineDB.AttachmentEntity
 import com.android.almufeed.datasource.network.models.attachment.AttachmentData
 import com.android.almufeed.datasource.network.models.attachment.AttachmentRequestModel
 import com.android.almufeed.datasource.network.models.attachment.AttachmentResponseModel
@@ -55,6 +56,25 @@ class AddAttachmentViewModel @Inject constructor(
             fsiImage = imageRequest
         )
         setStateEvent(TaskEvent.ImageTask(update))
+    }
+
+    suspend fun requestForImageDB(image1 : ByteArray?, image2 : ByteArray?, image3 : ByteArray?, image4 : ByteArray?, image5 : ByteArray?,
+                                  image6 : ByteArray?, imageType : Int, imageDetail : String, taskId : String) : AttachmentEntity{
+        val userName = basePreferencesManager.getUserName().first()
+        var attachmentEntity = AttachmentEntity(
+            0,
+            Image1 = image1,
+            Image2 = image2,
+            Image3 = image3,
+            Image4 = image4,
+            Image5 = image5,
+            Image6 = image6,
+            type = imageType,
+            description = imageDetail,
+            taskId = taskId,
+            resource = userName
+        )
+        return attachmentEntity
     }
 
     private fun setStateEvent(state: TaskEvent) {
