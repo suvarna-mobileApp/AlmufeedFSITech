@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@color/white"
     android:orientation="vertical"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
+        android:id="@+id/rel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp20"
+            android:layout_marginEnd="@dimen/dp20"
+            android:src="@drawable/vip48" />
 
         <LinearLayout
             android:id="@+id/llFavContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp10"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtTaskid"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp10"
                 android:text="Task ID : TST:385"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dp16"
-                android:layout_marginBottom="@dimen/dp10"
-                app:fontFamily="@font/montserrat_semibold"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+                app:fontFamily="@font/montserrat_semibold" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtscheduledate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark_gray"
                 android:layout_marginTop="@dimen/dp5"
                 android:text="Scheduled Date: 10/12/2023 8:51 AM"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
+                android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtAttendDate"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Attend Date: 10/12/2023 8:51 AM"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtbuilding"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="Building: Test Building"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -71,66 +85,66 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtlocation"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Location: Test location"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/dp14"
-                    app:fontFamily="@font/montserrat_medium"
-                    style="@style/TextAppearance.MaterialComponents.Body1"/>
+                    app:fontFamily="@font/montserrat_medium" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/txtarrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/icon_fwd"/>
+                    android:src="@drawable/icon_fwd" />
             </RelativeLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txttype"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="Type: BREAKDOWN"
-                android:visibility="gone"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                android:visibility="gone"
+                app:fontFamily="@font/montserrat" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtpriority"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="Priority: Routine"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtproblem"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="Problem: AC not cooling(FCU)"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtcategory"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="Category: HVAC"
+                android:textAlignment="textStart"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/dp14"
-                app:fontFamily="@font/montserrat_medium"
-                style="@style/TextAppearance.MaterialComponents.Body1"/>
+                app:fontFamily="@font/montserrat_medium" />
         </LinearLayout>
 
        <!-- <RelativeLayout

@@ -3,8 +3,10 @@ package com.android.almufeed.datasource.cache
 import com.android.almufeed.datasource.cache.database.BookDao
 import com.android.almufeed.datasource.cache.models.book.BookEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.AttachmentEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.InstructionSetEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.RatingEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity
 
 class BookDaoServiceImpl constructor(
@@ -29,5 +31,13 @@ class BookDaoServiceImpl constructor(
 
     override suspend fun insert(addAttachmentSetEntity: AttachmentEntity): Long {
         return bookDao.insertAddAttachmentSet(addAttachmentSetEntity)
+    }
+
+    override suspend fun insert(eventsEntity: EventsEntity): Long {
+        return bookDao.insertEvents(eventsEntity)
+    }
+
+    override suspend fun insert(ratingEntity: RatingEntity): Long {
+        return bookDao.insertRating(ratingEntity)
     }
 }

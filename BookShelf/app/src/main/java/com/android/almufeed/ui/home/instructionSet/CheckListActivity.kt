@@ -21,6 +21,7 @@ import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityCheckListBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.database.BookDatabase.Companion.DATABASE_NAME
+import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.InstructionSetEntity
 import com.android.almufeed.datasource.network.models.updateInstruction.UpdateInstructionData
 import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
@@ -103,16 +104,22 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 System.out.println("pressed " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
                 if(viewHolder.binding.etMessage.visibility == View.VISIBLE){
                     if(btnPressed && viewHolder.binding.etMessage.text.toString().isNotEmpty()){
-
-                        addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                        if(isOnline(this@CheckListActivity)){
+                            addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                        }else{
+                            db.bookDao().update("Instruction set completed",taskId,"")
+                        }
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
                     }
                 }else{
                     if(btnPressed){
-
-                        addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                        if(isOnline(this@CheckListActivity)){
+                            addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                        }else{
+                            db.bookDao().update("Instruction set completed",taskId,"")
+                        }
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
@@ -135,10 +142,17 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 is DataState.Success -> {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
-                    binding.recyclerTask.apply {
-                        instructionRecyclerAdapter = InstructionRecyclerAdapter(dataState.data,this@CheckListActivity,this@CheckListActivity)
-                        layoutManager = LinearLayoutManager(this@CheckListActivity)
-                        recyclerTask.adapter = instructionRecyclerAdapter
+                    if(dataState.data.problem.size > 0){
+                        binding.recyclerTask.apply {
+                            instructionRecyclerAdapter = InstructionRecyclerAdapter(dataState.data,this@CheckListActivity,this@CheckListActivity)
+                            layoutManager = LinearLayoutManager(this@CheckListActivity)
+                            recyclerTask.adapter = instructionRecyclerAdapter
+                        }
+                    }else{
+                        val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
+                        intent.putExtra("taskid", taskId)
+                        startActivity(intent)
+                        finish()
                     }
                 }
 
@@ -194,7 +208,17 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
 
     override fun onResume() {
         super.onResume()
-        checkListViewModel.requestForStep(taskId)
+        if(isOnline(this@CheckListActivity)){
+            checkListViewModel.requestForStep(taskId)
+        }else{
+           /* val instructionSet = db.bookDao().AllInstructionSet()
+
+            binding.recyclerTask.apply {
+                instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
+                layoutManager = LinearLayoutManager(this@CheckListActivity)
+                recyclerTask.adapter = instructionRecyclerAdapter
+            }*/
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

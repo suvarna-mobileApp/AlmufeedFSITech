@@ -20,6 +20,7 @@ import androidx.room.Room;
 import com.android.almufeed.R;
 import com.android.almufeed.datasource.cache.database.BookDatabase;
 import com.android.almufeed.datasource.cache.models.book.BookEntity;
+import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity;
 import com.android.almufeed.datasource.network.models.tasklist.TaskListRequest;
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse;
 import com.android.almufeed.ui.home.APIServices;
@@ -43,18 +44,14 @@ public class MyService extends Service  {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Toast.makeText(this, "Running service for 5 sec", Toast.LENGTH_SHORT).show();
-        //System.out.println("running service for 5 sec");
         if(isOnline(this)) {
             checkForTask();
         }
-        //PushNotification();
         return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // We don't provide binding
         return null;
     }
 
@@ -71,12 +68,19 @@ public class MyService extends Service  {
                 public void onResponse(Call<TaskListResponse> call, Response<TaskListResponse> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
-                            List<BookEntity> taskId = db.bookDao().getAllBooks();
-                            db.close();
-                            System.out.println("running service for 5 sec inside response " + taskId);
-                            if(taskId.size() < response.body().getTask().size()){
+                            List<TaskEntity> taskList = db.bookDao().getAllTask();
+                            int commonSize = Math.min(response.body().getTask().size(), taskList.size());
+                            //System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
+                            for (int i = commonSize; i < response.body().getTask().size(); i++) {
+                                System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
                                 PushNotification();
                             }
+
+                            db.close();
+
+                           /* if(taskList.size() < response.body().getTask().size()){
+                                PushNotification();
+                            }*/
                             /*if(taskId != null && taskId.size() > 0){
                                 for(int i=0; i < response.body().getTask().size(); i++){
                                     System.out.println("running service for 5 sec inside response for " + response.body().getTask().get(i).getTaskId());

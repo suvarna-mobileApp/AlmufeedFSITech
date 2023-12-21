@@ -16,12 +16,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dateFormater
 import com.android.almufeed.business.domain.utils.exhaustive
+import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.business.domain.utils.toast
 import com.android.almufeed.databinding.ActivityTaskDetailsBinding
+import com.android.almufeed.datasource.cache.database.BookDatabase
+import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.ui.base.BaseInterface
 import com.android.almufeed.ui.base.BaseViewModel
 import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
@@ -45,7 +50,8 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
     private lateinit var pd : Dialog
     private lateinit var taskId : String
     private val baseViewModel: BaseViewModel by viewModels()
-    private lateinit var snack: Snackbar
+    //private lateinit var snack: Snackbar
+    private lateinit var db: BookDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,16 +73,74 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
         baseViewModel.isNetworkConnected.observe(this) { isNetworkAvailable ->
             showNetworkSnackBar(isNetworkAvailable)
         }
+        db = Room.databaseBuilder(this@TaskDetailsActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
 
-        binding.apply {
+        pd = Dialog(this, android.R.style.Theme_Black)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.window!!.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+        pd.show()
+        if(isOnline(this@TaskDetailsActivity)){
+            homeViewModel.requestForTask()
+            subscribeObservers("")
+        }else{
+            pd.dismiss()
+            val taskList = db.bookDao().getTaskFromId(taskId)
+            val evenList = db.bookDao().getAllEvents()
+
+            binding.apply {
+                toolbar.aboutus.text = "Task :  $taskId"
+                txtTaskid.text = "Task Id : $taskId"
+                txtShortNote?.text = "Task Description : ${taskList.Notes}"
+                txtpro.text = "Priority : ${taskList.Priority}"
+                txtsceduleDate.text = "Reported Date : " + dateFormater(taskList.scheduledDate)
+                txtContactname.text = "Name : ${taskList.CustName}"
+                txtNumber.text = "Mobile Number : ${taskList.Phone}"
+                txtBuilding.text = "Building : ${taskList.Building}"
+                txtLocation.text = "Location : ${taskList.Location}"
+                txtDate.text = "Due Date :  " + dateFormater(taskList.attendDate)
+
+                if(evenList.size > 0){
+                    val event = db.bookDao().getEventsForTask(taskId)
+                    System.out.println("evenlist " + event + " " + taskId)
+                    if(event.equals("Risk Assessment Completed")){
+                        txtAction.text = event
+                        btnAccept.text = "Start"
+                    }else if(event.equals("Accepted")){
+                        txtAction.text = event
+                        btnAccept.text = "Start Risk Assessment"
+                    }else if(event.equals("Instruction set completed")){
+                        txtAction.text = event
+                        btnAccept.text = "Add Pictures"
+                    }else if(event.equals("Started")){
+                        txtAction.text = event
+                        btnAccept.text = "Continue"
+                    }else if(event.equals("Before Task")){
+                        txtAction.text = "Before Task Pictures Added"
+                        btnAccept.text = "Add Pictures"
+                    }else if(event.equals("After Task")){
+                        txtAction.text = "After Task Pictures Added"
+                        btnAccept.text = "Complete Task"
+                    }else{
+                        txtAction.text = event
+                    }
+                }else{
+                    txtAction.text = taskList.LOC
+                }
+            }
+
+        }
+
+
+      /*  binding.apply {
             snack = Snackbar.make(
                 root,
                 getString(com.android.almufeed.R.string.text_network_not_available),
                 Snackbar.LENGTH_INDEFINITE
             )
-        }
+        }*/
 
-        subscribeObservers("")
 
         binding.toolbar.incToolbarEvent.setOnClickListener (View.OnClickListener {
             val intent = Intent(this@TaskDetailsActivity, AddEventsActivity::class.java)
@@ -92,11 +156,36 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
 
         binding.btnAccept.setOnClickListener (View.OnClickListener { view ->
             if(binding.btnAccept.text.toString().equals("Accept")){
-                addEventsViewModel.saveForEvent(taskId,"comments","Accepted")
-                subscribeObservers("Accept")
+                if(isOnline(this@TaskDetailsActivity)){
+                    addEventsViewModel.saveForEvent(taskId,"comments","Accepted")
+                    subscribeObservers("Accept")
+                }else{
+                    val eventRequest = EventsEntity(
+                        id = 0,
+                        taskId = taskId,
+                        resource = "",
+                        Comments = "comments",
+                        Events = "Accepted",
+                    )
+                    db.bookDao().insertEvents(eventRequest)
+                    val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
+                    intent.putExtra("taskid", taskId)
+                    startActivity(intent)
+                    finish()
+                }
+
             }else if(binding.btnAccept.text.toString().equals("Start")){
-                addEventsViewModel.saveForEvent(taskId,"comments","Started")
-                subscribeObservers("Start")
+                if(isOnline(this@TaskDetailsActivity)){
+                    addEventsViewModel.saveForEvent(taskId,"comments","Started")
+                    subscribeObservers("Start")
+                }else{
+                    db.bookDao().update("Started",taskId,"comments")
+                    val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    startActivity(intent)
+                    finish()
+                }
+
             }else if(binding.btnAccept.text.toString().equals("Continue")){
                 val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
                 intent.putExtra("taskid", taskId)
@@ -249,23 +338,16 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
     }
 
     override fun showNetworkSnackBar(isNetworkAvailable: Boolean) {
-        if (isNetworkAvailable) {
+       /* if (isNetworkAvailable) {
             if (snack.isShown) {
                 this.toast(getString(com.android.almufeed.R.string.text_network_connected))
             }
         } else {
-            snack.show()
-        }
+            snack.dismiss()
+        }*/
     }
 
     override fun onResume() {
         super.onResume()
-        pd = Dialog(this, android.R.style.Theme_Black)
-        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pd.window!!.setBackgroundDrawableResource(R.color.transparent)
-        pd.setContentView(view)
-        pd.show()
-        homeViewModel.requestForTask()
     }
 }

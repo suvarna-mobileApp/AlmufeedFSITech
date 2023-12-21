@@ -125,7 +125,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:gravity="start"
-                android:inputType="textMultiLine"
                 android:padding="@dimen/dp10"
                 android:textSize="@dimen/dp18"
                 android:layout_marginHorizontal="@dimen/dp18"

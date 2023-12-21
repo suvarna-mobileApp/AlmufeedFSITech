@@ -3,9 +3,11 @@ package com.android.almufeed.ui.home.adapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.android.almufeed.R
 import com.android.almufeed.business.domain.utils.dateFormater
 import com.android.almufeed.business.domain.utils.formatQcDate
 import com.android.almufeed.business.domain.utils.getDate
@@ -34,13 +36,13 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = taskList.get(position)
         if (currentItem != null) {
-            holder.bind(currentItem)
+            holder.bind(currentItem,position)
         }
     }
 
     inner class ItemViewHolder(private val binding: RecyclerTaskadapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(currentItem: TaskEntity) {
+        fun bind(currentItem: TaskEntity,position: Int) {
             binding.apply {
                 itemView.setOnClickListener {
                     val intent = Intent(context, TaskDetailsActivity::class.java)
@@ -56,6 +58,17 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
                     intent.putExtra("status", currentItem.LOC)
                     context.startActivity(intent)
                 }
+
+                if(currentItem.hazard){
+                    vip.visibility = View.VISIBLE
+                }else{
+                    vip.visibility = View.GONE
+                }
+
+                /*if(position == 0){
+                    //rel.setBackgroundResource(R.drawable.border)
+                    vip.visibility = View.VISIBLE
+                }*/
 
                 txtTaskid.text = "Task ID - " + currentItem.TaskId
                 txtscheduledate.text = "Reported Date :  " + dateFormater(currentItem.scheduledDate)

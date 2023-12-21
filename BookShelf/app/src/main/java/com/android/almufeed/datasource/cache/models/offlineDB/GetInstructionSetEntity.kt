@@ -9,11 +9,13 @@ data class GetInstructionSetEntity (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Int,
 
-    @ColumnInfo(name = "Refrecid") var Refrecid: Long,
+    @ColumnInfo(name = "LineNumber") var LineNumber: Int,
+
+    @ColumnInfo(name = "Steps") var Steps: String?,
 
     @ColumnInfo(name = "FeedbackType") var FeedbackType: Int,
 
-    @ColumnInfo(name = "AnswerSet") var AnswerSet: String,
+    @ColumnInfo(name = "Refrecid") var Refrecid: Long,
 
     @ColumnInfo(name = "taskId") var taskId: String
     )

@@ -32,6 +32,7 @@ import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityAddAttachmentBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.models.offlineDB.AttachmentEntity
+import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity
 import com.android.almufeed.ui.home.TaskDetailsActivity
 import com.android.almufeed.ui.home.events.AddEventsActivity
@@ -153,18 +154,29 @@ class AddAttachmentActivity : AppCompatActivity() {
                 pd.show()
                 if(isOnline(this@AddAttachmentActivity)){
                     if(binding.spinnerType.selectedItem.equals("Before")){
-                        addEventsViewModel.saveForEvent(taskId,"comments","Before Task")
+                        addEventsViewModel.saveForEvent(taskId,binding.etDescription.text.toString(),"Before Task")
                     }else if(binding.spinnerType.selectedItem.equals("After")){
-                        addEventsViewModel.saveForEvent(taskId,"comments","After Task")
+                        addEventsViewModel.saveForEvent(taskId,binding.etDescription.text.toString(),"After Task")
                     }
                     addAttachmentViewModel.requestForImage(convertedImage1,convertedImage2,convertedImage3,convertedImage4,convertedImage5,convertedImage6,selectedImageType,binding.etDescription.text.toString(),taskId)
                 }else{
+                    pd.dismiss()
                     val db = Room.databaseBuilder(this@AddAttachmentActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
                     lifecycleScope.launch {
                         attachmentEntity = addAttachmentViewModel.requestForImageDB(convertedImageDB1,convertedImageDB2,convertedImageDB3,convertedImageDB4,
                             convertedImageDB5,convertedImageDB6,selectedImageType,binding.etDescription.text.toString(),taskId)
                     }
-                    db.bookDao().insertAddAttachmentSet(attachmentEntity)
+                    if(binding.spinnerType.selectedItem.equals("Before")){
+                        db.bookDao().insertAddAttachmentSet(attachmentEntity)
+                        db.bookDao().update("Before Task",taskId,binding.etDescription.text.toString())
+                    }else if(binding.spinnerType.selectedItem.equals("After")){
+                        db.bookDao().insertAddAttachmentSet(attachmentEntity)
+                        db.bookDao().update("After Task",taskId,binding.etDescription.text.toString())
+                    }
+                    val intent = Intent(this@AddAttachmentActivity, TaskDetailsActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    startActivity(intent)
+                    finish()
                 }
               /*  if(binding.spinnerType.selectedItem.equals("Before")){
                     addEventsViewModel.saveForEvent(taskId,"comments","Before Task")
@@ -179,7 +191,7 @@ class AddAttachmentActivity : AppCompatActivity() {
             startActivity(intent)*/
         }
 
-        //subscribeObservers()
+        subscribeObservers()
     }
 
     override fun onResume() {

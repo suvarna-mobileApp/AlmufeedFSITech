@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.almufeed.R
 import com.android.almufeed.databinding.RecyclerInstructionadapterBinding
+import com.android.almufeed.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionData
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionSetResponseModel
 
@@ -72,7 +73,7 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                     else -> print("I don't know anything about it")
                 }
 
-                binding.etMessage.setOnFocusChangeListener(object : OnFocusChangeListener {
+               /* binding.etMessage.setOnFocusChangeListener(object : OnFocusChangeListener {
                     override fun onFocusChange(view: View, hasFocus: Boolean) {
                         if (hasFocus) {
                             Toast.makeText(context, "Typing", Toast.LENGTH_SHORT).show()
@@ -81,17 +82,17 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                             Toast.makeText(context, "Typing Stop", Toast.LENGTH_SHORT).show()
                         }
                     }
-                })
+                })*/
 
                 binding.etMessage.addTextChangedListener(object : TextWatcher {
 
                     override fun afterTextChanged(s: Editable) {
-                       /* handler.removeCallbacksAndMessages(null)
+                        handler.removeCallbacksAndMessages(null)
 
                         handler.postDelayed({
                             val fullString = s.toString()
                             listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,fullString)
-                        }, DELAY_MS)*/
+                        }, DELAY_MS)
                     }
 
                     override fun beforeTextChanged(s: CharSequence, start: Int,

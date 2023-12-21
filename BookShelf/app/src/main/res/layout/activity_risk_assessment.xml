@@ -15,7 +15,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/btn_safe">
 
         <LinearLayout
             android:id="@+id/lin_task"
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp5"
                 android:text="Do you have the right tools for the job?"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textSize="@dimen/dp18"
                 android:layout_marginBottom="@dimen/dp10"
                 app:fontFamily="@font/montserrat"/>
@@ -126,6 +127,7 @@
                 android:layout_height="200dp"
                 android:gravity="start"
                 android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
                 android:padding="@dimen/dp10"
                 android:textSize="@dimen/dp18"
                 android:layout_marginHorizontal="@dimen/dp18"
@@ -135,7 +137,7 @@
                 android:layout_marginBottom="@dimen/dp10"
                 android:hint=""
                 android:background="@drawable/layout_border"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:maxLength="300"
                 android:singleLine="false"
                 android:elevation="0dp"/>

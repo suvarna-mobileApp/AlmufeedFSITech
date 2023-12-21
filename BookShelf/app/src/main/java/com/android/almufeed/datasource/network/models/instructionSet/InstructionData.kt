@@ -19,4 +19,8 @@ data class InstructionData (
     @SerializedName("Refrecid")
     @Expose
     val Refrecid: Long,
+
+    @SerializedName("taskId")
+    @Expose
+    val taskId: String,
 )

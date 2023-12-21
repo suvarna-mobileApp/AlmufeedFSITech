@@ -47,10 +47,43 @@
         android:padding="30dp"
         app:strokeWidth="0dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbarapp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search"
+            style="@style/Widget.agriReach.TextInputLayoutOutlinedWhiteBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginVertical="@dimen/dp4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_search_query"
+                style="@style/Widget.book.TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,-_"
+                android:drawableStart="@drawable/ic_search"
+                android:drawableEnd="@drawable/ic_close"
+                android:drawablePadding="@dimen/dp16"
+                android:hint="Search "
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/dp14"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/search"
             android:layout_marginTop="@dimen/dp10">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -64,13 +97,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_below="@+id/toolbarapp"
             style="@style/TextAppearance.AppCompat.Headline"
             android:text="@string/text_task"
             android:textColor="@color/black"
             android:textSize="@dimen/dp20"
             android:visibility="gone"
             app:fontFamily="@font/montserrat_semibold"/>
-
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

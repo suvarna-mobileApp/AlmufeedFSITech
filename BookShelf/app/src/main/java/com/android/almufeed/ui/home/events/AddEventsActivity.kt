@@ -63,7 +63,12 @@ class AddEventsActivity : AppCompatActivity() {
             intent.putExtra("taskid", taskId)
             startActivity(intent)
         })
-
+        pd = Dialog(this, android.R.style.Theme_Black)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+        pd.show()
         subscribeObservers()
         binding.spinnerType.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -77,7 +82,7 @@ class AddEventsActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener {
-
+            pd.show()
             if(selectedImageType < 0){
                 Toast.makeText(this@AddEventsActivity,"Please select image type", Toast.LENGTH_SHORT).show()
             }else if (binding.etDescription.text.toString().isNotEmpty()){
@@ -85,10 +90,6 @@ class AddEventsActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this@AddEventsActivity,"Please give comments", Toast.LENGTH_SHORT).show()
             }
-
-            /*val intent = Intent(this@AddAttachmentActivity, RatingActivity::class.java)
-            intent.putExtra("taskid", taskId)
-            startActivity(intent)*/
         }
     }
 
@@ -120,29 +121,25 @@ class AddEventsActivity : AppCompatActivity() {
         addEventsViewModel.mySetEventDataSTate.observe(this@AddEventsActivity) { dataState ->
             when (dataState) {
                 is DataState.Error -> {
+                    pd.dismiss()
                     Toast.makeText(this@AddEventsActivity,"Some error, Please try later", Toast.LENGTH_SHORT).show()
                 }
                 is DataState.Loading -> {
 
                 }
                 is DataState.Success -> {
+                    pd.dismiss()
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     val intent = Intent(this@AddEventsActivity, TaskActivity::class.java)
                     intent.putExtra("taskid", taskId)
                     startActivity(intent)
+                    finish()
                 }
             }.exhaustive
         }
     }
     override fun onResume() {
         super.onResume()
-        pd = Dialog(this, android.R.style.Theme_Black)
-        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
-        pd.setContentView(view)
-        pd.show()
-
         addEventsViewModel.requestForEvent()
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

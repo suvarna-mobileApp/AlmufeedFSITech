@@ -11,12 +11,16 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dateFormater
 import com.android.almufeed.business.domain.utils.exhaustive
+import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityRiskAssessmentBinding
 import com.android.almufeed.databinding.ActivityTaskBinding
+import com.android.almufeed.datasource.cache.database.BookDatabase
+import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.ui.home.events.AddEventsViewModel
 import com.android.almufeed.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,11 +31,13 @@ class RiskAssessment : AppCompatActivity() {
     private lateinit var taskId: String
     private lateinit var pd : Dialog
     private val addEventsViewModel: AddEventsViewModel by viewModels()
+    private lateinit var db : BookDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRiskAssessmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        db = Room.databaseBuilder(this, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
 
         taskId = intent.getStringExtra("taskid").toString()
         setSupportActionBar(binding.toolbar.incToolbarWithCenterLogoToolbar)
@@ -59,7 +65,17 @@ class RiskAssessment : AppCompatActivity() {
                         pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
                         pd.setContentView(view)
                         pd.show()
-                        addEventsViewModel.saveForEvent(taskId,binding.message.text.toString(),"Risk Assessment Completed")
+                        if(isOnline(this@RiskAssessment)){
+                            addEventsViewModel.saveForEvent(taskId,binding.message.text.toString(),"Risk Assessment Completed")
+                        }else{
+                            pd.dismiss()
+                            db.bookDao().update("Risk Assessment Completed",taskId,binding.message.text.toString())
+                            val intent = Intent(this@RiskAssessment, TaskDetailsActivity::class.java)
+                            intent.putExtra("status", "Risk Assessment Completed")
+                            intent.putExtra("taskid", taskId)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                 }else{
                     Toast.makeText(this@RiskAssessment,"Not safe to continue", Toast.LENGTH_SHORT).show()
@@ -79,7 +95,6 @@ class RiskAssessment : AppCompatActivity() {
                     intent.putExtra("taskid", taskId)
                     startActivity(intent)
                     finish()
-                    //addEventsViewModel.saveForEvent(taskId,"tab1","comments","Risk Assessment InCompleted")
                 }else{
                     Toast.makeText(this@RiskAssessment,"Not safe to continue", Toast.LENGTH_SHORT).show()
                 }

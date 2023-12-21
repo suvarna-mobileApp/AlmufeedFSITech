@@ -7,7 +7,7 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookShelf.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".SyncWithServer"
+            android:exported="false" />
         <activity
             android:name=".ui.home.attachment.CapturedPictureActivity"
             android:exported="false" />
@@ -123,10 +126,17 @@
         <activity
             android:name=".ui.home.FavouritesActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <receiver android:name=".ui.services.AlarmBrodcast"/>
-        <service android:name=".ui.services.MyService" android:process=":remote"/>
-    <receiver android:name=".ui.services.AlarmReceiver" android:process=":remote" />
+        <receiver android:name=".ui.services.AlarmBrodcast" />
+
+        <service
+            android:name=".ui.services.MyService"
+            android:process=":remote" />
+
+        <receiver
+            android:name=".ui.services.AlarmReceiver"
+            android:process=":remote" />
     </application>
+
 </manifest>

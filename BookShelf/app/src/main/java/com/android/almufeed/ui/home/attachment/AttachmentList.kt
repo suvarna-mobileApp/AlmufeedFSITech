@@ -38,6 +38,7 @@ class AttachmentList : AppCompatActivity() {
     private val baseViewModel: BaseViewModel by viewModels()
     private lateinit var attachmentEntity : AttachmentEntity
     private lateinit var db:BookDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAttachmentListBinding.inflate(layoutInflater)
