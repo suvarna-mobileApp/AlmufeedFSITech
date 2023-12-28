@@ -135,7 +135,10 @@ class SyncWithServer : AppCompatActivity() {
                 ratingList[i].rating,
                 ratingList[i].comment,
                 ratingList[i].dateTime,
-                ratingList[i].task_id
+                ratingList[i].task_id,
+                ratingList[i].customerName,
+                ratingList[i].Email,
+                ratingList[i].Phone,
             )
         }
         subscribeObserversForRating()
@@ -161,8 +164,7 @@ class SyncWithServer : AppCompatActivity() {
             val convertedImage5 = Base64.encodeToString(attachmentList[i].Image5, Base64.DEFAULT)
             val convertedImage6 = Base64.encodeToString(attachmentList[i].Image6, Base64.DEFAULT)
 
-            addAttachmentViewModel.requestForImage(convertedImage1,convertedImage2,convertedImage3,
-                convertedImage4,convertedImage5,convertedImage6,attachmentList[i].type,attachmentList[i].description,attachmentList[i].taskId)
+            //addAttachmentViewModel.requestForImage(convertedImage1,convertedImage2,convertedImage3, convertedImage4,convertedImage5,convertedImage6,attachmentList[i].type,attachmentList[i].description,attachmentList[i].taskId)
         }
         subscribeObserversForAttachment()
     }

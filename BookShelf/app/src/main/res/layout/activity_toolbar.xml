@@ -24,7 +24,7 @@
                 android:text=""
                 android:layout_marginStart="@dimen/dp10"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 app:fontFamily="@font/montserrat_semibold"/>
 
             <LinearLayout

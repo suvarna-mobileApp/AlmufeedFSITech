@@ -18,6 +18,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.room.Room;
 import com.android.almufeed.R;
+import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager;
 import com.android.almufeed.datasource.cache.database.BookDatabase;
 import com.android.almufeed.datasource.cache.models.book.BookEntity;
 import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity;
@@ -34,7 +35,7 @@ import retrofit2.Response;
 
 public class MyService extends Service  {
     private static final String CHANNEL_ID = "this.is.my.channelId";
-
+    private static BasePreferencesManager basePreferencesManager;
     @Override
     public void onCreate() {
         HandlerThread thread = new HandlerThread("ServiceStartArguments", 1);
@@ -56,12 +57,13 @@ public class MyService extends Service  {
     }
 
     public void checkForTask() {
-        TaskListRequest taskRequest = new TaskListRequest("tab1");
         SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
-        String s1 = sh.getString("token", "");
-        Call<TaskListResponse> getToken = APIServices.Companion.notcreate(this).getTaskListForNotification(s1,taskRequest);
+        String token = sh.getString("token", "");
+        String username = sh.getString("username", "");
+        TaskListRequest taskRequest = new TaskListRequest(username);
+        Call<TaskListResponse> getToken = APIServices.Companion.notcreate(this).getTaskListForNotification(token,taskRequest);
         BookDatabase db = Room.databaseBuilder(this, BookDatabase.class, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build();
-
+        System.out.println("sharedpreference " + token + " " + username);
         try {
             getToken.enqueue(new Callback<TaskListResponse>() {
                 @Override
@@ -70,14 +72,13 @@ public class MyService extends Service  {
                         if (response.body() != null) {
                             List<TaskEntity> taskList = db.bookDao().getAllTask();
                             int commonSize = Math.min(response.body().getTask().size(), taskList.size());
-                            //System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
-                            for (int i = commonSize; i < response.body().getTask().size(); i++) {
-                                System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
+                            System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
+                           /* for (int i = commonSize; i < response.body().getTask().size(); i++) {
+                                PushNotification();
+                            }*/
+                            if(response.body().getTask().size() > taskList.size()){
                                 PushNotification();
                             }
-
-                            db.close();
-
                            /* if(taskList.size() < response.body().getTask().size()){
                                 PushNotification();
                             }*/
@@ -97,6 +98,7 @@ public class MyService extends Service  {
                     }else{
 
                     }
+                    db.close();
                 }
 
                 @Override
@@ -122,6 +124,7 @@ public class MyService extends Service  {
         Notification notification = builder.setContentTitle("Al Mufeed Group")
                 .setContentText("New Task Assigned")
                 .setTicker("New Message Alert!")
+                .setAutoCancel(true)
                 .setSmallIcon(R.mipmap.almufeedlogoclr)
                 .setDefaults(Notification.DEFAULT_ALL) // must requires VIBRATE permission
                 .setPriority(Notification.PRIORITY_HIGH)

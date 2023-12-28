@@ -71,7 +71,7 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
                 }*/
 
                 txtTaskid.text = "Task ID - " + currentItem.TaskId
-                txtscheduledate.text = "Reported Date :  " + dateFormater(currentItem.scheduledDate)
+                txtscheduledate.text = "Scheduled Date :  " + dateFormater(currentItem.scheduledDate)
                 txtAttendDate.text = "Due Date :  " + dateFormater(currentItem.attendDate)
                 txtbuilding.text = "Building :  " + currentItem.Building
                 txtlocation.text = "Location :  " + currentItem.Location

@@ -35,7 +35,6 @@
                 app:fontFamily="@font/montserrat_semibold"/>
 
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.card.MaterialCardView

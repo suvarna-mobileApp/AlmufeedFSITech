@@ -72,7 +72,7 @@
                 app:fontFamily="@font/montserrat">
             </androidx.appcompat.widget.AppCompatTextView>
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/lin_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,13 +137,27 @@
                     android:layout_weight="1"
                     android:layout_height="200dp">
                 </androidx.appcompat.widget.AppCompatImageView>
-            </LinearLayout>
+            </LinearLayout>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/idCourseRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/txt_subtitle"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/capture_image"
+                android:layout_width="match_parent"
+                android:layout_below="@id/idCourseRV"
+                android:layout_margin="@dimen/dp10"
+                android:layout_height="400dp">
+            </androidx.appcompat.widget.AppCompatImageView>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lin_image2"
+                android:layout_below="@id/capture_image"
                 android:layout_marginStart="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginEnd="@dimen/dp10"

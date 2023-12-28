@@ -39,6 +39,10 @@ android {
         }
     }
 
+    defaultConfig {
+        resConfigs "en", "US"
+    }
+
     flavorDimensions += "default"
     /*productFlavors {
         create("bookApi") {

@@ -20,6 +20,7 @@ import com.android.almufeed.databinding.ActivityAddEventsBinding
 import com.android.almufeed.datasource.network.models.events.GetEventData
 import com.android.almufeed.ui.home.TaskActivity
 import com.android.almufeed.ui.home.TaskDetailsActivity
+import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.rateus.RatingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,14 +33,15 @@ class AddEventsActivity : AppCompatActivity() {
     var imageType = arrayOf("Select an Event", "Under DLP", "Material Collected and On site"," Customer request to reschedule","Inspection Completed",
     "In progress","Out of scope","Call back requested","Quotation pending","No access")
     private var selectedImageType : Int = -1
-    private var selectedImage : Int = -1
+    private var selectedImage : String = ""
     private lateinit var taskId : String
+    private lateinit var eventList : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEventsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        eventList = ArrayList<String>()
         val intent = getIntent()
         taskId = intent.getStringExtra("taskid").toString()
         setSupportActionBar(binding.toolbar.incToolbarWithCenterLogoToolbar)
@@ -74,6 +76,15 @@ class AddEventsActivity : AppCompatActivity() {
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedImageType = position - 1
+                selectedImage = eventList.get(position)
+                if(selectedImage.equals("NO ACCESS PPM") || selectedImage.equals("NO ACCESS RM")){
+                    val intent = Intent(this@AddEventsActivity, AddAttachmentActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    intent.putExtra("selectedImage", selectedImage)
+                    intent.putExtra("fromEvent", true)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -105,7 +116,6 @@ class AddEventsActivity : AppCompatActivity() {
                 is DataState.Success -> {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
-                    var eventList = ArrayList<String>()
                     eventList.add("Select an Event")
                     for (i in dataState.data.EventList.indices) {
                         eventList.add(dataState.data.EventList[i].TaskEvent)

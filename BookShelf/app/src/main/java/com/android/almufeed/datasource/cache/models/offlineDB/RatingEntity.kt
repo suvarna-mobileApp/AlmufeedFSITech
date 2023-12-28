@@ -15,6 +15,12 @@ data class RatingEntity(
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var customerSignature: ByteArray? = null,
 
+    @ColumnInfo(name = "customerName") var customerName: String,
+
+    @ColumnInfo(name = "Email") var Email: String,
+
+    @ColumnInfo(name = "Phone") var Phone: String,
+
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var techiSignature: ByteArray? = null,
 

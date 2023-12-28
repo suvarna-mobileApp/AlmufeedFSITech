@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "GetInstructionSet")
 data class GetInstructionSetEntity (
     @PrimaryKey(autoGenerate = true)
+
     @ColumnInfo(name = "id") var id: Int,
 
     @ColumnInfo(name = "LineNumber") var LineNumber: Int,

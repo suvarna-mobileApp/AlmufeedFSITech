@@ -124,11 +124,116 @@
                     app:fontFamily="@font/montserrat_medium">
                 </androidx.appcompat.widget.AppCompatButton>
 
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/btn_technic"
+                    android:layout_marginStart="@dimen/dp22"
+                    android:layout_marginTop="@dimen/dp22"
+                    android:layout_marginEnd="@dimen/dp22"
+                    android:layout_marginBottom="@dimen/dp22"
+                    android:background="@color/purple_500">
+                </View>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cusdetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view1"
+                    android:layout_marginStart="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginEnd="@dimen/dp10"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:background="@color/purple_500"
+                    android:padding="@dimen/dp2"
+                    android:text="Add Customer Details"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dp18"
+                    app:fontFamily="@font/montserrat_medium">
+                </androidx.appcompat.widget.AppCompatButton>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.book.CardView"
+                    android:id="@+id/card_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/btn_cusdetails"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:visibility="gone"
+                    android:padding="30dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/lin_contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp14"
+                        android:layout_below="@+id/lin_task"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/toolbar"
+                            android:text="Customer Details"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dp20"
+                            app:fontFamily="@font/montserrat_medium">
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                        <View
+                            android:id="@+id/view_divide_contact"
+                            android:layout_width="100dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="start"
+                            android:background="@color/purple_500"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_contactname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp20"
+                            android:text="Name : test name"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dp18"
+                            app:fontFamily="@font/montserrat" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp5"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:text="Mobile: 0552347623"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/dp18"
+                            app:fontFamily="@font/montserrat"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_mail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp5"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:text="Email: 0552347623"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/dp18"
+                            app:fontFamily="@font/montserrat"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/btn_technic"
+                    android:layout_below="@+id/card_contact"
                     android:layout_marginHorizontal="@dimen/dp18"
                     android:layout_marginStart="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp10"

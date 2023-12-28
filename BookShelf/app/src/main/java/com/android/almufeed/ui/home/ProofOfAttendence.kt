@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.android.almufeed.databinding.ActivityProofOfAttendenceBinding
 import com.android.almufeed.ui.home.instructionSet.CheckListActivity
+import com.android.almufeed.ui.home.rateus.RatingActivity
 
 class ProofOfAttendence : AppCompatActivity() {
     private lateinit var binding: ActivityProofOfAttendenceBinding
@@ -17,11 +19,17 @@ class ProofOfAttendence : AppCompatActivity() {
         var taskId = intent.getStringExtra("taskid").toString()
         binding.toolbar.aboutus.setText("Task : " + taskId)
 
-        binding.btnNext.setOnClickListener(View.OnClickListener { view ->
-
-            val intent = Intent(this@ProofOfAttendence, CheckListActivity::class.java)
-            intent.putExtra("taskid", taskId)
-            startActivity(intent)
+        binding.btnSubmit.setOnClickListener(View.OnClickListener { view ->
+            if(binding.nameInput.text.toString().isNotEmpty() && binding.mobileEditText.text.toString().isNotEmpty() && binding.emailInput.text.toString().isNotEmpty()){
+                val intent = Intent(this@ProofOfAttendence, RatingActivity::class.java)
+                intent.putExtra("taskid", taskId)
+                intent.putExtra("name", binding.nameInput.text.toString())
+                intent.putExtra("mobile", binding.mobileEditText.text.toString())
+                intent.putExtra("email", binding.emailInput.text.toString())
+                startActivity(intent)
+            }else{
+                Toast.makeText(this@ProofOfAttendence,"All fields are mandatory", Toast.LENGTH_SHORT).show()
+            }
            /* val intent = Intent(this@ProofOfAttendence, TaskDetailsActivity::class.java)
             intent.putExtra("taskid", taskId)
             intent.putExtra("status", "Add Instruction Steps")

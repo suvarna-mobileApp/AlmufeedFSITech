@@ -89,11 +89,11 @@
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName|textCapWords"
                         android:maxLines="1"
-                        android:maxLength="120"
+                        android:maxLength="150"
                         android:lines="1"
                         android:singleLine="true"
                         android:elevation="0dp"
-                        android:nextFocusDown="@id/nameInputLast"/>
+                        android:nextFocusDown="@id/mobileEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -145,6 +145,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="14dp"
                         android:paddingEnd="14dp"
+                        android:textColor="@color/black"
                         android:text="+971  | "
                         android:textSize="16sp"/>
 
@@ -154,8 +155,9 @@
                         android:layout_height="wrap_content"
                         android:hint="Mobile number"
                         android:inputType="phone"
-                        android:maxLength="10"
+                        android:maxLength="9"
                         android:textSize="16sp"
+                        android:textColor="@color/black"
                         android:background="@android:color/transparent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -235,6 +237,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
                         android:background="@color/white"
+                        android:textColor="@color/black"
                         android:imeOptions="actionDone"
                         android:maxLines="1"
                         android:lines="1"
@@ -247,7 +250,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

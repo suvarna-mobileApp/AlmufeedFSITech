@@ -20,16 +20,12 @@ import com.android.almufeed.databinding.FragmentMobileBinding
 import com.android.almufeed.datasource.network.models.token.CreateTokenResponse
 import com.android.almufeed.ui.home.APIServices
 import com.android.almufeed.ui.launchpad.DashboardActivity
-import com.android.almufeed.ui.launchpad.LaunchpadActivity
-import com.android.almufeed.ui.personalInfo.PersonalInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class MobileFragment : Fragment(R.layout.fragment_mobile) {

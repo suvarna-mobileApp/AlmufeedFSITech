@@ -6,23 +6,21 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.almufeed.R
 import com.android.almufeed.databinding.RecyclerInstructionadapterBinding
-import com.android.almufeed.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionData
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionSetResponseModel
 
-class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseModel,
+class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseModel,
                                   val context: Context,
                                   private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<InstructionRecyclerAdapter.ItemViewHolder>() {
     private val DELAY_MS: Long = 1000
     private val handler = Handler()
-
+    private val selectedItems = mutableSetOf<Int>() // Use a Set to store selected item positions
+    private val selectedItemsNo = mutableSetOf<Int>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = RecyclerInstructionadapterBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -33,15 +31,13 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val currentItem = instructionList.problem.get(position)
-        if (currentItem != null) {
-            holder.bind(currentItem)
-        }
+        val currentItem = dbinstructionList.problem.get(position)
+        holder.bind(currentItem,position)
     }
 
     inner class ItemViewHolder(val binding: RecyclerInstructionadapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(currentItem: InstructionData) {
+        fun bind(currentItem: InstructionData,position: Int) {
             binding.apply {
 
                 /*feedbacktype = 0 = nothing
@@ -54,6 +50,9 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                     0 -> {
                         binding.checklist.linYesno.visibility = View.GONE
                         binding.etMessage.visibility = View.GONE
+                        listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,
+                            currentItem.Steps.toString()
+                        )
                     }
 
                     1 -> {
@@ -62,7 +61,7 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                     }
 
                     2 -> {
-                        binding.checklist.linYesno.visibility = View.VISIBLE
+                        binding.checklist.linYesno.visibility = View.GONE
                         binding.etMessage.visibility = View.GONE
                     }
 
@@ -83,6 +82,11 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                         }
                     }
                 })*/
+
+              /*  binding.checklist.btnNo.setTextColor(context.getColor(R.color.black))
+                binding.checklist.btnNo.setBackgroundColor(context.getColor(R.color.white))
+                binding.checklist.btnYes.setTextColor(context.getColor(R.color.black))
+                binding.checklist.btnYes.setBackgroundColor(context.getColor(R.color.white))*/
 
                 binding.etMessage.addTextChangedListener(object : TextWatcher {
 
@@ -106,45 +110,67 @@ class InstructionRecyclerAdapter (val instructionList: InstructionSetResponseMod
                     }
                 })
 
-               binding.checklist.btnYes.setOnClickListener(View.OnClickListener { view ->
+               binding.checklist.btnYes.setOnClickListener {
+                   if (position != RecyclerView.NO_POSITION) {
+                       CheckListActivity.btnPressed = true
+                       listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes")
+                       if (selectedItems.contains(position)) {
+                           // Item was already selected, unselect it
+                           System.out.println("suvarna yes ")
+                           selectedItems.remove(position)
+                       } else {
+                           // Item was not selected, select it
+                           selectedItems.add(position)
+                           if (selectedItemsNo.contains(position)) {
+                               selectedItemsNo.remove(position)
+                           }
+                       }
+                       notifyDataSetChanged()
+                   }
+                }
+
+                if (selectedItems.contains(position)) {
+                    // Item is selected, set button color to blue
                     binding.checklist.btnYes.setTextColor(context.getColor(R.color.white))
                     binding.checklist.btnYes.setBackgroundColor(context.getColor(R.color.primary))
                     binding.checklist.btnNo.setTextColor(context.getColor(R.color.black))
                     binding.checklist.btnNo.setBackgroundColor(context.getColor(R.color.white))
-                   listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes")
-                   CheckListActivity.btnPressed = true
-                })
-
-                binding.checklist.btnNo.setOnClickListener(View.OnClickListener { view ->
-                    binding.checklist.btnNo.setTextColor(context.getColor(R.color.white))
-                    binding.checklist.btnNo.setBackgroundColor(context.getColor(R.color.primary))
+                } else if(selectedItemsNo.contains(position)){
+                    // Item is not selected, set button color to the default color
                     binding.checklist.btnYes.setTextColor(context.getColor(R.color.black))
                     binding.checklist.btnYes.setBackgroundColor(context.getColor(R.color.white))
-                    listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No")
-                    CheckListActivity.btnPressed = true
-                })
+                    binding.checklist.btnNo.setTextColor(context.getColor(R.color.white))
+                    binding.checklist.btnNo.setBackgroundColor(context.getColor(R.color.primary))
+                }else{
+                    binding.checklist.btnYes.setTextColor(context.getColor(R.color.black))
+                    binding.checklist.btnYes.setBackgroundColor(context.getColor(R.color.white))
+                    binding.checklist.btnNo.setTextColor(context.getColor(R.color.black))
+                    binding.checklist.btnNo.setBackgroundColor(context.getColor(R.color.white))
+                }
 
-               /* itemView.rootView.setOnClickListener {
-                    val yesColor = (binding.checklist.btnYes.background as ColorDrawable).color
-                    val noColor = (binding.checklist.btnNo.background as ColorDrawable).color
-                    when(yesColor) {
-                        R.color.primary -> {
-                            listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes")
+                binding.checklist.btnNo.setOnClickListener {
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No")
+                        CheckListActivity.btnPressed = true
+                        if (selectedItemsNo.contains(position)) {
+                            // Item was already selected, unselect it
+                            selectedItemsNo.remove(position)
+                        } else {
+                            // Item was not selected, select it
+                            selectedItemsNo.add(position)
+                            if (selectedItems.contains(position)) {
+                                selectedItems.remove(position)
+                            }
                         }
+                        notifyDataSetChanged()
                     }
-
-                    when(noColor) {
-                        R.color.primary -> {
-                            listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No")
-                        }
-                    }
-                }*/
+                }
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return instructionList.problem.size
+        return dbinstructionList.problem.size
     }
 
     interface OnItemClickListener {

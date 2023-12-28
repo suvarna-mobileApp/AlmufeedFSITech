@@ -85,8 +85,6 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
         pd.setContentView(view)
         pd.show()
 
-        subscribeObservers()
-
         binding.btnAccept.setOnClickListener(View.OnClickListener { view ->
             val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, 0)
             instructionRecyclerAdapter.bindViewHolder(viewHolder, 0)
@@ -101,9 +99,9 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, position)
                 instructionRecyclerAdapter.bindViewHolder(viewHolder, position)
 
-                System.out.println("pressed " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
                 if(viewHolder.binding.etMessage.visibility == View.VISIBLE){
                     if(btnPressed && viewHolder.binding.etMessage.text.toString().isNotEmpty()){
+                        System.out.println("pressed " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
                         if(isOnline(this@CheckListActivity)){
                             addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                         }else{
@@ -115,6 +113,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     }
                 }else{
                     if(btnPressed){
+                        System.out.println("pressed1 " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
                         if(isOnline(this@CheckListActivity)){
                             addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                         }else{
@@ -143,6 +142,13 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
                     if(dataState.data.problem.size > 0){
+                        val instructionSet = db.bookDao().AllInstructionSet(taskId)
+                       /* binding.recyclerTask.apply {
+                            instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
+                            layoutManager = LinearLayoutManager(this@CheckListActivity)
+                            recyclerTask.adapter = instructionRecyclerAdapter
+                        }*/
+
                         binding.recyclerTask.apply {
                             instructionRecyclerAdapter = InstructionRecyclerAdapter(dataState.data,this@CheckListActivity,this@CheckListActivity)
                             layoutManager = LinearLayoutManager(this@CheckListActivity)
@@ -200,7 +206,6 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     pd.dismiss()
                     Log.e("AR_MYBUSS::", "update Success: ${dataState.data}")
                 }
-
                 else -> {}
             }.exhaustive
         }
@@ -210,14 +215,23 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
         super.onResume()
         if(isOnline(this@CheckListActivity)){
             checkListViewModel.requestForStep(taskId)
+            subscribeObservers()
         }else{
-           /* val instructionSet = db.bookDao().AllInstructionSet()
-
-            binding.recyclerTask.apply {
-                instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
-                layoutManager = LinearLayoutManager(this@CheckListActivity)
-                recyclerTask.adapter = instructionRecyclerAdapter
-            }*/
+            pd.dismiss()
+            val instructionSet = db.bookDao().AllInstructionSet(taskId)
+            System.out.println("instruction set " + instructionSet)
+            if(instructionSet.size > 0){
+                /*binding.recyclerTask.apply {
+                    instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
+                    layoutManager = LinearLayoutManager(this@CheckListActivity)
+                    recyclerTask.adapter = instructionRecyclerAdapter
+                }*/
+            }else{
+                val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
+                intent.putExtra("taskid", taskId)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
@@ -230,11 +244,12 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
     }
 
     override fun onItemClick(refId: Long, feedBackType: Int, answer: String) {
-        pd.show()
         if(isOnline(this@CheckListActivity)){
+            pd.show()
             checkListViewModel.updateForStep(refId,feedBackType,answer,taskId)
             subscribeObserversUpdate()
         }else{
+            pd.dismiss()
             val taskRequest = InstructionSetEntity(
                 id = 0,
                 Refrecid = refId,

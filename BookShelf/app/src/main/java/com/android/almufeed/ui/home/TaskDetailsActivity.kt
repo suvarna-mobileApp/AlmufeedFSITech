@@ -94,7 +94,7 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                 txtTaskid.text = "Task Id : $taskId"
                 txtShortNote?.text = "Task Description : ${taskList.Notes}"
                 txtpro.text = "Priority : ${taskList.Priority}"
-                txtsceduleDate.text = "Reported Date : " + dateFormater(taskList.scheduledDate)
+                txtsceduleDate.text = "Scheduled Date : " + dateFormater(taskList.scheduledDate)
                 txtContactname.text = "Name : ${taskList.CustName}"
                 txtNumber.text = "Mobile Number : ${taskList.Phone}"
                 txtBuilding.text = "Building : ${taskList.Building}"
@@ -129,7 +129,6 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                     txtAction.text = taskList.LOC
                 }
             }
-
         }
 
 

@@ -95,7 +95,7 @@
                         android:lines="1"
                         android:singleLine="true"
                         android:elevation="0dp"
-                        android:nextFocusDown="@id/nameInputLast"/>
+                        android:nextFocusDown="@id/mobileEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -249,7 +249,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="center"

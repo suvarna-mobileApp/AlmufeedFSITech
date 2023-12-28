@@ -26,6 +26,9 @@ interface BookDao {
     @Query("DELETE FROM tasklist WHERE TaskId = :taskId")
     fun deleteTaskByColumnValue(taskId: String?)
 
+    @Query("DELETE FROM GetInstructionSet WHERE TaskId = :taskId")
+    fun deleteInstructionByColumnValue(taskId: String?)
+
     @Insert
     fun insertInstructionSet(taskEntity: GetInstructionSetEntity): Long
     @Insert
@@ -58,8 +61,8 @@ interface BookDao {
     @Query("SELECT * from InstructionSet")
     fun getAllInstructionSet(): List<InstructionSetEntity>
 
-    @Query("SELECT * from GetInstructionSet")
-    fun AllInstructionSet(): List<GetInstructionSetEntity>
+    @Query("SELECT * from GetInstructionSet WHERE taskId= :taskId")
+    fun AllInstructionSet(taskId : String): List<GetInstructionSetEntity>
 
     @Query("SELECT * from Rating")
     fun getAllRating(): List<RatingEntity>

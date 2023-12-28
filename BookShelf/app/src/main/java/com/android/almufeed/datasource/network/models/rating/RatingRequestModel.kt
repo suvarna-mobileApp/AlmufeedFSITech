@@ -13,6 +13,15 @@ data class RatingData (
     @SerializedName("customerSignature")
     @Expose
     val customerSignature: String,
+    @SerializedName("customerName")
+    @Expose
+    val customerName: String,
+    @SerializedName("Email")
+    @Expose
+    val Email: String,
+    @SerializedName("Phone")
+    @Expose
+    val Phone: String,
     @SerializedName("techiSignature")
     @Expose
     val techiSignature: String,

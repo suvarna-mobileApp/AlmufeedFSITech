@@ -124,6 +124,7 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                 Toast.makeText(this@TaskActivity,"No Network", Toast.LENGTH_SHORT).show()
             }
         }
+        subscribeObserversForInstructionSet()
     }
 
     private var watcher = object : TextWatcher {
@@ -167,10 +168,10 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                 is DataState.Success -> {
                     Log.e("AR_MYBUSS::", "Instruction Details: ${dataState.data}")
                     pd.dismiss()
-                    System.out.println("number of times  " + dataState.data.problem.size)
+
+                    //System.out.println("instruction set number of times  " + dataState.data.problem.size)
                     if(dataState.data.problem.size > 0){
                         for (i in dataState.data.problem.indices) {
-                            System.out.println("number of times inside  " + dataState.data.problem.indices)
                             getInstructionSetEntity = GetInstructionSetEntity(
                                 0,
                                 dataState.data.problem[i].LineNumber,
@@ -180,12 +181,12 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                 dataState.data.problem[i].taskId
                             )
                             db.bookDao().insertInstructionSet(getInstructionSetEntity)
+                            System.out.println("number of times inside  " + getInstructionSetEntity)
                         }
-                        db.close()
+
                     } else {
 
                     }
-
                 }
 
                 else -> {}
@@ -229,7 +230,75 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                             binding.recyclerTask.visibility = View.VISIBLE
                             binding.noDataFoundTv.visibility = View.GONE
                             taskListResponse = dataState.data
-                            //db.bookDao().deleteBook(bookEntity)
+
+                           /* val datalist = arrayListOf("item1", "item2", "item3","item4", "item5")
+                            val tasklist = arrayListOf<String>()
+                            tasklist.addAll(datalist)
+
+                            datalist.removeAt(4)
+                            if (tasklist.size > datalist.size) {
+                                val iterator = tasklist.listIterator()
+
+                                while (iterator.hasNext()) {
+                                    val element = iterator.next()
+
+                                    if (!datalist.contains(element)) {
+                                        iterator.remove()
+                                    }
+                                }
+
+                                System.out.println("Common size inside delete " + tasklist + " " + datalist)
+                            }*/
+                            /*if (tasklist.size > datalist.size) {
+                                try{
+                                    for (i in datalist.indices) {
+                                        if (tasklist[i] != datalist[i]) {
+                                            tasklist.removeAt(i)
+                                        }
+                                    }
+                                }catch (e : IndexOutOfBoundsException){
+                                    tasklist.removeAt(tasklist.size - 1)
+                                }
+
+                              *//*  for (i in datalist.indices) {
+                                    System.out.println("suvarna Common size inside delete1 " + tasklist + " " + datalist)
+                                    if (tasklist[i] != datalist[i]) {
+                                        tasklist.removeAt(i)
+                                    }
+                                }*//*
+                                System.out.println("suvarna Common size inside delete " + tasklist + " " + datalist)
+                            }*/
+                                /*if (tasklist.size > datalist.size) {
+                                    for (i in datalist.indices) {
+                                    if (tasklist[i] != datalist[i]) {
+                                        tasklist.removeAt(i)
+                                    }
+                                }
+                                    System.out.println("common size inside delete " + tasklist + " " + datalist)
+                                }*/
+
+                            /* for (i in datalist.size until tasklist.size) {
+
+                                 if (tasklist.size > datalist.size) {
+                                     tasklist.removeAt(i)
+                                 }
+                             }
+                            */
+
+                            /* if (tasklist.size > datalist.size) {
+                                 for(i in tasklist.indices){
+                                     tasklist.removeAt(datalist[i])
+                                 }
+
+                                 //tasklist.removeAt(2)
+                             }*/
+
+                          /*  val indicesInDatalist = datalist.indices.toSet()
+                            tasklist.removeIf {
+                                System.out.println("common size inside delete " + indicesInDatalist)
+                                tasklist.indexOf(it) !in indicesInDatalist
+                            }*/
+
 
                             val dataTaskList = dataState.data.task
                             val taskList = db.bookDao().getAllTask()
@@ -265,10 +334,31 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                         dataState.data.task[i].Source,
                                         dataState.data.task[i].Asset)
                                     db.bookDao().insertTask(taskEntity)
+
+                                    //checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+                                    //subscribeObserversForInstructionSet()
                                 }
+
                                 for (i in commonSize until taskList.size) {
-                                    System.out.println("printtasklist else1 " + taskList[i].TaskId)
+
+                                    for (i in dataTaskList.indices) {
+                                        if (taskList[i].TaskId != dataTaskList[i].TaskId) {
+                                            System.out.println("common size inside delete " + i + " datasize " + taskList[i].TaskId)
+                                            db.bookDao().deleteTaskByColumnValue(taskList[i].TaskId)
+                                            db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
+                                        }
+                                    }
+
                                     db.bookDao().deleteTaskByColumnValue(taskList[i].TaskId)
+                                    db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
+                                    System.out.println("common size inside delete1 " + taskList.size + " " + dataTaskList.size)
+
+                                    /*if(taskList[i].TaskId.equals(dataTaskList[i].TaskId)){
+
+                                    }else{
+                                        db.bookDao().deleteTaskByColumnValue(taskList[i].TaskId)
+                                        db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
+                                    }*/
                                 }
                             }else{
                                 for (i in dataState.data.task.indices) {
@@ -296,21 +386,23 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                         dataState.data.task[i].Source,
                                         dataState.data.task[i].Asset)
                                     db.bookDao().insertTask(taskEntity)
-                                }
-                            }
-                            db.close()
 
+                                    //checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+                                    System.out.println("common size1 " + dataState.data.task[i].TaskId)
+                                }
+                              /*  for (i in dataState.data.task.indices) {
+                                    System.out.println("print size of instruction set")
+                                    checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+                                    subscribeObserversForInstructionSet()
+                                }*/
+                            }
                             binding.recyclerTask.apply {
                                 val taskList = db.bookDao().getAllTask()
                                 taskRecyclerAdapter = TaskRecyclerAdapter(taskList,this@TaskActivity)
                                 layoutManager = LinearLayoutManager(this@TaskActivity)
                                 recyclerTask.adapter = taskRecyclerAdapter
                             }
-
-                            /*for (i in dataState.data.task.indices) {
-                                checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
-                            }
-                            subscribeObserversForInstructionSet()*/
+                           // db.close()
 
                             /*for (i in 0 until commonSize) {
                                 if (dataTaskList[i].TaskId == taskList[i].TaskId) {
@@ -410,15 +502,16 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                     }
                 }.exhaustive
             }
+            db.close()
         }else{
             val taskList = db.bookDao().getAllTask()
             if(taskList.size > 0){
                 binding.recyclerTask.visibility = View.VISIBLE
                 binding.noDataFoundTv.visibility = View.GONE
                 binding.recyclerTask.apply {
-                   /* taskRecyclerAdapter = TaskRecyclerAdapter(taskList,this@TaskActivity)
+                    taskRecyclerAdapter = TaskRecyclerAdapter(taskList,this@TaskActivity)
                     layoutManager = LinearLayoutManager(this@TaskActivity)
-                    recyclerTask.adapter = taskRecyclerAdapter*/
+                    recyclerTask.adapter = taskRecyclerAdapter
                 }
                 db.close()
             }else{

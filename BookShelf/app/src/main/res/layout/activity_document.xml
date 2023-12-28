@@ -110,6 +110,21 @@ tools:context=".ui.home.DocumentActivity">
             app:fontFamily="@font/montserrat_medium">
 
         </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_doc4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:padding="@dimen/dp10"
+            android:layout_margin="8dp"
+            android:text="Technician Mobile App Module"
+            android:background="@drawable/nav_background"
+            app:fontFamily="@font/montserrat_medium">
+
+        </androidx.appcompat.widget.AppCompatTextView>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

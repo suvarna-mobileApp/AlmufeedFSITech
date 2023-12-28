@@ -14,6 +14,7 @@ import android.view.View
 import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -22,6 +23,8 @@ import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.databinding.ActivityRatingBinding
+import com.android.almufeed.ui.home.ProofOfAttendence
+import com.android.almufeed.ui.home.TaskActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.events.AddEventsActivity
 import com.android.almufeed.ui.home.events.AddEventsViewModel
@@ -39,6 +42,10 @@ class RatingActivity : AppCompatActivity() {
     private val ratingViewModel: RatingViewModel by viewModels()
     private val addEventsViewModel: AddEventsViewModel by viewModels()
     private lateinit var pd : Dialog
+    private var taskId : String = ""
+    private var customerName : String = ""
+    private var customerMobile : String = ""
+    private var customerMail : String = ""
     private var customerSignature : String = ""
     private var techSignature : String = ""
 
@@ -46,7 +53,8 @@ class RatingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val taskId = intent.getStringExtra("taskid").toString()
+        taskId = intent.getStringExtra("taskid").toString()
+
         setSupportActionBar(binding.toolbar.incToolbarWithCenterLogoToolbar)
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -78,19 +86,24 @@ class RatingActivity : AppCompatActivity() {
             showSignatureDialog("technician")
         })
 
+        binding.btnCusdetails.setOnClickListener (View.OnClickListener { view ->
+            showCustomerDialog()
+        })
+
         binding.btnComplete.setOnClickListener (View.OnClickListener { view ->
 
-            if(binding.rating.rating > 0 && binding.emailInput.text.toString().isNotEmpty() && binding.imgSignatureCustomer.drawable != null && binding.imgSignatureTech.drawable != null){
+            if(binding.rating.rating > 0 && binding.emailInput.text.toString().isNotEmpty() && binding.imgSignatureCustomer.drawable != null &&
+                binding.imgSignatureTech.drawable != null){
                 pd = Dialog(this, android.R.style.Theme_Black)
                 val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
                 pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
                 pd.setContentView(view)
                 pd.show()
-                addEventsViewModel.saveForEvent(taskId,"comments","Completed")
                 val sdf = SimpleDateFormat("dd-MM-yyyy hh:mm")
                 val currentDate = sdf.format(Date())
-                ratingViewModel.requestForRating(customerSignature,techSignature,binding.rating.rating.toDouble(),binding.emailInput.text.toString(),currentDate,taskId)
+                ratingViewModel.requestForRating(customerSignature,techSignature,binding.rating.rating.toDouble(),
+                    binding.emailInput.text.toString(),currentDate,taskId,customerName,customerMail,customerMobile)
             }else{
                 Toast.makeText(this@RatingActivity,"All fields are mandatory", Toast.LENGTH_SHORT).show()
             }
@@ -145,6 +158,36 @@ class RatingActivity : AppCompatActivity() {
             }
         }
     }
+    private fun showCustomerDialog() {
+        val mBuilder = MaterialAlertDialogBuilder(this, com.google.android.material.R.style.MaterialAlertDialog_Material3)
+        mBuilder.setView(layoutInflater.inflate(R.layout.dialog_proof_of_attendence, null))
+        val mDialog = mBuilder.create()
+        mDialog.setCancelable(false)
+        mDialog.setCanceledOnTouchOutside(true)
+        mDialog.show()
+
+        val nameInput = mDialog.findViewById<EditText>(R.id.nameInput)
+        val mobileEditText = mDialog.findViewById<EditText>(R.id.mobileEditText)
+        val emailInput = mDialog.findViewById<EditText>(R.id.emailInput)
+        val btn_submit = mDialog.findViewById<Button>(R.id.btn_submit)
+
+        btn_submit?.setOnClickListener {
+            if(nameInput?.text.toString().isNotEmpty() && mobileEditText?.text.toString().isNotEmpty() && emailInput?.text.toString().isNotEmpty()){
+                customerName = nameInput?.text.toString()
+                customerMobile = mobileEditText?.text.toString()
+                customerMail = emailInput?.text.toString()
+                binding.btnCusdetails.visibility = View.GONE
+                binding.cardContact.visibility = View.VISIBLE
+                binding.txtContactname.text = "Name : " + customerName
+                binding.txtNumber.text = "Mobile Number : +971 " + customerMobile
+                binding.txtMail.text = "Email Id : " + customerMail
+                mDialog.dismiss()
+            }else{
+                Toast.makeText(this@RatingActivity,"All fields are mandatory", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
   /*  private fun showMessageDialog() {
         val builder = AlertDialog.Builder(this@RatingActivity)
@@ -197,8 +240,9 @@ class RatingActivity : AppCompatActivity() {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
                     if(dataState.data.Success){
+                        addEventsViewModel.saveForEvent(taskId,"comments","Completed")
                         Toast.makeText(this@RatingActivity,"Task Completed", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@RatingActivity, DashboardActivity::class.java)
+                        val intent = Intent(this@RatingActivity, TaskActivity::class.java)
                         startActivity(intent)
                     } else {
 

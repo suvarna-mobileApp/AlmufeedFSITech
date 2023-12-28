@@ -1,8 +1,10 @@
 package com.android.almufeed.ui.login
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +15,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.errorListener
@@ -43,6 +48,8 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var snack: Snackbar
     private lateinit var pd : Dialog
+    private val REQUEST_PERMISSION = 100
+    private val ACTION_NOTIFICATION_SETTINGS = "android.settings.APP_NOTIFICATION_SETTINGS"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +100,24 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
         subscribeObservers()
     }
 
+    private val notificationSettingsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Handle the result if needed
+        }
+
+    private fun requestNotificationPermission() {
+        // Check if the device is running Android 12 or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Intent to open the specific app's notification settings
+            val intent = Intent(ACTION_NOTIFICATION_SETTINGS).apply {
+                putExtra("android.provider.extra.APP_PACKAGE", packageName)
+            }
+
+            // Launch the notification settings activity
+            notificationSettingsLauncher.launch(intent)
+        }
+    }
+
     internal fun isValidPassword(password: String): Boolean {
         //if (password.length < 8) return false
         if (password.filter { it.isDigit() }.firstOrNull() == null) return false
@@ -104,7 +129,7 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
 
     private fun getTokenApi(userName : String, password : String) {
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
-        val body = "client_id=7d2f26f6-2e67-4299-9abd-fbac27deff25&client_secret=rcI8Q~eugdoR2M0Yx8_gkTPqqyPyT.sn9ab3BdeF&grant_type=client_credentials&resource=https://alm.sandbox.operations.eu.dynamics.com".toRequestBody(mediaType)
+        val body = "client_id=7d2f26f6-2e67-4299-9abd-fbac27deff25&client_secret=rcI8Q~eugdoR2M0Yx8_gkTPqqyPyT.sn9ab3BdeF&grant_type=client_credentials&resource=https://iye-live.operations.dynamics.com".toRequestBody(mediaType)
         val getToken = APIServices.create().getProducts(body)
         Log.d("products getToken", getToken.request().body.toString())
         try{
@@ -118,8 +143,7 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
                         if (response.body() != null) {
                             baseViewModel.setToken(response.body()!!.access_token)
                             var accessToken = "Bearer " + response.body()!!.access_token
-                            val sharedPreferences: SharedPreferences =
-                                getSharedPreferences("MySharedPref", MODE_PRIVATE)
+                            val sharedPreferences: SharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
                             val myEdit: SharedPreferences.Editor = sharedPreferences.edit()
                             myEdit.putString("token", accessToken)
                             myEdit.commit()
@@ -165,6 +189,10 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
                     pd.dismiss()
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     if(dataState.data.Success){
+                        val sharedPreferences: SharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+                        val myEdit: SharedPreferences.Editor = sharedPreferences.edit()
+                        myEdit.putString("username", dataState.data.ResourceID)
+                        myEdit.commit()
                         baseViewModel.updateLogin()
                         baseViewModel.updateUsername(dataState.data.ResourceID)
                         gotoLaunchpadPage(dataState.data.ResourceID)

@@ -50,6 +50,12 @@ class DocumentActivity : AppCompatActivity() {
                 intent.putExtra("url","training_PPM.pdf")
                 startActivity(intent)
             }
+
+            txtDoc4.setOnClickListener {
+                val intent = Intent(this@DocumentActivity, PDFVIew::class.java)
+                intent.putExtra("url","technicianMobileTraining.pdf")
+                startActivity(intent)
+            }
         }
     }
 
