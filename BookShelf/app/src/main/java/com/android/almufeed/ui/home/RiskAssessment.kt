@@ -14,15 +14,11 @@ import androidx.activity.viewModels
 import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
-import com.android.almufeed.business.domain.utils.dateFormater
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityRiskAssessmentBinding
-import com.android.almufeed.databinding.ActivityTaskBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
-import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.ui.home.events.AddEventsViewModel
-import com.android.almufeed.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

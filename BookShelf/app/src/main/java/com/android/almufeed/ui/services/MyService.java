@@ -15,12 +15,10 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
 import androidx.room.Room;
 import com.android.almufeed.R;
 import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager;
 import com.android.almufeed.datasource.cache.database.BookDatabase;
-import com.android.almufeed.datasource.cache.models.book.BookEntity;
 import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity;
 import com.android.almufeed.datasource.network.models.tasklist.TaskListRequest;
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse;

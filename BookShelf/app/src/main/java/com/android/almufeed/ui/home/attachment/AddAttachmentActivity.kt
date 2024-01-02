@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
-import com.android.almufeed.business.domain.utils.calculateInSampleSize
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityAddAttachmentBinding

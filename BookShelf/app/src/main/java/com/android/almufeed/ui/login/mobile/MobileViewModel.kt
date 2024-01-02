@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.almufeed.business.domain.state.DataState
-import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.repository.BookInfoRepository
 import com.android.almufeed.datasource.network.models.login.LoginRequest
@@ -15,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

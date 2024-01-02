@@ -3,8 +3,6 @@ package com.android.almufeed.ui.login.mobile
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -13,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
-import com.android.almufeed.business.domain.utils.collectLatestFlow
 import com.android.almufeed.business.domain.utils.errorListener
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.databinding.FragmentMobileBinding

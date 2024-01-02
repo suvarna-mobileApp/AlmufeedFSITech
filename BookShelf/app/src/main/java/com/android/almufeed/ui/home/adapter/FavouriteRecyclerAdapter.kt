@@ -3,12 +3,9 @@ package com.android.almufeed.ui.home.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.android.almufeed.databinding.RecyclerFavoriteSingleRowBinding
 import com.android.almufeed.datasource.cache.models.book.BookEntity
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.recycler_favorite_single_row.view.*
 
 class FavouriteRecyclerAdapter (val context: Context, val bookList: List<BookEntity>
 ) : RecyclerView.Adapter<FavouriteRecyclerAdapter.ItemViewHolder>() {

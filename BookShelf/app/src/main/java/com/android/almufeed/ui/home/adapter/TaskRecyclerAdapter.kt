@@ -6,19 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.android.almufeed.R
 import com.android.almufeed.business.domain.utils.dateFormater
-import com.android.almufeed.business.domain.utils.formatQcDate
-import com.android.almufeed.business.domain.utils.getDate
 import com.android.almufeed.databinding.RecyclerTaskadapterBinding
-import com.android.almufeed.datasource.cache.database.BookDatabase
-import com.android.almufeed.datasource.cache.models.book.BookEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.TaskEntity
-import com.android.almufeed.datasource.network.models.bookList.BookData
-import com.android.almufeed.datasource.network.models.bookList.BookListNetworkResponse
-import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
-import com.android.almufeed.ui.home.RiskAssessment
 import com.android.almufeed.ui.home.TaskDetailsActivity
 
 class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context

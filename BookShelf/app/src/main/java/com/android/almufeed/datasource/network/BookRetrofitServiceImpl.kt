@@ -7,7 +7,6 @@ import com.android.almufeed.datasource.network.models.attachment.AttachmentReque
 import com.android.almufeed.datasource.network.models.attachment.AttachmentResponseModel
 import com.android.almufeed.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.android.almufeed.datasource.network.models.attachment.GetAttachmentResponseModel
-import com.android.almufeed.datasource.network.models.bookList.BookListNetworkResponse
 import com.android.almufeed.datasource.network.models.events.GetEventListResponseModel
 import com.android.almufeed.datasource.network.models.events.SaveEventRequestModel
 import com.android.almufeed.datasource.network.models.events.SaveEventResponseModel
@@ -19,15 +18,9 @@ import com.android.almufeed.datasource.network.models.rating.RatingRequestModel
 import com.android.almufeed.datasource.network.models.rating.RatingResponseModel
 import com.android.almufeed.datasource.network.models.tasklist.TaskListRequest
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
-import com.android.almufeed.datasource.network.models.token.CreateTokenRequest
-import com.android.almufeed.datasource.network.models.token.CreateTokenResponse
 import com.android.almufeed.datasource.network.models.updateInstruction.UpdateInstructionSetRequestModel
 import com.android.almufeed.datasource.network.models.updateInstruction.UpdateInstructionSetResponseModel
 import com.android.almufeed.datasource.network.retrofit.BookWebServices
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

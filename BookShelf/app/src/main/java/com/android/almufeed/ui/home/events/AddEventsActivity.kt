@@ -17,12 +17,9 @@ import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.databinding.ActivityAddEventsBinding
-import com.android.almufeed.datasource.network.models.events.GetEventData
 import com.android.almufeed.ui.home.TaskActivity
-import com.android.almufeed.ui.home.TaskDetailsActivity
 import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
-import com.android.almufeed.ui.home.rateus.RatingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

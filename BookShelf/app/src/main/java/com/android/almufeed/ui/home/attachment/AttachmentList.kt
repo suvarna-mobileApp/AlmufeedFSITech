@@ -22,11 +22,9 @@ import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.models.offlineDB.AttachmentEntity
 import com.android.almufeed.ui.base.BaseViewModel
 import com.android.almufeed.ui.home.TaskDetailsActivity
-import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
 import com.android.almufeed.ui.home.events.AddEventsActivity
 import com.android.almufeed.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_task.recyclerTask
 
 @AndroidEntryPoint
 class AttachmentList : AppCompatActivity() {

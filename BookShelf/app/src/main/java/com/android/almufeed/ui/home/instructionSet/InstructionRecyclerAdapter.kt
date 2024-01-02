@@ -12,6 +12,7 @@ import com.android.almufeed.R
 import com.android.almufeed.databinding.RecyclerInstructionadapterBinding
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionData
 import com.android.almufeed.datasource.network.models.instructionSet.InstructionSetResponseModel
+import com.android.almufeed.ui.home.instructionSet.CheckListActivity.Companion.clickedButtonCount
 
 class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseModel,
                                   val context: Context,
@@ -94,6 +95,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
                         handler.removeCallbacksAndMessages(null)
 
                         handler.postDelayed({
+                            clickedButtonCount++
                             val fullString = s.toString()
                             listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,fullString)
                         }, DELAY_MS)
@@ -112,16 +114,17 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
 
                binding.checklist.btnYes.setOnClickListener {
                    if (position != RecyclerView.NO_POSITION) {
-                       CheckListActivity.btnPressed = true
                        listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes")
                        if (selectedItems.contains(position)) {
                            // Item was already selected, unselect it
-                           System.out.println("suvarna yes ")
+                           //System.out.println("suvarna yes ")
                            selectedItems.remove(position)
                        } else {
                            // Item was not selected, select it
                            selectedItems.add(position)
+                           clickedButtonCount++
                            if (selectedItemsNo.contains(position)) {
+                               clickedButtonCount--
                                selectedItemsNo.remove(position)
                            }
                        }
@@ -151,14 +154,15 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
                 binding.checklist.btnNo.setOnClickListener {
                     if (position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No")
-                        CheckListActivity.btnPressed = true
                         if (selectedItemsNo.contains(position)) {
                             // Item was already selected, unselect it
                             selectedItemsNo.remove(position)
                         } else {
                             // Item was not selected, select it
                             selectedItemsNo.add(position)
+                            clickedButtonCount++
                             if (selectedItems.contains(position)) {
+                                clickedButtonCount--
                                 selectedItems.remove(position)
                             }
                         }

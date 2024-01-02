@@ -8,14 +8,8 @@ import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.repository.BookInfoRepository
-import com.android.almufeed.datasource.network.models.bookList.BookData
-import com.android.almufeed.datasource.network.models.bookList.BookListNetworkResponse
-import com.android.almufeed.datasource.network.models.login.LoginRequest
-import com.android.almufeed.datasource.network.models.login.LoginResponse
 import com.android.almufeed.datasource.network.models.tasklist.TaskListRequest
 import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
-import com.android.almufeed.datasource.network.models.token.CreateTokenRequest
-import com.android.almufeed.datasource.network.models.token.CreateTokenResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

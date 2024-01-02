@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Database
 import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
@@ -21,9 +20,8 @@ import com.android.almufeed.business.domain.utils.isOnline
 import com.android.almufeed.databinding.ActivityCheckListBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.database.BookDatabase.Companion.DATABASE_NAME
-import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.datasource.cache.models.offlineDB.InstructionSetEntity
-import com.android.almufeed.datasource.network.models.updateInstruction.UpdateInstructionData
+import com.android.almufeed.datasource.network.models.instructionSet.InstructionData
 import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.events.AddEventsActivity
@@ -37,12 +35,13 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
     private val checkListViewModel: CheckListViewModel by viewModels()
     private val addEventsViewModel: AddEventsViewModel by viewModels()
     private lateinit var instructionRecyclerAdapter: InstructionRecyclerAdapter
+    private lateinit var instructionList: ArrayList<InstructionData>
     private lateinit var taskId : String
     private lateinit var pd : Dialog
     private lateinit var db :BookDatabase
 
     companion object {
-        var btnPressed: Boolean = false
+        var clickedButtonCount = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,18 +94,34 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
             pd.setContentView(view)
             pd.show()
 
-            for (position in 0 until instructionRecyclerAdapter.itemCount) {
+            val allButtonsClicked = clickedButtonCount >= instructionList.size
+            System.out.println("suvarna pressed " + instructionList.size)
+            if (allButtonsClicked) {
+                System.out.println("suvarna pressed yes" + clickedButtonCount)
+                if(isOnline(this@CheckListActivity)){
+                    addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                }else{
+                    db.bookDao().update("Instruction set completed",taskId,"")
+                }
+            }else{
+                System.out.println("suvarna pressed no " + clickedButtonCount)
+                pd.dismiss()
+                Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
+            }
+
+           /* for (position in 0 until instructionRecyclerAdapter.itemCount) {
                 val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, position)
                 instructionRecyclerAdapter.bindViewHolder(viewHolder, position)
 
                 if(viewHolder.binding.etMessage.visibility == View.VISIBLE){
                     if(btnPressed && viewHolder.binding.etMessage.text.toString().isNotEmpty()){
                         System.out.println("pressed " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
-                        if(isOnline(this@CheckListActivity)){
+                        System.out.println("suvarna pressed " + btnPressed)
+                       *//* if(isOnline(this@CheckListActivity)){
                             addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                         }else{
                             db.bookDao().update("Instruction set completed",taskId,"")
-                        }
+                        }*//*
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
@@ -114,17 +129,18 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                 }else{
                     if(btnPressed){
                         System.out.println("pressed1 " + btnPressed + "  "  + viewHolder.binding.etMessage.text.toString().isNotEmpty())
-                        if(isOnline(this@CheckListActivity)){
+                        System.out.println("suvarna pressed yes" + btnPressed)
+                       *//* if(isOnline(this@CheckListActivity)){
                             addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
                         }else{
                             db.bookDao().update("Instruction set completed",taskId,"")
-                        }
+                        }*//*
                     }else{
                         pd.dismiss()
                         Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
+            }*/
         })
     }
 
@@ -143,12 +159,32 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     pd.dismiss()
                     if(dataState.data.problem.size > 0){
                         val instructionSet = db.bookDao().AllInstructionSet(taskId)
+                        instructionList = ArrayList<InstructionData>()
                        /* binding.recyclerTask.apply {
                             instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
                             layoutManager = LinearLayoutManager(this@CheckListActivity)
                             recyclerTask.adapter = instructionRecyclerAdapter
                         }*/
+                        for(i in dataState.data.problem.indices){
+                            when(dataState.data.problem[i].FeedbackType) {
+                                0 -> {
 
+                                }
+
+                                1 -> {
+                                    instructionList.add(dataState.data.problem[i])
+                                }
+
+                                2 -> {
+
+                                }
+
+                                3 -> {
+                                    instructionList.add(dataState.data.problem[i])
+                                }
+                                else -> print("I don't know anything about it")
+                            }
+                        }
                         binding.recyclerTask.apply {
                             instructionRecyclerAdapter = InstructionRecyclerAdapter(dataState.data,this@CheckListActivity,this@CheckListActivity)
                             layoutManager = LinearLayoutManager(this@CheckListActivity)

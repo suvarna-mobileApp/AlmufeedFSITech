@@ -9,27 +9,19 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dateFormater
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.domain.utils.isOnline
-import com.android.almufeed.business.domain.utils.toast
 import com.android.almufeed.databinding.ActivityTaskDetailsBinding
 import com.android.almufeed.datasource.cache.database.BookDatabase
 import com.android.almufeed.datasource.cache.models.offlineDB.EventsEntity
 import com.android.almufeed.ui.base.BaseInterface
 import com.android.almufeed.ui.base.BaseViewModel
-import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
 import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.events.AddEventsActivity
@@ -37,9 +29,7 @@ import com.android.almufeed.ui.home.events.AddEventsViewModel
 import com.android.almufeed.ui.home.instructionSet.CheckListActivity
 import com.android.almufeed.ui.home.rateus.RatingActivity
 import com.android.almufeed.ui.login.LoginActivity
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_task.recyclerTask
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
 @AndroidEntryPoint

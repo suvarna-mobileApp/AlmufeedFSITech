@@ -1,6 +1,5 @@
 package com.android.almufeed.ui.home.attachment
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View

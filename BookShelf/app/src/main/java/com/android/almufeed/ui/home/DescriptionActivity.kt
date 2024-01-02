@@ -1,20 +1,12 @@
 package com.android.almufeed.ui.home
 
-import android.content.Context
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.*
-import androidx.core.content.ContextCompat
-import androidx.room.Room
 import com.android.almufeed.R
 import com.android.almufeed.databinding.ActivityDescriptionBinding
-import com.android.almufeed.datasource.cache.database.BookDatabase
-import com.android.almufeed.datasource.cache.database.BookDatabase.Companion.DATABASE_NAME
-import com.android.almufeed.datasource.cache.models.book.BookEntity
 import com.android.almufeed.datasource.network.models.bookList.BookData
-import com.bumptech.glide.Glide
 
 class DescriptionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDescriptionBinding

@@ -33,9 +33,7 @@ import com.android.almufeed.datasource.network.models.tasklist.TaskListResponse
 import com.android.almufeed.ui.base.BaseInterface
 import com.android.almufeed.ui.base.BaseViewModel
 import com.android.almufeed.ui.home.adapter.TaskRecyclerAdapter
-import com.android.almufeed.ui.home.attachment.AddAttachmentActivity
 import com.android.almufeed.ui.home.instructionSet.CheckListViewModel
-import com.android.almufeed.ui.home.instructionSet.InstructionRecyclerAdapter
 import com.android.almufeed.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -43,7 +41,6 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_task.recyclerTask
 import java.util.Collections
-import java.util.List
 import java.util.Random
 
 @AndroidEntryPoint

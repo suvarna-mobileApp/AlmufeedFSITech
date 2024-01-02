@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,12 +22,10 @@ import com.android.almufeed.R
 import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.databinding.ActivityRatingBinding
-import com.android.almufeed.ui.home.ProofOfAttendence
 import com.android.almufeed.ui.home.TaskActivity
 import com.android.almufeed.ui.home.attachment.AttachmentList
 import com.android.almufeed.ui.home.events.AddEventsActivity
 import com.android.almufeed.ui.home.events.AddEventsViewModel
-import com.android.almufeed.ui.launchpad.DashboardActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kyanogen.signatureview.SignatureView
 import dagger.hilt.android.AndroidEntryPoint

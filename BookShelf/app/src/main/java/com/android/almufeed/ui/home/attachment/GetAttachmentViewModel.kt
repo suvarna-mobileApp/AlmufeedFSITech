@@ -8,7 +8,6 @@ import com.android.almufeed.business.domain.state.DataState
 import com.android.almufeed.business.domain.utils.dataStore.BasePreferencesManager
 import com.android.almufeed.business.domain.utils.exhaustive
 import com.android.almufeed.business.repository.BookInfoRepository
-import com.android.almufeed.datasource.network.models.attachment.AttachmentRequestModel
 import com.android.almufeed.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.android.almufeed.datasource.network.models.attachment.GetAttachmentResponseModel
 import dagger.hilt.android.lifecycle.HiltViewModel

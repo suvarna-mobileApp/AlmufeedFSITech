@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.android.almufeed.databinding.ActivityProofOfAttendenceBinding
-import com.android.almufeed.ui.home.instructionSet.CheckListActivity
 import com.android.almufeed.ui.home.rateus.RatingActivity
 
 class ProofOfAttendence : AppCompatActivity() {
