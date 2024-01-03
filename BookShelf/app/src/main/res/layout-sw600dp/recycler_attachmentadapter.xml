@@ -125,6 +125,108 @@
                     android:layout_height="400dp">
                 </androidx.appcompat.widget.AppCompatImageView>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_image3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/lin_image2"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image7"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image8"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image9"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_image4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/lin_image3"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image10"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image11"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image12"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_image5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/lin_image4"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image13"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image14"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/capture_image15"
+                    android:layout_width="200dp"
+                    android:layout_margin="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:layout_height="200dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+            </LinearLayout>
         </LinearLayout>
 
         <!-- <RelativeLayout

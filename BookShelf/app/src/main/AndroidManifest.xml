@@ -2,17 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature android:name="android.hardware.camera.any" />
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -136,15 +130,15 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".ui.services.AlarmBrodcast" />
+        <receiver android:name="com.almufeed.cafm.ui.services.AlarmBrodcast" />
 
         <service
-            android:name=".ui.services.MyService"
+            android:name="com.almufeed.cafm.ui.services.MyService"
             android:exported="false"
             android:process=":remote" />
 
         <receiver
-            android:name=".ui.services.AlarmReceiver"
+            android:name="com.almufeed.cafm.ui.services.AlarmReceiver"
             android:process=":remote" />
     </application>
 

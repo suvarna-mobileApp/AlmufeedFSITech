@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mobileFragment"
-        android:name="com.android.almufeed.ui.login.mobile.MobileFragment"
+        android:name="com.android.cafm.ui.login.mobile.MobileFragment"
         android:label="@string/activity_login"
         tools:layout="@layout/fragment_mobile">
     </fragment>
