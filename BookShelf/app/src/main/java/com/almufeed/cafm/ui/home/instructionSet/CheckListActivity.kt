@@ -84,6 +84,28 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
         pd.setContentView(view)
         pd.show()
 
+        if(isOnline(this@CheckListActivity)){
+            checkListViewModel.requestForStep(taskId)
+            subscribeObservers()
+        }else{
+            pd.dismiss()
+            val instructionSet = db.bookDao().AllInstructionSet(taskId)
+            System.out.println("instruction set " + instructionSet)
+            if(instructionSet.size > 0){
+                /* binding.recyclerTask.apply {
+                     instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
+                     layoutManager = LinearLayoutManager(this@CheckListActivity)
+                     recyclerTask.adapter = instructionRecyclerAdapter
+                 }*/
+            }else{
+                val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
+                intent.putExtra("taskid", taskId)
+                intent.putExtra("fromTaskBefore", true)
+                startActivity(intent)
+                finish()
+            }
+        }
+
         binding.btnAccept.setOnClickListener(View.OnClickListener { view ->
             val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, 0)
             instructionRecyclerAdapter.bindViewHolder(viewHolder, 0)
@@ -99,6 +121,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     db.bookDao().update("Instruction set completed",taskId,"")
                     val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
+                    intent.putExtra("fromTaskBefore", true)
                     startActivity(intent)
                     finish()
                 }
@@ -192,6 +215,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     }else{
                         val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
                         intent.putExtra("taskid", taskId)
+                        intent.putExtra("fromTaskBefore", true)
                         startActivity(intent)
                         finish()
                     }
@@ -217,6 +241,7 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                     if(dataState.data.Success){
                         val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
                         intent.putExtra("taskid", taskId)
+                        intent.putExtra("fromTaskBefore", true)
                         startActivity(intent)
                         finish()
                     }else{
@@ -248,26 +273,6 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
 
     override fun onResume() {
         super.onResume()
-        if(isOnline(this@CheckListActivity)){
-            checkListViewModel.requestForStep(taskId)
-            subscribeObservers()
-        }else{
-            pd.dismiss()
-            val instructionSet = db.bookDao().AllInstructionSet(taskId)
-            System.out.println("instruction set " + instructionSet)
-            if(instructionSet.size > 0){
-               /* binding.recyclerTask.apply {
-                    instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
-                    layoutManager = LinearLayoutManager(this@CheckListActivity)
-                    recyclerTask.adapter = instructionRecyclerAdapter
-                }*/
-            }else{
-                val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
-                intent.putExtra("taskid", taskId)
-                startActivity(intent)
-                finish()
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

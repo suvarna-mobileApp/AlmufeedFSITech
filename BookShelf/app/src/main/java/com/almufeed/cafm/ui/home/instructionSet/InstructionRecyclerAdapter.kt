@@ -23,6 +23,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
     private val handler = Handler()
     private val selectedItems = mutableSetOf<Int>() // Use a Set to store selected item positions
     private val selectedItemsNo = mutableSetOf<Int>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = RecyclerInstructionadapterBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -93,11 +94,10 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
                 binding.etMessage.addTextChangedListener(object : TextWatcher {
 
                     override fun afterTextChanged(s: Editable) {
+                        val fullString = s.toString()
                         handler.removeCallbacksAndMessages(null)
-
                         handler.postDelayed({
                             clickedButtonCount++
-                            val fullString = s.toString()
                             listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,fullString)
                         }, DELAY_MS)
                     }

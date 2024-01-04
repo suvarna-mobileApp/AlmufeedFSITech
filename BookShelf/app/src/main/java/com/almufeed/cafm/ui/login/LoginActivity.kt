@@ -125,7 +125,7 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
 
     private fun getTokenApi(userName : String, password : String) {
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
-        val body = "client_id=7d2f26f6-2e67-4299-9abd-fbac27deff25&client_secret=rcI8Q~eugdoR2M0Yx8_gkTPqqyPyT.sn9ab3BdeF&grant_type=client_credentials&resource=https://alm.sandbox.operations.eu.dynamics.com".toRequestBody(mediaType)
+        val body = "client_id=7d2f26f6-2e67-4299-9abd-fbac27deff25&client_secret=rcI8Q~eugdoR2M0Yx8_gkTPqqyPyT.sn9ab3BdeF&grant_type=client_credentials&resource=https://iye-live.operations.dynamics.com".toRequestBody(mediaType)
         val getToken = APIServices.create().getProducts(body)
         Log.d("products getToken", getToken.request().body.toString())
         try{

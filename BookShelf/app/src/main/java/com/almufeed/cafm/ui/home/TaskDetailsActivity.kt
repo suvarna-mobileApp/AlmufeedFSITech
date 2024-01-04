@@ -181,10 +181,16 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                 startActivity(intent)
                 finish()
             }else if(binding.btnAccept.text.toString().equals("Add Pictures")){
-                if(binding.txtAction.text == "Before Task Pictures Added"){
+                if(binding.txtAction.text == "Instruction set completed"){
                     val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
-                    intent.putExtra("fromTask", true)
+                    intent.putExtra("fromTaskBefore", true)
+                    startActivity(intent)
+                    finish()
+                }else if(binding.txtAction.text == "Before Task Pictures Added"){
+                    val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    intent.putExtra("fromTaskAfter", true)
                     startActivity(intent)
                     finish()
                 }else{

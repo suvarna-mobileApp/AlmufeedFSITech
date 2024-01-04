@@ -103,7 +103,8 @@ class AddAttachmentActivity : AppCompatActivity() {
     private lateinit var taskId : String
     private var selectedImage : String = ""
     private var fromEvent : Boolean = false
-    private var fromTask : Boolean = false
+    private var fromTaskBefore : Boolean = false
+    private var fromTaskAfter : Boolean = false
     private lateinit var attachmentEntity : AttachmentEntity
     private lateinit var recyclerDataArrayList: ArrayList<Bitmap>
     private lateinit var courseRVAdapter: CourseRVAdapter
@@ -126,7 +127,8 @@ class AddAttachmentActivity : AppCompatActivity() {
 
         selectedImage = intent.getStringExtra("selectedImage").toString()
         fromEvent = intent.getBooleanExtra("fromEvent", false)
-        fromTask = intent.getBooleanExtra("fromTask", false)
+        fromTaskBefore = intent.getBooleanExtra("fromTaskBefore", false)
+        fromTaskAfter = intent.getBooleanExtra("fromTaskAfter", false)
 
         if (fromEvent) {
             binding.idCourseRV.visibility = View.GONE
@@ -180,11 +182,19 @@ class AddAttachmentActivity : AppCompatActivity() {
         }
 
         binding.btnImage.setOnClickListener {
-            openCamera()
+            if(recyclerDataArrayList.size < 15){
+                openCamera()
+            }else{
+                Toast.makeText(this@AddAttachmentActivity, "Limit is 15 images", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnGallery.setOnClickListener {
-            openGallery()
+            if(recyclerDataArrayList.size < 15){
+                openGallery()
+            }else{
+                Toast.makeText(this@AddAttachmentActivity, "Limit is 15 images", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnSave.setOnClickListener {
@@ -236,11 +246,18 @@ class AddAttachmentActivity : AppCompatActivity() {
                 if (selectedImageType < 0) {
                     pd.dismiss()
                     Toast.makeText(this@AddAttachmentActivity, "Please select image type", Toast.LENGTH_SHORT).show()
-                }else if(fromTask && binding.spinnerType.selectedItem.equals("Before") ){
+                }else if(fromTaskBefore && binding.spinnerType.selectedItem.equals("After") ){
                     pd.dismiss()
                     Toast.makeText(
                         this@AddAttachmentActivity,
-                        "Select Image Type After Task",
+                        "Select Image Type Before",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else if(fromTaskAfter && binding.spinnerType.selectedItem.equals("Before") ){
+                    pd.dismiss()
+                    Toast.makeText(
+                        this@AddAttachmentActivity,
+                        "Select Image Type After",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else if (taskId.contains("RM") || binding.spinnerType.selectedItem.equals("Material Picture") || binding.spinnerType.selectedItem.equals(
@@ -345,7 +362,7 @@ class AddAttachmentActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                }else if (taskId.contains("PPM") && convertedImage1.isNotEmpty() && convertedImage2.isNotEmpty() && convertedImage3.isNotEmpty()
+                }else if ((taskId.contains("FC") || taskId.contains("SCH") || taskId.contains("PPM"))&& convertedImage1.isNotEmpty() && convertedImage2.isNotEmpty() && convertedImage3.isNotEmpty()
                     && convertedImage4.isNotEmpty() && convertedImage5.isNotEmpty() && convertedImage6.isNotEmpty() && convertedImage7.isNotEmpty()
                     && convertedImage8.isNotEmpty() && convertedImage9.isNotEmpty() && convertedImage10.isNotEmpty()
                 ) {
@@ -479,158 +496,6 @@ class AddAttachmentActivity : AppCompatActivity() {
         }
     }
     private fun openCamera() {
-        if(Image1){
-            Image1 = false
-            Image2 = true
-        }else if(Image2){
-            Image1 = false
-            Image2 = false
-            Image3 = true
-        }else if(Image3){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = true
-        }else if(Image4){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = true
-        }else if(Image5){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = true
-        }else if(Image6){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = true
-        }else if(Image7){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = true
-        }else if(Image8){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = true
-        }else if(Image9){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = true
-        }else if(Image10){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = true
-        }else if(Image11){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = true
-        }else if(Image12){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = true
-        }else if(Image13){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = false
-            Image14 = true
-        }else if(Image14){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = false
-            Image14 = false
-            Image15 = true
-        }else if(Image15){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = false
-            Image14 = false
-            Image15 = false
-        }else{
-            Image1 = true
-        }
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
             intent.resolveActivity(packageManager)?.also {
                 startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
@@ -639,142 +504,6 @@ class AddAttachmentActivity : AppCompatActivity() {
     }
 
     private fun openGallery() {
-        if(Image1){
-            Image1 = false
-            Image2 = true
-        }else if(Image2){
-            Image1 = false
-            Image2 = false
-            Image3 = true
-        }else if(Image3){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = true
-        }else if(Image4){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = true
-        }else if(Image5){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = true
-        }else if(Image6){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = true
-        }else if(Image7){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = true
-        }else if(Image8){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = true
-        }else if(Image9){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = true
-        }else if(Image10){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = true
-        }else if(Image11){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = true
-        }else if(Image12){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = true
-        }else if(Image13){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = false
-            Image14 = true
-        }else if(Image14){
-            Image1 = false
-            Image2 = false
-            Image3 = false
-            Image4 = false
-            Image5 = false
-            Image6 = false
-            Image7 = false
-            Image8 = false
-            Image9 = false
-            Image10 = false
-            Image11 = false
-            Image12 = false
-            Image13 = false
-            Image14 = false
-            Image15 = true
-        }else{
-            Image1 = true
-        }
         Intent(Intent.ACTION_GET_CONTENT).also { intent ->
             intent.type = "image/*"
             intent.resolveActivity(packageManager)?.also {
@@ -786,6 +515,142 @@ class AddAttachmentActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
+            if(Image1){
+                Image1 = false
+                Image2 = true
+            }else if(Image2){
+                Image1 = false
+                Image2 = false
+                Image3 = true
+            }else if(Image3){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = true
+            }else if(Image4){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = true
+            }else if(Image5){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = true
+            }else if(Image6){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = true
+            }else if(Image7){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = true
+            }else if(Image8){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = true
+            }else if(Image9){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = true
+            }else if(Image10){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = false
+                Image11 = true
+            }else if(Image11){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = false
+                Image11 = false
+                Image12 = true
+            }else if(Image12){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = false
+                Image11 = false
+                Image12 = false
+                Image13 = true
+            }else if(Image13){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = false
+                Image11 = false
+                Image12 = false
+                Image13 = false
+                Image14 = true
+            }else if(Image14){
+                Image1 = false
+                Image2 = false
+                Image3 = false
+                Image4 = false
+                Image5 = false
+                Image6 = false
+                Image7 = false
+                Image8 = false
+                Image9 = false
+                Image10 = false
+                Image11 = false
+                Image12 = false
+                Image13 = false
+                Image14 = false
+                Image15 = true
+            }else{
+                Image1 = true
+            }
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 if (fromEvent) {
                     val bitmap = data?.extras?.get("data") as Bitmap

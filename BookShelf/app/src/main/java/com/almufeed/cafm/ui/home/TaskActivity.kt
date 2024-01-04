@@ -34,6 +34,7 @@ import com.almufeed.cafm.ui.base.BaseInterface
 import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.adapter.TaskRecyclerAdapter
 import com.almufeed.cafm.ui.home.instructionSet.CheckListViewModel
+import com.almufeed.cafm.ui.launchpad.DashboardActivity
 import com.almufeed.cafm.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -543,7 +544,9 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            finish()
+            Intent(this@TaskActivity, DashboardActivity::class.java).apply {
+                startActivity(this)
+            }
             return true
         }
         return super.onOptionsItemSelected(item)

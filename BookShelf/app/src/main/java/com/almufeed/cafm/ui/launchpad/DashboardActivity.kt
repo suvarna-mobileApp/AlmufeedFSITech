@@ -2,6 +2,7 @@ package com.almufeed.cafm.ui.launchpad
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -69,6 +70,15 @@ class DashboardActivity : AppCompatActivity() , BaseInterface {
         val alarm = com.almufeed.cafm.ui.services.AlarmReceiver()
         alarm.setAlarm(this)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     override fun showNetworkSnackBar(isNetworkAvailable: Boolean) {
         if (isNetworkAvailable) {

@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RiskAssessment : AppCompatActivity() {
     private lateinit var binding: ActivityRiskAssessmentBinding
     private lateinit var taskId: String
+    private var comment: String = "NA"
     private lateinit var pd : Dialog
     private val addEventsViewModel: AddEventsViewModel by viewModels()
     private lateinit var db : BookDatabase
@@ -52,26 +53,23 @@ class RiskAssessment : AppCompatActivity() {
                 (binding.checkBoxTool1.isChecked || binding.checkBoxTool2.isChecked)){
                 if(binding.checkBoxCheck1.isChecked && binding.checkBoxTool1.isChecked &&
                     !binding.checkBoxCheck2.isChecked && !binding.checkBoxTool2.isChecked){
-                    if(binding.message.text.toString().isEmpty()){
-                        Toast.makeText(this@RiskAssessment,"Add Comments", Toast.LENGTH_SHORT).show()
+                    pd = Dialog(this, android.R.style.Theme_Black)
+                    val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+                    pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
+                    pd.setContentView(view)
+                    pd.show()
+                    comment = binding.message.text.toString()
+                    if(isOnline(this@RiskAssessment)){
+                        addEventsViewModel.saveForEvent(taskId,comment,"Risk Assessment Completed")
                     }else{
-                        pd = Dialog(this, android.R.style.Theme_Black)
-                        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-                        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
-                        pd.setContentView(view)
-                        pd.show()
-                        if(isOnline(this@RiskAssessment)){
-                            addEventsViewModel.saveForEvent(taskId,binding.message.text.toString(),"Risk Assessment Completed")
-                        }else{
-                            pd.dismiss()
-                            db.bookDao().update("Risk Assessment Completed",taskId,binding.message.text.toString())
-                            val intent = Intent(this@RiskAssessment, TaskDetailsActivity::class.java)
-                            intent.putExtra("status", "Risk Assessment Completed")
-                            intent.putExtra("taskid", taskId)
-                            startActivity(intent)
-                            finish()
-                        }
+                        pd.dismiss()
+                        db.bookDao().update("Risk Assessment Completed",taskId,comment)
+                        val intent = Intent(this@RiskAssessment, TaskDetailsActivity::class.java)
+                        intent.putExtra("status", "Risk Assessment Completed")
+                        intent.putExtra("taskid", taskId)
+                        startActivity(intent)
+                        finish()
                     }
                 }else{
                     Toast.makeText(this@RiskAssessment,"Not safe to continue", Toast.LENGTH_SHORT).show()

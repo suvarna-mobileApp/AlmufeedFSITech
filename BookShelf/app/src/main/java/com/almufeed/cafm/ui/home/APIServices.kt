@@ -13,9 +13,9 @@ class APIServices {
     companion object {
 
         var BASE_URL = "https://login.microsoftonline.com/8bd1367c-efa4-40b4-acac-9f3e4c82000b/oauth2/"
-        //val BASE_URL1 = "https://iye-live.operations.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        val BASE_URL1 = "https://iye-live.operations.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
         //var BASE_URL1 = "https://almdevb0bb67faa678fcfadevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/getTaskList/"
-        var BASE_URL1 = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        //var BASE_URL1 = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
         //var BASE_URL1 = "https://ahsca7486d9b32c9b0ddevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
 
         fun create(): BookWebServices{
