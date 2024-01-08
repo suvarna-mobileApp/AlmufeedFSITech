@@ -57,7 +57,7 @@
                     android:src="@drawable/icon_fwd" />
             </RelativeLayout>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:id="@+id/lin_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     android:layout_weight="1"
                     android:layout_height="200dp">
                 </androidx.appcompat.widget.AppCompatImageView>
-            </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
 
         <!-- <RelativeLayout

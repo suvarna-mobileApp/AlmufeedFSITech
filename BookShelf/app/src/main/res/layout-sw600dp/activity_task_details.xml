@@ -344,6 +344,21 @@
                     android:textSize="@dimen/dp22"/>
             </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_addattachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_below="@+id/card_status"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:textSize="@dimen/dp20"
+                android:textAllCaps="false"
+                android:background="@color/primary"
+                android:text="Add Attachment"
+                app:fontFamily="@font/montserrat_semibold">
+            </androidx.appcompat.widget.AppCompatButton>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
     </com.google.android.material.card.MaterialCardView>

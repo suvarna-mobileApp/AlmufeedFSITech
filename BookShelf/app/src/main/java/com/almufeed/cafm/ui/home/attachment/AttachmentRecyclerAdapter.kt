@@ -15,7 +15,7 @@ import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentRespo
 
 class AttachmentRecyclerAdapter(val taskList: GetAttachmentResponseModel, val context: Context
 ) : RecyclerView.Adapter<AttachmentRecyclerAdapter.ItemViewHolder>() {
-    private lateinit var decodedImage1 : Bitmap
+    /*private lateinit var decodedImage1 : Bitmap
     private lateinit var decodedImage2 : Bitmap
     private lateinit var decodedImage3 : Bitmap
     private lateinit var decodedImage4 : Bitmap
@@ -29,7 +29,7 @@ class AttachmentRecyclerAdapter(val taskList: GetAttachmentResponseModel, val co
     private lateinit var decodedImage12 : Bitmap
     private lateinit var decodedImage13 : Bitmap
     private lateinit var decodedImage14 : Bitmap
-    private lateinit var decodedImage15 : Bitmap
+    private lateinit var decodedImage15 : Bitmap*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = RecyclerAttachmentadapterBinding.inflate(
@@ -50,7 +50,7 @@ class AttachmentRecyclerAdapter(val taskList: GetAttachmentResponseModel, val co
     inner class ItemViewHolder(private val binding: RecyclerAttachmentadapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(currentItem: GetAttachmentData, position: Int) {
-            if(currentItem.Image1?.isNotEmpty() == true){
+      /*      if(currentItem.Image1?.isNotEmpty() == true){
                 val decodedString1: ByteArray = Base64.decode(currentItem.Image1, Base64.DEFAULT)
                 decodedImage1 = BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.size)
                 binding.captureImage1.setImageBitmap(decodedImage1)
@@ -150,7 +150,7 @@ class AttachmentRecyclerAdapter(val taskList: GetAttachmentResponseModel, val co
                 decodedImage15 = BitmapFactory.decodeByteArray(decodedString15, 0, decodedString15.size)
                 binding.linImage5.visibility = View.VISIBLE
                 binding.captureImage15.setImageBitmap(decodedImage15)
-            }
+            }*/
 
            /* val decodedString1: ByteArray = Base64.decode(currentItem.Image1, Base64.DEFAULT)
             val decodedImage1 = BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.size)
@@ -174,9 +174,9 @@ class AttachmentRecyclerAdapter(val taskList: GetAttachmentResponseModel, val co
                     context.startActivity(intent)
                 }*/
 
-                captureImage1.setImageBitmap(decodedImage1)
+               /* captureImage1.setImageBitmap(decodedImage1)
                 captureImage2.setImageBitmap(decodedImage2)
-                captureImage3.setImageBitmap(decodedImage3)
+                captureImage3.setImageBitmap(decodedImage3)*/
                 dateTime.text = "Date :  " + dateFormater(currentItem.datetime)
                 when(currentItem.type) {
                     0 -> txtImageType.text = "Image Type :  Before Task"

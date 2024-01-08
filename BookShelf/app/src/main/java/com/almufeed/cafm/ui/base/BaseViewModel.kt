@@ -32,6 +32,10 @@ class BaseViewModel @Inject constructor(
     fun updateUsername(userName:String) = viewModelScope.launch {
         basePreferencesManager.updateUserName(userName)
     }
+    suspend fun getUsername() : String{
+        val userName = basePreferencesManager.getUserName().first()
+        return userName
+    }
 
     private fun setStateEvent(state: Event) {
         viewModelScope.launch(Dispatchers.IO) {

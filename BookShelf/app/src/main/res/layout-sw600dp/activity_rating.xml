@@ -147,6 +147,7 @@
                     android:layout_marginBottom="@dimen/dp10"
                     android:background="@color/purple_500"
                     android:padding="@dimen/dp2"
+                    android:visibility="gone"
                     android:text="Add Customer Details"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -253,7 +254,6 @@
                     android:layout_height="400dp"
                     android:layout_below="@+id/txt_1"
                     android:gravity="start"
-                    android:inputType="textMultiLine"
                     android:padding="@dimen/dp10"
                     android:textSize="@dimen/dp18"
                     android:layout_marginHorizontal="@dimen/dp18"
@@ -265,7 +265,7 @@
                     android:background="@drawable/layout_border"
                     android:imeOptions="actionDone"
                     android:maxLength="300"
-                    android:singleLine="false"
+                    android:singleLine="true"
                     android:elevation="0dp"/>
             </RelativeLayout>
         </androidx.core.widget.NestedScrollView>

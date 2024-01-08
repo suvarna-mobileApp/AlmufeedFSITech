@@ -4,6 +4,8 @@ import com.almufeed.cafm.datasource.network.models.attachment.AttachmentRequestM
 import com.almufeed.cafm.datasource.network.models.attachment.AttachmentResponseModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentResponseModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerRequestModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerResponseModel
 import com.almufeed.cafm.datasource.network.models.events.GetEventListResponseModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventRequestModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventResponseModel
@@ -70,6 +72,12 @@ interface BookWebServices {
         @Header("Authorization") authToken: String,
         @Body req: RatingRequestModel
     ): Response<RatingResponseModel>
+
+    @POST("setCustomerDetail")
+    suspend fun setCustomerDetail(
+        @Header("Authorization") authToken: String,
+        @Body req: CustomerRequestModel
+    ): Response<CustomerResponseModel>
 
     @POST("setEventtoTask")
     suspend fun setEventTask(

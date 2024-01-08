@@ -5,6 +5,8 @@ import com.almufeed.cafm.datasource.network.models.attachment.AttachmentRequestM
 import com.almufeed.cafm.datasource.network.models.attachment.AttachmentResponseModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentResponseModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerRequestModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerResponseModel
 import com.almufeed.cafm.datasource.network.models.events.GetEventListResponseModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventRequestModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventResponseModel
@@ -29,5 +31,6 @@ interface BookRetrofitService {
     suspend fun getAttachment(token: String, request: GetAttachmentRequestModel): Flow<DataState<GetAttachmentResponseModel>>
     suspend fun getEventList(token: String): Flow<DataState<GetEventListResponseModel>>
     suspend fun setRating(token: String,request: RatingRequestModel): Flow<DataState<RatingResponseModel>>
+    suspend fun setCustomerDetail(token: String,request: CustomerRequestModel): Flow<DataState<CustomerResponseModel>>
     suspend fun setEventTask(token: String,request: SaveEventRequestModel): Flow<DataState<SaveEventResponseModel>>
 }

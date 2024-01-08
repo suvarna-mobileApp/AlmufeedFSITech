@@ -24,6 +24,7 @@ import com.almufeed.cafm.ui.base.BaseInterface
 import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.attachment.AddAttachmentActivity
 import com.almufeed.cafm.ui.home.attachment.AttachmentList
+import com.almufeed.cafm.ui.home.customer.ProofOfAttendence
 import com.almufeed.cafm.ui.home.events.AddEventsActivity
 import com.almufeed.cafm.ui.home.events.AddEventsViewModel
 import com.almufeed.cafm.ui.home.instructionSet.CheckListActivity
@@ -42,6 +43,10 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
     private val baseViewModel: BaseViewModel by viewModels()
     //private lateinit var snack: Snackbar
     private lateinit var db: BookDatabase
+    companion object {
+        var clickedButtonCountBefore = 0
+        var clickedButtonCountAfter = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,18 +70,19 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
         }
         db = Room.databaseBuilder(this@TaskDetailsActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
 
-        pd = Dialog(this, android.R.style.Theme_Black)
-        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pd.window!!.setBackgroundDrawableResource(R.color.transparent)
-        pd.setContentView(view)
-        pd.show()
+
         if(isOnline(this@TaskDetailsActivity)){
+            pd = Dialog(this, android.R.style.Theme_Black)
+            val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+            pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            pd.window!!.setBackgroundDrawableResource(R.color.transparent)
+            pd.setContentView(view)
+            pd.show()
             homeViewModel.requestForTask()
-            subscribeObservers("")
+            subscribeObservers()
         }else{
-            pd.dismiss()
-            val taskList = db.bookDao().getTaskFromId(taskId)
+            Toast.makeText(this@TaskDetailsActivity,"No Internet Connection", Toast.LENGTH_SHORT).show()
+        /*    val taskList = db.bookDao().getTaskFromId(taskId)
             val evenList = db.bookDao().getAllEvents()
 
             binding.apply {
@@ -102,34 +108,29 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                         btnAccept.text = "Start Risk Assessment"
                     }else if(event.equals("Instruction set completed")){
                         txtAction.text = event
-                        btnAccept.text = "Add Pictures"
+                        btnAccept.text = "Complete Task"
                     }else if(event.equals("Started")){
                         txtAction.text = event
                         btnAccept.text = "Continue"
                     }else if(event.equals("Before Task")){
                         txtAction.text = "Before Task Pictures Added"
-                        btnAccept.text = "Add Pictures"
+                        if(clickedButtonCountBefore < 11){
+                            btnAccept.text = "Add Pictures"
+                        }
                     }else if(event.equals("After Task")){
+                        if(clickedButtonCountAfter < 11){
+                            btnAccept.text = "Add Pictures"
+                        }
                         txtAction.text = "After Task Pictures Added"
-                        btnAccept.text = "Complete Task"
+
                     }else{
                         txtAction.text = event
                     }
                 }else{
                     txtAction.text = taskList.LOC
                 }
-            }
+            }*/
         }
-
-
-      /*  binding.apply {
-            snack = Snackbar.make(
-                root,
-                getString(com.android.almufeed.R.string.text_network_not_available),
-                Snackbar.LENGTH_INDEFINITE
-            )
-        }*/
-
 
         binding.toolbar.incToolbarEvent.setOnClickListener (View.OnClickListener {
             val intent = Intent(this@TaskDetailsActivity, AddEventsActivity::class.java)
@@ -144,78 +145,98 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
         })
 
         binding.btnAccept.setOnClickListener (View.OnClickListener { view ->
-            if(binding.btnAccept.text.toString().equals("Accept")){
-                if(isOnline(this@TaskDetailsActivity)){
-                    addEventsViewModel.saveForEvent(taskId,"comments","Accepted")
-                    subscribeObservers("Accept")
-                }else{
-                    val eventRequest = EventsEntity(
-                        id = 0,
-                        taskId = taskId,
-                        resource = "",
-                        Comments = "comments",
-                        Events = "Accepted",
-                    )
-                    db.bookDao().insertEvents(eventRequest)
-                    val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
+            if(isOnline(this@TaskDetailsActivity)){
+                if(binding.btnAccept.text.toString().equals("Accept")){
+                    if(isOnline(this@TaskDetailsActivity)){
+                        addEventsViewModel.saveForEvent(taskId,"comments","Accepted")
+                        val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
+                        intent.putExtra("taskid", taskId)
+                        startActivity(intent)
+                        finish()
+                    }else{
+                        val eventRequest = EventsEntity(
+                            id = 0,
+                            taskId = taskId,
+                            resource = "",
+                            Comments = "comments",
+                            Events = "Accepted",
+                        )
+                        db.bookDao().insertEvents(eventRequest)
+                        val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
+                        intent.putExtra("taskid", taskId)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                }else if(binding.btnAccept.text.toString().equals("Add Customer Details")){
+                    val intent = Intent(this@TaskDetailsActivity, ProofOfAttendence::class.java)
                     intent.putExtra("taskid", taskId)
                     startActivity(intent)
                     finish()
-                }
 
-            }else if(binding.btnAccept.text.toString().equals("Start")){
-                if(isOnline(this@TaskDetailsActivity)){
-                    addEventsViewModel.saveForEvent(taskId,"comments","Started")
-                    subscribeObservers("Start")
-                }else{
-                    db.bookDao().update("Started",taskId,"comments")
-                    val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
-                    intent.putExtra("taskid", taskId)
-                    startActivity(intent)
-                    finish()
-                }
+                }else if(binding.btnAccept.text.toString().equals("Start")){
+                    if(isOnline(this@TaskDetailsActivity)){
+                        addEventsViewModel.saveForEvent(taskId,"comments","Started")
+                        if(binding.txtAction.text == "Start"){
+                            val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
+                            intent.putExtra("taskid", taskId)
+                            intent.putExtra("fromTaskBefore", true)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }else{
+                        db.bookDao().update("Started",taskId,"comments")
+                        if(binding.txtAction.text == "Start"){
+                            val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
+                            intent.putExtra("taskid", taskId)
+                            intent.putExtra("fromTaskBefore", true)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
 
-            }else if(binding.btnAccept.text.toString().equals("Continue")){
-                val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
-                intent.putExtra("taskid", taskId)
-                startActivity(intent)
-                finish()
-            }else if(binding.btnAccept.text.toString().equals("Add Pictures")){
-                if(binding.txtAction.text == "Instruction set completed"){
+                }else if(binding.btnAccept.text.toString().equals("Continue")){
                     val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
                     intent.putExtra("fromTaskBefore", true)
                     startActivity(intent)
                     finish()
-                }else if(binding.txtAction.text == "Before Task Pictures Added"){
+                }else if(binding.btnAccept.text.toString().equals("Add Pictures")){
                     val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
-                    intent.putExtra("fromTaskAfter", true)
                     startActivity(intent)
                     finish()
-                }else{
-                    val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
+
+                }else if(binding.btnAccept.text.toString().equals("Complete Task")){
+                    clickedButtonCountBefore = 0
+                    clickedButtonCountAfter = 0
+                    val intent = Intent(this@TaskDetailsActivity, RatingActivity::class.java)
                     intent.putExtra("taskid", taskId)
-                    intent.putExtra("fromTask", false)
+                    startActivity(intent)
+                    finish()
+                }else if(binding.btnAccept.text.toString().equals("Add Instruction Set")){
+                    val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    startActivity(intent)
+                    finish()
+                }else if(binding.btnAccept.text.toString().equals("Start Risk Assessment")){
+                    val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
+                    intent.putExtra("taskid", taskId)
                     startActivity(intent)
                     finish()
                 }
-
-            }else if(binding.btnAccept.text.toString().equals("Complete Task")){
-                val intent = Intent(this@TaskDetailsActivity, RatingActivity::class.java)
-                intent.putExtra("taskid", taskId)
-                startActivity(intent)
-                finish()
-            }else if(binding.btnAccept.text.toString().equals("Start Risk Assessment")){
-                val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
-                intent.putExtra("taskid", taskId)
-                startActivity(intent)
-                finish()
             }
         })
+
+        binding.btnAddattachment.setOnClickListener {
+            val intent = Intent(this@TaskDetailsActivity, AddAttachmentActivity::class.java)
+            intent.putExtra("taskid", taskId)
+            startActivity(intent)
+            finish()
+        }
     }
 
-    private fun subscribeObservers(event: String) {
+    private fun subscribeObservers() {
 
         addEventsViewModel.mySetEventDataSTate.observe(this@TaskDetailsActivity) { dataState ->
             when (dataState) {
@@ -239,21 +260,9 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                 is DataState.Success -> {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     if(dataState.data.Success){
-                        if(event.equals("Accept")){
-                            val intent = Intent(this@TaskDetailsActivity, RiskAssessment::class.java)
-                            intent.putExtra("taskid", taskId)
-                            startActivity(intent)
-                            finish()
-                        }else if(event.equals("Start")){
-                            val intent = Intent(this@TaskDetailsActivity, CheckListActivity::class.java)
-                            intent.putExtra("taskid", taskId)
-                            startActivity(intent)
-                            finish()
-                        }else{
 
-                        }
                     }else{
-                        Toast.makeText(this@TaskDetailsActivity,"Some error, please try later", Toast.LENGTH_SHORT).show()
+
                     }
                 }
             }.exhaustive
@@ -306,22 +315,56 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
 
                                     if(dataState.data.task[i].LOC.equals("Risk Assessment Completed")){
                                         txtAction.text = dataState.data.task[i].LOC
-                                        btnAccept.text = "Start"
+                                        btnAccept.text = "Add Customer Details"
                                     }else if(dataState.data.task[i].LOC.equals("Accepted")){
                                         txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Start Risk Assessment"
-                                    }else if(dataState.data.task[i].LOC.equals("Instruction set completed")){
-                                        txtAction.text = dataState.data.task[i].LOC
-                                        btnAccept.text = "Add Pictures"
                                     }else if(dataState.data.task[i].LOC.equals("Started")){
                                         txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Continue"
-                                    }else if(dataState.data.task[i].LOC.equals("Before Task")){
-                                        txtAction.text = "Before Task Pictures Added"
-                                        btnAccept.text = "Add Pictures"
-                                    }else if(dataState.data.task[i].LOC.equals("After Task")){
-                                        txtAction.text = "After Task Pictures Added"
+                                    }else if(dataState.data.task[i].LOC.equals("Instruction set completed")){
+                                        txtAction.text = dataState.data.task[i].LOC
                                         btnAccept.text = "Complete Task"
+                                    }else if(dataState.data.task[i].LOC.equals("Started")){
+                                        txtAction.text = dataState.data.task[i].LOC
+                                        btnAccept.text = "Continue"
+                                    }else if(dataState.data.task[i].LOC.equals("Before Task") || dataState.data.task[i].LOC.equals("After Task")){
+
+                                        if(taskId.contains("PPM") && clickedButtonCountBefore < 10){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else if(taskId.contains("PPM") && clickedButtonCountAfter < 10){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else if(taskId.contains("RM") && clickedButtonCountBefore < 5){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else if(taskId.contains("RM") && clickedButtonCountAfter < 5){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else if(taskId.contains("SCH") && clickedButtonCountBefore < 5){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else if(taskId.contains("SCH") && clickedButtonCountAfter < 5){
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Pictures"
+                                        }else{
+                                            if(clickedButtonCountAfter == 15 && clickedButtonCountBefore == 15){
+                                                btnAddattachment.visibility = View.GONE
+                                            }else{
+                                                btnAddattachment.visibility = View.VISIBLE
+                                            }
+
+                                            txtAction.text = "Before Task - " + clickedButtonCountBefore + " Picture Added. " +
+                                                    "\nAfter Task - " + clickedButtonCountAfter + " Picture Added."
+                                            btnAccept.text = "Add Instruction Set"
+                                        }
                                     }else{
                                         txtAction.text = dataState.data.task[i].LOC
                                     }
@@ -330,6 +373,8 @@ class TaskDetailsActivity : AppCompatActivity(), BaseInterface {
                         }
                     }
                 }
+
+                else -> {}
             }.exhaustive
         }
     }

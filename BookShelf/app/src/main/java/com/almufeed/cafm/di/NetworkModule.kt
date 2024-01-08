@@ -41,7 +41,7 @@ object NetworkModule {
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
             .addInterceptor(
-                com.almufeed.cafm.business.domain.utils.networkException.ConnectivityInterceptor(
+                ConnectivityInterceptor(
                     context
                 )
             )
@@ -49,8 +49,8 @@ object NetworkModule {
             .build()
 
         //val BASE_URL = "https://almdevb0bb67faa678fcfadevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
-        //val BASE_URL = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
-        val BASE_URL = "https://iye-live.operations.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        val BASE_URL = "https://alm.sandbox.operations.eu.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
+        //val BASE_URL = "https://iye-live.operations.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
         //val BASE_URL = "https://ahsca7486d9b32c9b0ddevaos.axcloud.dynamics.com/api/services/FSIMobileServices/FSIMobileService/"
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

@@ -72,13 +72,6 @@
                 app:fontFamily="@font/montserrat">
 
             </androidx.appcompat.widget.AppCompatTextView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/idCourseRV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/txt_subtitle"/>
-
            <!-- <LinearLayout
                 android:id="@+id/lin_image"
                 android:layout_width="match_parent"
@@ -150,7 +143,7 @@
                 android:id="@+id/capture_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_below="@id/idCourseRV"
+                android:layout_below="@id/txt_subtitle"
                 android:layout_marginStart="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginEnd="@dimen/dp10"

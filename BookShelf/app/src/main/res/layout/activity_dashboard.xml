@@ -50,6 +50,22 @@
             android:layout_marginTop="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/txt_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:textAllCaps="false"
+                android:text="User Name - "
+                android:background="@drawable/nav_background"
+                app:fontFamily="@font/montserrat_semibold">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/txt_doc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,19 +81,19 @@
             </androidx.appcompat.widget.AppCompatButton>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/txt_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:padding="4dp"
-                android:layout_margin="4dp"
-                android:text="ACTIVITES"
-                android:background="@drawable/nav_background"
-                app:fontFamily="@font/montserrat_semibold">
+            android:id="@+id/txt_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:padding="4dp"
+            android:layout_margin="4dp"
+            android:text="ACTIVITES"
+            android:background="@drawable/nav_background"
+            app:fontFamily="@font/montserrat_semibold">
 
-            </androidx.appcompat.widget.AppCompatButton>
+        </androidx.appcompat.widget.AppCompatButton>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/txt_sync"
@@ -90,6 +106,21 @@
                 android:layout_margin="4dp"
                 android:text="SYNC"
                 android:visibility="gone"
+                android:background="@drawable/nav_background"
+                app:fontFamily="@font/montserrat_semibold">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/txt_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:text="Logout"
                 android:background="@drawable/nav_background"
                 app:fontFamily="@font/montserrat_semibold">
 

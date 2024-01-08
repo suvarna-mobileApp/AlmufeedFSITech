@@ -6,6 +6,8 @@ import com.almufeed.cafm.datasource.network.models.attachment.AttachmentRequestM
 import com.almufeed.cafm.datasource.network.models.attachment.AttachmentResponseModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentResponseModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerRequestModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerResponseModel
 import com.almufeed.cafm.datasource.network.models.events.GetEventListResponseModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventRequestModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventResponseModel
@@ -68,6 +70,11 @@ class BookNetworkDataSourceImpl @Inject constructor(
     }
     override suspend fun setRating(token: String,request: RatingRequestModel): Flow<DataState<RatingResponseModel>> = flow{
         bookRetrofitService.setRating(token,request).collect{ plans ->
+            emit(plans)
+        }
+    }
+    override suspend fun setCustomerDetail(token: String,request: CustomerRequestModel): Flow<DataState<CustomerResponseModel>> = flow{
+        bookRetrofitService.setCustomerDetail(token,request).collect{ plans ->
             emit(plans)
         }
     }

@@ -12,7 +12,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
-
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.book.CardView.Background"
         android:id="@+id/card1"
@@ -348,6 +347,22 @@
 
             </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_addattachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_below="@+id/card_status"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp14"
+                android:visibility="gone"
+                android:textAllCaps="false"
+                android:background="@color/primary"
+                android:text="Add Attachment"
+                app:fontFamily="@font/montserrat_semibold">
+            </androidx.appcompat.widget.AppCompatButton>
+
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 

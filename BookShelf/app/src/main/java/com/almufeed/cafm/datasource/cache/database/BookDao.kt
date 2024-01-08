@@ -17,8 +17,14 @@ interface BookDao {
     @Insert
     fun insertSet(setEntity: InstructionSetEntity): Long
 
+    @Query("UPDATE InstructionSet SET FeedbackType=:FeedbackType, AnswerSet=:AnswerSet WHERE Refrecid = :refrecid")
+    fun updateSet(FeedbackType : Int,AnswerSet: String, refrecid : Long)
+
     @Insert
     fun insertTask(taskEntity: TaskEntity): Long
+
+    @Query("UPDATE TaskList SET LOC=:loc WHERE taskId = :taskId")
+    fun updateTask(loc : String?,taskId : String?)
 
     @Delete
     fun deleteTask(taskEntity: TaskEntity)
@@ -60,6 +66,9 @@ interface BookDao {
 
     @Query("SELECT * from InstructionSet")
     fun getAllInstructionSet(): List<InstructionSetEntity>
+
+    @Query("SELECT Refrecid from InstructionSet WHERE id= :Id")
+    fun getRefId(Id : Int): Long
 
     @Query("SELECT * from GetInstructionSet WHERE taskId= :taskId")
     fun AllInstructionSet(taskId : String): List<GetInstructionSetEntity>

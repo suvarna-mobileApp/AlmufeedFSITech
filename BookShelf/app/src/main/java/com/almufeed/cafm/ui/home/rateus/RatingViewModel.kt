@@ -8,6 +8,7 @@ import com.almufeed.cafm.business.domain.state.DataState
 import com.almufeed.cafm.business.domain.utils.dataStore.BasePreferencesManager
 import com.almufeed.cafm.business.domain.utils.exhaustive
 import com.almufeed.cafm.business.repository.BookInfoRepository
+import com.almufeed.cafm.datasource.cache.models.offlineDB.RatingEntity
 import com.almufeed.cafm.datasource.network.models.rating.RatingData
 import com.almufeed.cafm.datasource.network.models.rating.RatingRequestModel
 import com.almufeed.cafm.datasource.network.models.rating.RatingResponseModel
@@ -28,13 +29,13 @@ class RatingViewModel @Inject constructor(
     val myRateDataSTate: LiveData<DataState<RatingResponseModel>> get() = _myRateDataSTate
 
     fun requestForRating(customerSignature : String, techiSignature:String,rating: Double,comment: String,dateTime: String,
-                         taskId: String,name:String,email:String,mobilenumber:String) = viewModelScope.launch {
+                         taskId: String) = viewModelScope.launch {
         val userName = basePreferencesManager.getUserName().first()
             val taskRequest = RatingData(
             customerSignature = customerSignature,
-                customerName = name,
-                Email = email,
-                Phone = mobilenumber,
+                customerName = "",
+                Email = "",
+                Phone = "",
             techiSignature = techiSignature,
             rating = rating,
             comment = comment,
@@ -46,6 +47,22 @@ class RatingViewModel @Inject constructor(
             FsiRating = taskRequest
         )
         setStateEvent(TaskEvent.Task(update))
+    }
+
+    suspend fun requestForRatingDB(customerSignature : ByteArray, techiSignature : ByteArray,rating: Double,comment: String,dateTime: String,
+                                   taskId: String) : RatingEntity {
+        val userName = basePreferencesManager.getUserName().first()
+        var ratingEntity = RatingEntity(
+            0,
+            customerSignature = customerSignature,
+            techiSignature = techiSignature,
+            rating = rating,
+            comment = comment,
+            dateTime = dateTime,
+            task_id = taskId,
+            resource = userName
+        )
+        return ratingEntity
     }
 
     private fun setStateEvent(state: TaskEvent) {

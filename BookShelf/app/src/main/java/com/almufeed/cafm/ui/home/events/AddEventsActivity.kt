@@ -74,7 +74,7 @@ class AddEventsActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedImageType = position - 1
                 selectedImage = eventList.get(position)
-                if(selectedImage.equals("NO ACCESS PPM") || selectedImage.equals("NO ACCESS RM")){
+                if(selectedImage.equals("NO ACCESS PPM") || selectedImage.equals("NO ACCESS RM") || selectedImage.equals("NO ACCESS PPM FOR ABU DHABI")){
                     val intent = Intent(this@AddEventsActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
                     intent.putExtra("selectedImage", selectedImage)

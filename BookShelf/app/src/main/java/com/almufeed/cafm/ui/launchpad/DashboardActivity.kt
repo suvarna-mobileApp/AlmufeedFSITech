@@ -6,7 +6,9 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.almufeed.cafm.R
+import com.almufeed.cafm.business.domain.utils.dataStore.BasePreferencesManager
 import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.business.domain.utils.toast
 import com.almufeed.cafm.databinding.ActivityDashboardBinding
@@ -15,9 +17,12 @@ import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.DocumentActivity
 import com.almufeed.cafm.ui.home.SyncWithServer
 import com.almufeed.cafm.ui.home.TaskActivity
+import com.almufeed.cafm.ui.login.LoginActivity
 import com.almufeed.cafm.ui.services.AlarmReceiver
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DashboardActivity : AppCompatActivity() , BaseInterface {
@@ -56,6 +61,26 @@ class DashboardActivity : AppCompatActivity() , BaseInterface {
                 }
             }
 
+
+            lifecycleScope.launch {
+                val userName = baseViewModel.getUsername()
+                txtUsername.setText("USER NAME - " + userName)
+            }
+
+            txtLogout.setOnClickListener {
+                baseViewModel.setToken("")
+                baseViewModel.updateUsername("")
+                Intent(this@DashboardActivity, LoginActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+
+            txtActivity.setOnClickListener {
+                Intent(this@DashboardActivity, TaskActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+
             txtSync.setOnClickListener {
                 if(isOnline(this@DashboardActivity)){
                     Intent(this@DashboardActivity, SyncWithServer::class.java).apply {
@@ -69,6 +94,10 @@ class DashboardActivity : AppCompatActivity() , BaseInterface {
 
         val alarm = com.almufeed.cafm.ui.services.AlarmReceiver()
         alarm.setAlarm(this)
+    }
+
+    suspend fun userName(){
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

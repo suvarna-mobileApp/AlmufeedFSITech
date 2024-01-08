@@ -133,10 +133,7 @@ class SyncWithServer : AppCompatActivity() {
                 ratingList[i].rating,
                 ratingList[i].comment,
                 ratingList[i].dateTime,
-                ratingList[i].task_id,
-                ratingList[i].customerName,
-                ratingList[i].Email,
-                ratingList[i].Phone,
+                ratingList[i].task_id
             )
         }
         subscribeObserversForRating()

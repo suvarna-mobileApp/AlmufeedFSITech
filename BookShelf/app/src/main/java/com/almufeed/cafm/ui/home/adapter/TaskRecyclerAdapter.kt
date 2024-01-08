@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.almufeed.cafm.business.domain.utils.dateFormater
 import com.almufeed.cafm.databinding.RecyclerTaskadapterBinding
 import com.almufeed.cafm.datasource.cache.models.offlineDB.TaskEntity
+import com.almufeed.cafm.datasource.network.models.bookList.BookData
+import com.almufeed.cafm.datasource.network.models.tasklist.TaskListResponse
 import com.almufeed.cafm.ui.home.TaskDetailsActivity
 
-class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
+class TaskRecyclerAdapter (val taskList: TaskListResponse, val context: Context
 ) : RecyclerView.Adapter<TaskRecyclerAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -24,7 +26,7 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val currentItem = taskList.get(position)
+        val currentItem = taskList.task.get(position)
         if (currentItem != null) {
             holder.bind(currentItem,position)
         }
@@ -32,7 +34,7 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
 
     inner class ItemViewHolder(private val binding: RecyclerTaskadapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(currentItem: TaskEntity,position: Int) {
+        fun bind(currentItem: BookData, position: Int) {
             binding.apply {
                 itemView.setOnClickListener {
                     val intent = Intent(context, TaskDetailsActivity::class.java)
@@ -65,14 +67,15 @@ class TaskRecyclerAdapter (val taskList: List<TaskEntity>, val context: Context
                 txtAttendDate.text = "Due Date :  " + dateFormater(currentItem.attendDate)
                 txtbuilding.text = "Building :  " + currentItem.Building
                 txtlocation.text = "Location :  " + currentItem.Location
-                txtpriority.text = "Priority :  " + currentItem.Priority
                 txtproblem.text = "Problem :  " + currentItem.Problem
+                txtpriority.text = "Priority :  " + currentItem.Priority
                 txtcategory.text = "Category :  " + currentItem.Category
+                txtStatus.text = "Task Status :  " + currentItem.LOC
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return taskList.size
+        return taskList.task.size
     }
 }

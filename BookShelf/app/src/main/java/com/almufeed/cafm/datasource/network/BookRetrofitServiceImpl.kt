@@ -7,6 +7,8 @@ import com.almufeed.cafm.datasource.network.models.attachment.AttachmentRequestM
 import com.almufeed.cafm.datasource.network.models.attachment.AttachmentResponseModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentRequestModel
 import com.almufeed.cafm.datasource.network.models.attachment.GetAttachmentResponseModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerRequestModel
+import com.almufeed.cafm.datasource.network.models.customer.CustomerResponseModel
 import com.almufeed.cafm.datasource.network.models.events.GetEventListResponseModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventRequestModel
 import com.almufeed.cafm.datasource.network.models.events.SaveEventResponseModel
@@ -202,6 +204,30 @@ class BookRetrofitServiceImpl constructor(
                 }
             } catch (e: Exception) {
                 Log.e("Send rating::", "Exception: $e.")
+                emit(DataState.Loading(false))
+                emit(DataState.Error(CancellationException("unknown")))
+            }
+        }
+
+    override suspend fun setCustomerDetail(token: String,request: CustomerRequestModel): Flow<DataState<CustomerResponseModel>> =
+        flow {
+            emit(DataState.Loading(true))
+            try {
+                val response = bookWebServices.setCustomerDetail(token,request)
+                System.out.println("Send customer request " + request)
+                System.out.println("Send customer response " + response.body())
+                if (response.isSuccessful) {
+                    Log.d("Send customer::", "API isSuccessful: ")
+                    emit(DataState.Success(response.body()!!))
+                    emit(DataState.Loading(false))
+                } else {
+                    Log.d("Send customer::", "API NOT isSuccessful: ")
+                    Log.d("Send customer::", "ERROR : " + response.errorBody()?.string())
+                    emit(DataState.Loading(false))
+                    emit(DataState.Error(CancellationException("unknown")))
+                }
+            } catch (e: Exception) {
+                Log.e("Send customer::", "Exception: $e.")
                 emit(DataState.Loading(false))
                 emit(DataState.Error(CancellationException("unknown")))
             }

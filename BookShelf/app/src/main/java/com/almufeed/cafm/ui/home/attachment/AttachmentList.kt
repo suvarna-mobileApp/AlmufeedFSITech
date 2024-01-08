@@ -76,25 +76,27 @@ class AttachmentList : AppCompatActivity() {
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
         pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
         pd.setContentView(view)
-        pd.show()
+
         if(isOnline(this@AttachmentList)){
+            pd.show()
             viewModel.requestForImage(taskId)
             subscribeObservers()
         }else{
-            val attachmentList = db.bookDao().getAllAttachment(taskId)
+            Toast.makeText(this@AttachmentList,"No Internet Connection", Toast.LENGTH_SHORT).show()
+           /* val attachmentList = db.bookDao().getAllAttachment(taskId)
             pd.dismiss()
             if(attachmentList.size > 0){
                 binding.recyclerAttach.visibility = View.VISIBLE
                 binding.noDataFoundTv.visibility = View.GONE
-             /*   binding.recyclerAttach.apply {
+             *//*   binding.recyclerAttach.apply {
                     attachmentRecyclerAdapter = AttachmentRecyclerAdapter(attachmentList,this@AttachmentList)
                     layoutManager = LinearLayoutManager(this@AttachmentList)
                     binding.recyclerAttach.adapter = attachmentRecyclerAdapter
-                }*/
+                }*//*
             }else{
                 binding.recyclerAttach.visibility = View.GONE
                 binding.noDataFoundTv.visibility = View.VISIBLE
-            }
+            }*/
         }
     }
 
