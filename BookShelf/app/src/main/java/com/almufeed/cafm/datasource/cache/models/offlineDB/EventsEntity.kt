@@ -17,5 +17,4 @@ data class EventsEntity(
     @ColumnInfo(name = "Comments") var Comments: String,
 
     @ColumnInfo(name = "Events") var Events: String,
-
 )

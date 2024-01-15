@@ -3,7 +3,9 @@ package com.almufeed.cafm.datasource.cache
 import com.almufeed.cafm.datasource.cache.database.BookDao
 import com.almufeed.cafm.datasource.cache.models.book.BookEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.AttachmentEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.CustomerDetailEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.EventsEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.GetEventEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.InstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.RatingEntity
@@ -39,5 +41,13 @@ class BookDaoServiceImpl constructor(
 
     override suspend fun insert(ratingEntity: RatingEntity): Long {
         return bookDao.insertRating(ratingEntity)
+    }
+
+    override suspend fun insert(customerDetailEntity: CustomerDetailEntity): Long {
+        return bookDao.insertCustomerDetail(customerDetailEntity)
+    }
+
+    override suspend fun insert(getEventEntity: GetEventEntity): Long {
+        return bookDao.insertGetEvents(getEventEntity)
     }
 }

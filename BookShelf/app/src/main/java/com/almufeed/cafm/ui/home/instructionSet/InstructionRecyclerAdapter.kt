@@ -54,7 +54,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
                         binding.checklist.linYesno.visibility = View.GONE
                         binding.etMessage.visibility = View.GONE
                         listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,
-                            currentItem.Steps.toString()
+                            currentItem.Steps.toString(),position
                         )
                     }
 
@@ -98,7 +98,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
                         handler.removeCallbacksAndMessages(null)
                         handler.postDelayed({
                             clickedButtonCount++
-                            listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,fullString)
+                            listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,fullString,position)
                         }, DELAY_MS)
                     }
 
@@ -115,7 +115,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
 
                binding.checklist.btnYes.setOnClickListener {
                    if (position != RecyclerView.NO_POSITION) {
-                       listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes")
+                       listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"Yes",position)
                        if (selectedItems.contains(position)) {
                            // Item was already selected, unselect it
                            //System.out.println("suvarna yes ")
@@ -154,7 +154,7 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
 
                 binding.checklist.btnNo.setOnClickListener {
                     if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No")
+                        listener.onItemClick(currentItem.Refrecid, currentItem.FeedbackType,"No",position)
                         if (selectedItemsNo.contains(position)) {
                             // Item was already selected, unselect it
                             selectedItemsNo.remove(position)
@@ -179,6 +179,6 @@ class InstructionRecyclerAdapter (val dbinstructionList: InstructionSetResponseM
     }
 
     interface OnItemClickListener {
-        fun onItemClick(refId: Long, feedBackType: Int, answer: String)
+        fun onItemClick(refId: Long, feedBackType: Int, answer: String,position:Int)
     }
 }

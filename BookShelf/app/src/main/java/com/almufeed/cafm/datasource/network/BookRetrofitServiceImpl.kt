@@ -214,7 +214,7 @@ class BookRetrofitServiceImpl constructor(
             emit(DataState.Loading(true))
             try {
                 val response = bookWebServices.setCustomerDetail(token,request)
-                System.out.println("Send customer request " + request)
+                System.out.println("Send customer request " + request.FsiRating)
                 System.out.println("Send customer response " + response.body())
                 if (response.isSuccessful) {
                     Log.d("Send customer::", "API isSuccessful: ")

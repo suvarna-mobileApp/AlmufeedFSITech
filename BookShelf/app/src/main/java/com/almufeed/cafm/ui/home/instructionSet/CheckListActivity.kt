@@ -20,24 +20,26 @@ import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.databinding.ActivityCheckListBinding
 import com.almufeed.cafm.datasource.cache.database.BookDatabase
 import com.almufeed.cafm.datasource.cache.database.BookDatabase.Companion.DATABASE_NAME
+import com.almufeed.cafm.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.InstructionSetEntity
 import com.almufeed.cafm.datasource.network.models.instructionSet.InstructionData
 import com.almufeed.cafm.ui.home.TaskDetailsActivity
-import com.almufeed.cafm.ui.home.attachment.AddAttachmentActivity
 import com.almufeed.cafm.ui.home.attachment.AttachmentList
 import com.almufeed.cafm.ui.home.events.AddEventsActivity
 import com.almufeed.cafm.ui.home.events.AddEventsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_task.recyclerTask
-import kotlinx.android.synthetic.main.activity_task_details.view_divide_status
+import java.text.FieldPosition
 
 @AndroidEntryPoint
-class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemClickListener{
+class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemClickListener,InstructionRecyclerAdapterOffline.OnItemClickListener{
     private lateinit var binding: ActivityCheckListBinding
     private val checkListViewModel: CheckListViewModel by viewModels()
     private val addEventsViewModel: AddEventsViewModel by viewModels()
     private lateinit var instructionRecyclerAdapter: InstructionRecyclerAdapter
+    private lateinit var instructionRecyclerAdapterOffline: InstructionRecyclerAdapterOffline
     private lateinit var instructionList: ArrayList<InstructionData>
+    private lateinit var instructionListOffline: ArrayList<GetInstructionSetEntity>
     private lateinit var taskId : String
     private lateinit var pd : Dialog
     private lateinit var db :BookDatabase
@@ -79,6 +81,37 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
             finish()
         })
 
+        binding.btnAccept.setOnClickListener(View.OnClickListener { view ->
+            if(isOnline(this@CheckListActivity)){
+                val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, 0)
+                instructionRecyclerAdapter.bindViewHolder(viewHolder, 0)
+
+                val allButtonsClicked = clickedButtonCount >= instructionList.size
+                if (allButtonsClicked) {
+                    pd.show()
+                    addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
+                }else{
+                    System.out.println("suvarna pressed no " + clickedButtonCount)
+                    Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                val viewHolder = instructionRecyclerAdapterOffline.createViewHolder(binding.recyclerTask, 0)
+                instructionRecyclerAdapterOffline.bindViewHolder(viewHolder, 0)
+                val allButtonsClicked = clickedButtonCount >= instructionListOffline.size
+                if (allButtonsClicked) {
+                    db.bookDao().update("Instruction set completed",taskId,"Instruction set completed")
+                    db.bookDao().updateLOC("Instruction set completed",taskId)
+                    val intent = Intent(this@CheckListActivity, TaskDetailsActivity::class.java)
+                    intent.putExtra("taskid", taskId)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    System.out.println("suvarna pressed no " + clickedButtonCount)
+                    Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
 
         if(isOnline(this@CheckListActivity)){
             pd = Dialog(this, android.R.style.Theme_Black)
@@ -90,50 +123,45 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
 
             checkListViewModel.requestForStep(taskId)
             subscribeObservers()
-
-            binding.btnAccept.setOnClickListener(View.OnClickListener { view ->
-                val viewHolder = instructionRecyclerAdapter.createViewHolder(binding.recyclerTask, 0)
-                instructionRecyclerAdapter.bindViewHolder(viewHolder, 0)
-
-                val allButtonsClicked = clickedButtonCount >= instructionList.size
-                System.out.println("suvarna pressed " + instructionList.size)
-                if (allButtonsClicked) {
-                    System.out.println("suvarna pressed yes" + clickedButtonCount)
-                    if(isOnline(this@CheckListActivity)){
-                        pd.show()
-                        addEventsViewModel.saveForEvent(taskId,"","Instruction set completed")
-                    }else{
-                        db.bookDao().update("Instruction set completed",taskId,"")
-                        val intent = Intent(this@CheckListActivity, TaskDetailsActivity::class.java)
-                        intent.putExtra("taskid", taskId)
-                        startActivity(intent)
-                        finish()
-                    }
-                }else{
-                    System.out.println("suvarna pressed no " + clickedButtonCount)
-                    pd.dismiss()
-                    Toast.makeText(this@CheckListActivity,"All Instruction set are mandatory", Toast.LENGTH_SHORT).show()
-                }
-            })
             subscribeObserversUpdate()
         }else{
-            Toast.makeText(this@CheckListActivity,"No Internet Connection", Toast.LENGTH_SHORT).show()
-           /* pd.dismiss()
+            //Toast.makeText(this@CheckListActivity,"No Internet Connection", Toast.LENGTH_SHORT).show()
             val instructionSet = db.bookDao().AllInstructionSet(taskId)
             System.out.println("instruction set " + instructionSet)
             if(instructionSet.size > 0){
-                *//* binding.recyclerTask.apply {
-                     instructionRecyclerAdapter = InstructionRecyclerAdapter(instructionSet,this@CheckListActivity,this@CheckListActivity)
+                instructionListOffline = ArrayList<GetInstructionSetEntity>()
+                for(i in instructionSet.indices){
+                    when(instructionSet[i].FeedbackType) {
+                        0 -> {
+
+                        }
+
+                        1 -> {
+                            instructionListOffline.add(instructionSet[i])
+                        }
+
+                        2 -> {
+
+                        }
+
+                        3 -> {
+                            instructionListOffline.add(instructionSet[i])
+                        }
+                        else -> print("I don't know anything about it")
+                    }
+                }
+                 binding.recyclerTask.apply {
+                     instructionRecyclerAdapterOffline = InstructionRecyclerAdapterOffline(instructionSet,this@CheckListActivity,this@CheckListActivity)
                      layoutManager = LinearLayoutManager(this@CheckListActivity)
-                     recyclerTask.adapter = instructionRecyclerAdapter
-                 }*//*
+                     recyclerTask.adapter = instructionRecyclerAdapterOffline
+                 }
             }else{
-                val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
+                val intent = Intent(this@CheckListActivity, TaskDetailsActivity::class.java)
                 intent.putExtra("taskid", taskId)
                 intent.putExtra("fromTaskBefore", true)
                 startActivity(intent)
                 finish()
-            }*/
+            }
         }
     }
 
@@ -184,9 +212,8 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
                             recyclerTask.adapter = instructionRecyclerAdapter
                         }*/
                     }else{
-                        val intent = Intent(this@CheckListActivity, AddAttachmentActivity::class.java)
+                        val intent = Intent(this@CheckListActivity, TaskDetailsActivity::class.java)
                         intent.putExtra("taskid", taskId)
-                        intent.putExtra("fromTaskBefore", true)
                         startActivity(intent)
                         finish()
                     }
@@ -252,21 +279,27 @@ class CheckListActivity : AppCompatActivity(),InstructionRecyclerAdapter.OnItemC
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onItemClick(refId: Long, feedBackType: Int, answer: String) {
+    override fun onItemClick(refId: Long, feedBackType: Int, answer: String,position: Int) {
 
         if(isOnline(this@CheckListActivity)){
             pd.show()
             checkListViewModel.updateForStep(refId,feedBackType,answer,taskId)
         }else{
-            pd.dismiss()
-            val taskRequest = InstructionSetEntity(
-                id = 0,
-                Refrecid = refId,
-                FeedbackType = feedBackType,
-                AnswerSet = answer,
-                taskId = taskId
-            )
-            db.bookDao().insertSet(taskRequest)
+            val refId1 = db.bookDao().getRefId(refId,taskId)
+            if(refId1 == refId){
+                db.bookDao().updateSet(answer,refId)
+                System.out.println("suvarna print update ")
+            }else{
+                System.out.println("suvarna print insert ")
+                val taskRequest = InstructionSetEntity(
+                    id = 0,
+                    Refrecid = refId,
+                    FeedbackType = feedBackType,
+                    AnswerSet = answer,
+                    taskId = taskId
+                )
+                db.bookDao().insertSet(taskRequest)
+            }
         }
     }
 }

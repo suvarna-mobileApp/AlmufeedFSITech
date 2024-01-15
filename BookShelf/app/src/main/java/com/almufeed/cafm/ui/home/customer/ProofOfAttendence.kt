@@ -18,7 +18,9 @@ import com.almufeed.cafm.business.domain.utils.exhaustive
 import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.databinding.ActivityProofOfAttendenceBinding
 import com.almufeed.cafm.datasource.cache.database.BookDatabase
+import com.almufeed.cafm.datasource.cache.models.offlineDB.CustomerDetailEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.EventsEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.TaskEntity
 import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.RiskAssessment
 import com.almufeed.cafm.ui.home.TaskActivity
@@ -66,19 +68,19 @@ class ProofOfAttendence : AppCompatActivity() {
 
         binding.btnSubmit.setOnClickListener(View.OnClickListener { view ->
             if(binding.nameInput.text.toString().isNotEmpty() && binding.mobileEditText.text.toString().isNotEmpty() && binding.emailInput.text.toString().isNotEmpty()){
-                pd.show()
                 if(isOnline(this@ProofOfAttendence)){
-                    proofOfAttendenceViewModel.requestForCustomer(binding.nameInput.text.toString(),binding.mobileEditText.text.toString(),binding.emailInput.text.toString(), taskId)
+                    pd.show()
+                    proofOfAttendenceViewModel.requestForCustomer(binding.nameInput.text.toString(),binding.emailInput.text.toString(),binding.mobileEditText.text.toString(), taskId)
                 }else{
-                    pd.dismiss()
-                    val eventRequest = EventsEntity(
-                        id = 0,
-                        taskId = taskId,
-                        resource = "",
-                        Comments = "comments",
-                        Events = "Customer Details Added",
+                    val customerEntity = CustomerDetailEntity(0,
+                        binding.nameInput.text.toString(),
+                        binding.emailInput.text.toString(),
+                        binding.mobileEditText.text.toString(),
+                        taskId,
                     )
-                    db.bookDao().insertEvents(eventRequest)
+                    db.bookDao().insertCustomerDetail(customerEntity)
+                    db.bookDao().update("Customer Details Added",taskId,"Customer Details Added")
+                    db.bookDao().updateLOC("Customer Details Added",taskId)
                     val intent = Intent(this@ProofOfAttendence, TaskDetailsActivity::class.java)
                     intent.putExtra("taskid", taskId)
                     startActivity(intent)
@@ -111,7 +113,7 @@ class ProofOfAttendence : AppCompatActivity() {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
                     if(dataState.data.Success){
-                        addEventsViewModel.saveForEvent(taskId,"comments","Customer Details Added")
+                        addEventsViewModel.saveForEvent(taskId,"Customer Details Added","Customer Details Added")
                         val intent = Intent(this@ProofOfAttendence, TaskDetailsActivity::class.java)
                         intent.putExtra("taskid", taskId)
                         startActivity(intent)

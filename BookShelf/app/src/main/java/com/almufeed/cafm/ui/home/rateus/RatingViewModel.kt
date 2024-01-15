@@ -49,7 +49,7 @@ class RatingViewModel @Inject constructor(
         setStateEvent(TaskEvent.Task(update))
     }
 
-    suspend fun requestForRatingDB(customerSignature : ByteArray, techiSignature : ByteArray,rating: Double,comment: String,dateTime: String,
+    suspend fun requestForRatingDB(customerSignature : String, techiSignature : String,rating: Double,comment: String,dateTime: String,
                                    taskId: String) : RatingEntity {
         val userName = basePreferencesManager.getUserName().first()
         var ratingEntity = RatingEntity(

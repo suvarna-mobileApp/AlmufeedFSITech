@@ -4,7 +4,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.almufeed.cafm.datasource.cache.models.book.BookEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.AttachmentEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.CustomerDetailEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.EventsEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.GetEventEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.InstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.RatingEntity
@@ -16,7 +18,9 @@ import com.almufeed.cafm.datasource.cache.models.offlineDB.TaskEntity
                       GetInstructionSetEntity::class,
                       AttachmentEntity::class,
                       RatingEntity::class,
-                      EventsEntity::class], version = 1)
+                      EventsEntity::class,
+                      CustomerDetailEntity::class,
+                      GetEventEntity::class], version = 1)
 abstract class BookDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
 

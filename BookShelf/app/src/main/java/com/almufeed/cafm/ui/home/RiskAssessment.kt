@@ -46,18 +46,18 @@ class RiskAssessment : AppCompatActivity() {
             binding.toolbar.aboutus.text = "Task : $taskId"
         }
 
-        subscribeObservers()
+        pd = Dialog(this, android.R.style.Theme_Black)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+
         binding.btnSafe.setOnClickListener (View.OnClickListener { view ->
 
             if((binding.checkBoxCheck1.isChecked || binding.checkBoxCheck2.isChecked) &&
                 (binding.checkBoxTool1.isChecked || binding.checkBoxTool2.isChecked)){
                 if(binding.checkBoxCheck1.isChecked && binding.checkBoxTool1.isChecked &&
                     !binding.checkBoxCheck2.isChecked && !binding.checkBoxTool2.isChecked){
-                    pd = Dialog(this, android.R.style.Theme_Black)
-                    val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-                    pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
-                    pd.setContentView(view)
                     pd.show()
                     comment = binding.message.text.toString()
                     if(isOnline(this@RiskAssessment)){
@@ -65,8 +65,8 @@ class RiskAssessment : AppCompatActivity() {
                     }else{
                         pd.dismiss()
                         db.bookDao().update("Risk Assessment Completed",taskId,comment)
+                        db.bookDao().updateLOC("Risk Assessment Completed",taskId)
                         val intent = Intent(this@RiskAssessment, TaskDetailsActivity::class.java)
-                        intent.putExtra("status", "Risk Assessment Completed")
                         intent.putExtra("taskid", taskId)
                         startActivity(intent)
                         finish()
@@ -96,6 +96,8 @@ class RiskAssessment : AppCompatActivity() {
                 Toast.makeText(this@RiskAssessment,"Check the necessary details", Toast.LENGTH_SHORT).show()
             }
         })
+
+        subscribeObservers()
     }
 
     private fun subscribeObservers() {
@@ -103,8 +105,8 @@ class RiskAssessment : AppCompatActivity() {
         addEventsViewModel.mySetEventDataSTate.observe(this@RiskAssessment) { dataState ->
             when (dataState) {
                 is DataState.Error -> {
-                    dataState.exception.message
-                        Toast.makeText(this@RiskAssessment,dataState.exception.message, Toast.LENGTH_SHORT).show()
+                    pd.dismiss()
+                    Toast.makeText(this@RiskAssessment,dataState.exception.message, Toast.LENGTH_SHORT).show()
                 }
                 is DataState.Loading -> {
 
@@ -114,12 +116,11 @@ class RiskAssessment : AppCompatActivity() {
                     pd.dismiss()
                     if(dataState.data.Success){
                         val intent = Intent(this@RiskAssessment, TaskDetailsActivity::class.java)
-                        intent.putExtra("status", "Risk Assessment Completed")
                         intent.putExtra("taskid", taskId)
                         startActivity(intent)
                         finish()
                     }else{
-                        Toast.makeText(this@RiskAssessment,"please try later", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RiskAssessment,"Some error please try later", Toast.LENGTH_SHORT).show()
                     }
                 }
             }.exhaustive

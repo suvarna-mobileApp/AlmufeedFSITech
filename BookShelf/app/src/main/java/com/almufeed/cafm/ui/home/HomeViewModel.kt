@@ -43,6 +43,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (state) {
                 is TaskEvent.Task -> {
+                    System.out.println("access token " + basePreferencesManager.getAccessToken().first())
                     bookInfoRepository.taskList(
                         basePreferencesManager.getAccessToken().first(),state.taskRequest
                     ).onEach {

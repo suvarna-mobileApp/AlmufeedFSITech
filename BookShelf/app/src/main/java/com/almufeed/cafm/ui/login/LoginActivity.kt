@@ -10,6 +10,7 @@ import android.os.Looper
 import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.Toast
@@ -21,6 +22,7 @@ import com.almufeed.cafm.R
 import com.almufeed.cafm.business.domain.state.DataState
 import com.almufeed.cafm.business.domain.utils.errorListener
 import com.almufeed.cafm.business.domain.utils.exhaustive
+import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.business.domain.utils.toast
 import com.almufeed.cafm.databinding.ActivityLoginBinding
 import com.almufeed.cafm.datasource.network.models.token.CreateTokenResponse
@@ -44,7 +46,6 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var snack: Snackbar
     private lateinit var pd : Dialog
-    private val REQUEST_PERMISSION = 100
     private val ACTION_NOTIFICATION_SETTINGS = "android.settings.APP_NOTIFICATION_SETTINGS"
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -66,17 +67,14 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
         pd.setContentView(view)
 
         binding.apply {
-            snack = Snackbar.make(
-                root,
-                getString(R.string.text_network_not_available),
-                Snackbar.LENGTH_INDEFINITE
-            )
+            snack = Snackbar.make(root, getString(R.string.text_network_not_available), Snackbar.LENGTH_INDEFINITE)
         }
+
         binding.apply {
             toolbar.aboutus.visibility = View.GONE
             cardMobileNumber.errorListener(binding.etusername)
             cardPassword.errorListener(binding.etpassword)
-            pd.dismiss()
+
             btnSignIn.setOnClickListener{
 
                 if(binding.etusername.text.isNullOrEmpty()){
@@ -85,8 +83,12 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
                     binding.cardPassword.error = "Please enter a password"
                 }else if(binding.etusername.text.toString().isNotEmpty() && binding.etpassword.text.toString().isNotEmpty()){
                         if (isValidPassword(binding.etpassword.text.toString())) {
-                            pd.show()
-                            getTokenApi(binding.etusername.text!!.trim().toString(), binding.etpassword.text!!.trim().toString())
+                            if(isOnline(this@LoginActivity)){
+                                pd.show()
+                                getTokenApi(binding.etusername.text!!.trim().toString(), binding.etpassword.text!!.trim().toString())
+                            }else{
+                                Toast.makeText(this@LoginActivity, "No Internet Connection", Toast.LENGTH_SHORT).show()
+                            }
                         } else {
                             binding.cardPassword.error = "Please enter correct password"
                         }
@@ -124,8 +126,8 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
     }
 
     private fun getTokenApi(userName : String, password : String) {
-        val mediaType = "application/x-www-form-urlencoded".toMediaType()
-        val body = "client_id=7d2f26f6-2e67-4299-9abd-fbac27deff25&client_secret=rcI8Q~eugdoR2M0Yx8_gkTPqqyPyT.sn9ab3BdeF&grant_type=client_credentials&resource=https://alm.sandbox.operations.eu.dynamics.com".toRequestBody(mediaType)
+        val mediaType = APIServices.mediaType.toMediaType()
+        val body = APIServices.body.toRequestBody(mediaType)
         val getToken = APIServices.create().getProducts(body)
         Log.d("products getToken", getToken.request().body.toString())
         try{
@@ -137,8 +139,8 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
                     if (response.isSuccessful) {
                         Log.d("products", response.body().toString())
                         if (response.body() != null) {
-                            baseViewModel.setToken(response.body()!!.access_token)
                             var accessToken = "Bearer " + response.body()!!.access_token
+                            baseViewModel.setToken(response.body()!!.access_token)
                             val sharedPreferences: SharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
                             val myEdit: SharedPreferences.Editor = sharedPreferences.edit()
                             myEdit.putString("token", accessToken)
@@ -153,21 +155,13 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
 
                 override fun onFailure(call: Call<CreateTokenResponse>, t: Throwable) {
                     Log.d("failure", t.message.toString())
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "onFailure: " + t.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@LoginActivity, "onFailure: " + t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }catch(e:Exception){
             e.printStackTrace()
             pd.dismiss()
-            Toast.makeText(
-                this@LoginActivity,
-                "Some error. Please try later",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this@LoginActivity, "Some error. Please try later", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -214,5 +208,12 @@ class LoginActivity : AppCompatActivity(), BaseInterface {
         } else {
             snack.show()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

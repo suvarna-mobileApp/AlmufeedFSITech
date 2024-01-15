@@ -77,22 +77,8 @@
                 android:background="@drawable/nav_background"
                 android:text="DOCUMENTS"
                 android:padding="4dp"
-                app:fontFamily="@font/montserrat_medium">
+                app:fontFamily="@font/montserrat_semibold">
 
-            </androidx.appcompat.widget.AppCompatButton>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/txt_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:padding="4dp"
-                android:layout_margin="4dp"
-                android:text="ACTIVITES"
-                android:background="@drawable/nav_background"
-                app:fontFamily="@font/montserrat_medium">
             </androidx.appcompat.widget.AppCompatButton>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -105,7 +91,20 @@
                 android:padding="4dp"
                 android:layout_margin="4dp"
                 android:text="SYNC"
-                android:visibility="gone"
+                android:background="@drawable/nav_background"
+                app:fontFamily="@font/montserrat_semibold">
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/txt_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:text="ACTIVITES"
                 android:background="@drawable/nav_background"
                 app:fontFamily="@font/montserrat_semibold">
             </androidx.appcompat.widget.AppCompatButton>

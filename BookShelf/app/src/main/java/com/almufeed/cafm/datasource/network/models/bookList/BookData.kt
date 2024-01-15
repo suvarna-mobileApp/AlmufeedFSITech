@@ -95,4 +95,12 @@ data class BookData(
     @SerializedName("Asset")
     @Expose
     val Asset: String?,
+
+    @SerializedName("BeforeCount")
+    @Expose
+    val beforeCount: Int,
+
+    @SerializedName("AfterCount")
+    @Expose
+    val afterCount: Int,
 )

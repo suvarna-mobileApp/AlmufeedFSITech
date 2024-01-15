@@ -13,10 +13,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.room.Room
 import com.almufeed.cafm.R
 import com.almufeed.cafm.business.domain.state.DataState
 import com.almufeed.cafm.business.domain.utils.exhaustive
+import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.databinding.ActivityAddEventsBinding
+import com.almufeed.cafm.datasource.cache.database.BookDatabase
+import com.almufeed.cafm.datasource.cache.models.offlineDB.GetEventEntity
 import com.almufeed.cafm.ui.home.TaskActivity
 import com.almufeed.cafm.ui.home.attachment.AddAttachmentActivity
 import com.almufeed.cafm.ui.home.attachment.AttachmentList
@@ -33,6 +37,7 @@ class AddEventsActivity : AppCompatActivity() {
     private var selectedImage : String = ""
     private lateinit var taskId : String
     private lateinit var eventList : ArrayList<String>
+    private lateinit var db : BookDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,7 @@ class AddEventsActivity : AppCompatActivity() {
             binding.toolbar.aboutus.text = "Task : $taskId"
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
+        db = Room.databaseBuilder(this@AddEventsActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
 
         binding.toolbar.linTool.visibility = View.VISIBLE
        /* binding.toolbar.incToolbarEvent.setOnClickListener (View.OnClickListener { view ->
@@ -67,7 +73,7 @@ class AddEventsActivity : AppCompatActivity() {
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
         pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
         pd.setContentView(view)
-        pd.show()
+
         subscribeObservers()
         binding.spinnerType.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -75,6 +81,8 @@ class AddEventsActivity : AppCompatActivity() {
                 selectedImageType = position - 1
                 selectedImage = eventList.get(position)
                 if(selectedImage.equals("NO ACCESS PPM") || selectedImage.equals("NO ACCESS RM") || selectedImage.equals("NO ACCESS PPM FOR ABU DHABI")){
+                    db.bookDao().update(binding.spinnerType.selectedItem.toString(),taskId,binding.etDescription.text.toString())
+                    db.bookDao().updateLOC("NO ACCESS",taskId)
                     val intent = Intent(this@AddEventsActivity, AddAttachmentActivity::class.java)
                     intent.putExtra("taskid", taskId)
                     intent.putExtra("selectedImage", selectedImage)
@@ -90,11 +98,16 @@ class AddEventsActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener {
-            pd.show()
             if(selectedImageType < 0){
-                Toast.makeText(this@AddEventsActivity,"Please select image type", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddEventsActivity,"Please select an Event", Toast.LENGTH_SHORT).show()
             }else if (binding.etDescription.text.toString().isNotEmpty()){
-                addEventsViewModel.saveForEvent(taskId,binding.etDescription.text.toString(),binding.spinnerType.selectedItem.toString())
+                if(isOnline(this@AddEventsActivity)){
+                    pd.show()
+                    addEventsViewModel.saveForEvent(taskId,binding.etDescription.text.toString(),binding.spinnerType.selectedItem.toString())
+                }else{
+                    db.bookDao().update(binding.spinnerType.selectedItem.toString(),taskId,binding.etDescription.text.toString())
+                    db.bookDao().updateLOC(binding.spinnerType.selectedItem.toString(),taskId)
+                }
             }else{
                 Toast.makeText(this@AddEventsActivity,"Please give comments", Toast.LENGTH_SHORT).show()
             }
@@ -147,7 +160,20 @@ class AddEventsActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        addEventsViewModel.requestForEvent()
+        if(isOnline(this@AddEventsActivity)){
+            pd.show()
+            addEventsViewModel.requestForEvent()
+        }else{
+            val event = db.bookDao().getAllAddEvents()
+            eventList.add("Select an Event")
+            for (i in event.indices) {
+                eventList.add(event[i].EventList)
+            }
+
+            val adapter = ArrayAdapter(this, R.layout.simple_spinner_item,eventList)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerType.adapter = adapter
+        }
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

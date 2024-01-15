@@ -55,4 +55,10 @@ data class TaskEntity(
     @ColumnInfo(name = "Source") var Source: String?,
 
     @ColumnInfo(name = "Asset") var Asset: String?,
+
+    @ColumnInfo(name = "BeforeCount") var BeforeCount: Int,
+
+    @ColumnInfo(name = "AfterCount") var AfterCount: Int,
+
+    @ColumnInfo(name = "userName") var UserName: String,
 )

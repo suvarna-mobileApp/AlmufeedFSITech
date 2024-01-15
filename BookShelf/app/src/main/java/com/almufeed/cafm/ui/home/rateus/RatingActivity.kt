@@ -26,13 +26,9 @@ import com.almufeed.cafm.business.domain.utils.exhaustive
 import com.almufeed.cafm.business.domain.utils.isOnline
 import com.almufeed.cafm.databinding.ActivityRatingBinding
 import com.almufeed.cafm.datasource.cache.database.BookDatabase
-import com.almufeed.cafm.datasource.cache.models.offlineDB.GetInstructionSetEntity
-import com.almufeed.cafm.datasource.cache.models.offlineDB.InstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.RatingEntity
-import com.almufeed.cafm.datasource.network.models.instructionSet.InstructionData
+import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.TaskActivity
-import com.almufeed.cafm.ui.home.TaskDetailsActivity.Companion.clickedButtonCountAfter
-import com.almufeed.cafm.ui.home.TaskDetailsActivity.Companion.clickedButtonCountBefore
 import com.almufeed.cafm.ui.home.attachment.AttachmentList
 import com.almufeed.cafm.ui.home.events.AddEventsActivity
 import com.almufeed.cafm.ui.home.events.AddEventsViewModel
@@ -49,6 +45,7 @@ class RatingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRatingBinding
     private val ratingViewModel: RatingViewModel by viewModels()
     private val addEventsViewModel: AddEventsViewModel by viewModels()
+    private val baseViewModel: BaseViewModel by viewModels()
     private lateinit var pd : Dialog
     private var taskId : String = ""
     private var customerName : String = ""
@@ -57,9 +54,6 @@ class RatingActivity : AppCompatActivity() {
     private var customerSignature : String = ""
     private var techSignature : String = ""
     private lateinit var db: BookDatabase
-    private lateinit var ratingEntity: ArrayList<RatingEntity>
-    private var customerSignatureDB : ByteArray = "".toByteArray()
-    private var techSignatureDB : ByteArray = "".toByteArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +68,13 @@ class RatingActivity : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.title = "Task : $taskId"
         }
+
+        pd = Dialog(this, android.R.style.Theme_Black)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+
         db = Room.databaseBuilder(this@RatingActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
 
         binding.toolbar.linTool.visibility = View.VISIBLE
@@ -103,27 +104,29 @@ class RatingActivity : AppCompatActivity() {
 
             if(binding.rating.rating > 0 && binding.emailInput.text.toString().isNotEmpty() && binding.imgSignatureCustomer.drawable != null &&
                 binding.imgSignatureTech.drawable != null){
-                pd = Dialog(this, android.R.style.Theme_Black)
-                val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-                pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                pd.getWindow()!!.setBackgroundDrawableResource(R.color.transparent)
-                pd.setContentView(view)
-                pd.show()
                 val sdf = SimpleDateFormat("dd-MM-yyyy hh:mm")
                 val currentDate = sdf.format(Date())
                 if(isOnline(this@RatingActivity)){
+                    pd.show()
                     ratingViewModel.requestForRating(customerSignature,techSignature,binding.rating.rating.toDouble(), binding.emailInput.text.toString(),currentDate,taskId)
                 }else{
                     lifecycleScope.launch {
                         val ratingEntity = ratingViewModel.requestForRatingDB(
-                            customerSignatureDB,
-                            techSignatureDB,
+                            customerSignature,
+                            techSignature,
                             binding.rating.rating.toDouble(),
                             binding.emailInput.text.toString(),
                             currentDate,
                             taskId,
                         )
                         db.bookDao().insertRating(ratingEntity)
+                        db.bookDao().update("Completed",taskId,binding.emailInput.text.toString())
+                        db.bookDao().deleteTaskByColumnValue(taskId)
+                        db.bookDao().deleteInstructionByColumnValue(taskId)
+
+                        Toast.makeText(this@RatingActivity,"Task Completed", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@RatingActivity, TaskActivity::class.java)
+                        startActivity(intent)
                     }
                 }
             }else{
@@ -166,7 +169,6 @@ class RatingActivity : AppCompatActivity() {
                     val baos = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos) // bm is the bitmap object
                     val byteArrayImage: ByteArray = baos.toByteArray()
-                    customerSignatureDB = byteArrayImage
                     customerSignature = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
                     mDialog.dismiss()
                 }else if(tag == "technician"){
@@ -175,7 +177,6 @@ class RatingActivity : AppCompatActivity() {
                     val baos = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos) // bm is the bitmap object
                     val byteArrayImage: ByteArray = baos.toByteArray()
-                    techSignatureDB = byteArrayImage
                     techSignature = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
                     mDialog.dismiss()
                 }
@@ -245,8 +246,8 @@ class RatingActivity : AppCompatActivity() {
                     Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
                     pd.dismiss()
                     if(dataState.data.Success){
-                        clickedButtonCountBefore = 0
-                        clickedButtonCountAfter = 0
+                        baseViewModel.setBeforeCount(0)
+                        baseViewModel.setAfterCount(0)
                         addEventsViewModel.saveForEvent(taskId,binding.emailInput.text.toString(),"Completed")
                         Toast.makeText(this@RatingActivity,"Task Completed", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@RatingActivity, TaskActivity::class.java)

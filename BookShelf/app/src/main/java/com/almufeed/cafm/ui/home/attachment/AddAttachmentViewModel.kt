@@ -1,5 +1,6 @@
 package com.almufeed.cafm.ui.home.attachment
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,11 +49,11 @@ class AddAttachmentViewModel @Inject constructor(
         setStateEvent(TaskEvent.ImageTask(update))
     }
 
-    suspend fun requestForImageDB(image1 : ByteArray?, imageType : Int, imageDetail : String, taskId : String) : AttachmentEntity{
+    suspend fun requestForImageDB(image : String, imageType : Int, imageDetail : String, taskId : String) : AttachmentEntity{
         val userName = basePreferencesManager.getUserName().first()
-        var attachmentEntity = AttachmentEntity(
+        val attachmentEntity = AttachmentEntity(
             0,
-            Image1 = image1,
+            Image = image,
             type = imageType,
             description = imageDetail,
             taskId = taskId,

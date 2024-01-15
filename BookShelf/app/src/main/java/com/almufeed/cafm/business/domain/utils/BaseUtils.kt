@@ -44,6 +44,14 @@ import java.util.*
 val <T>T.exhaustive: T
     get() = this
 
+var clickedButtonCountBefore = 0
+var clickedButtonCountAfter = 0
+var clickedButtonCountMaterialPicture = 0
+var clickedButtonCountInspection = 0
+var maxImage = 15
+var minImagePPM = 10
+var minImageRM = 5
+
 fun <T> AppCompatActivity.collectLatestFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
     lifecycleScope.launch {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

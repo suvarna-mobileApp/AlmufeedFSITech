@@ -147,7 +147,9 @@
                 android:layout_marginStart="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginEnd="@dimen/dp10"
-                android:layout_marginBottom="@dimen/dp10"></androidx.appcompat.widget.AppCompatImageView>
+                android:layout_marginBottom="@dimen/dp10">
+
+            </androidx.appcompat.widget.AppCompatImageView>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_image"

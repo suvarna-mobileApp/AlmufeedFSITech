@@ -78,18 +78,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/container"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerTask"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/search"
-                android:layout_marginTop="@dimen/dp10">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerTask"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:layout_height="wrap_content"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/no_data_found_tv"

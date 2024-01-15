@@ -22,6 +22,8 @@ class BasePreferencesManagerImpl constructor(
         val USER_LOGIN_STATUS = booleanPreferencesKey("user_login_status")
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val USER_NAME = stringPreferencesKey("user_name")
+        val BEFORE_COUNT = intPreferencesKey("before_count")
+        val AFTER_COUNT = intPreferencesKey("after_count")
     }
 
     override suspend fun updateAccessToken(accessToken: String) {
@@ -78,6 +80,44 @@ class BasePreferencesManagerImpl constructor(
     override suspend fun updateUserName(userName: String) {
         context.datastore.edit { preferences ->
             preferences[USER_NAME] = userName
+        }
+    }
+
+    override suspend fun getBeforeCount() = context.datastore.data
+        .catch { exeption ->
+            if (exeption is IOException) {
+                Log.e(TAG, "Error reading preferences: ", exeption)
+                emit(emptyPreferences())
+            } else {
+                throw exeption
+            }
+        }
+        .map { preferences ->
+            preferences[BEFORE_COUNT] ?: 0
+        }
+
+    override suspend fun setBeforeCount(count: Int) {
+        context.datastore.edit { preferences ->
+            preferences[BEFORE_COUNT] = count
+        }
+    }
+
+    override suspend fun getAfterCount() = context.datastore.data
+        .catch { exeption ->
+            if (exeption is IOException) {
+                Log.e(TAG, "Error reading preferences: ", exeption)
+                emit(emptyPreferences())
+            } else {
+                throw exeption
+            }
+        }
+        .map { preferences ->
+            preferences[AFTER_COUNT] ?: 0
+        }
+
+    override suspend fun setAfterCount(count: Int) {
+        context.datastore.edit { preferences ->
+            preferences[AFTER_COUNT] = count
         }
     }
 }

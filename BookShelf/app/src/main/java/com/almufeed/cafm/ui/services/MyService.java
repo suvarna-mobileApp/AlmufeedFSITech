@@ -69,7 +69,7 @@ public class MyService extends Service  {
                 public void onResponse(Call<TaskListResponse> call, Response<TaskListResponse> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
-                            List<TaskEntity> taskList = db.bookDao().getAllTask();
+                            List<TaskEntity> taskList = db.bookDao().getAllTask(username);
                             int commonSize = Math.min(response.body().getTask().size(), taskList.size());
                             System.out.println("running service response size " + response.body().getTask().size() + " DB size " + taskList.size());
                            /* for (int i = commonSize; i < response.body().getTask().size(); i++) {

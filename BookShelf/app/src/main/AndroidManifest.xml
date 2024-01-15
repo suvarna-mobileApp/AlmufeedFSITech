@@ -26,70 +26,70 @@
 
         <meta-data
             android:name="android.bubble.icon"
-            android:resource="@drawable/logo_amg" />
+            android:resource="@drawable/logo_amg"/>
 
         <activity
             android:name=".ui.home.SyncWithServer"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.home.attachment.CapturedPictureActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.home.events.AddEventsActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.attachment.AttachmentList"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.instructionSet.CheckListActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.SignaturePadActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.rateus.RatingActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.attachment.AddAttachmentActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.customer.ProofOfAttendence"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.RiskAssessment"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.TaskDetailsActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.DocumentActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.PDFVIew"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.TaskActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.launchpad.DashboardActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.splash.SplashScreen"
             android:exported="true"
@@ -116,35 +116,34 @@
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
-                android:value="" />
+                android:value=""/>
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:noHistory="true"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.launchpad.LaunchpadActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.BookShelf.LightStatusBar" />
+            android:theme="@style/Theme.BookShelf.LightStatusBar"/>
         <activity
             android:name=".ui.home.FavouritesActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
-        <receiver android:name="com.almufeed.cafm.ui.services.AlarmBrodcast" />
+        <receiver android:name="com.almufeed.cafm.ui.services.AlarmBrodcast"/>
 
         <service
             android:name="com.almufeed.cafm.ui.services.MyService"
             android:exported="false"
-            android:process=":remote" />
+            android:process=":remote"/>
 
         <receiver
             android:name="com.almufeed.cafm.ui.services.AlarmReceiver"
-            android:process=":remote" />
+            android:process=":remote"/>
     </application>
-
 </manifest>

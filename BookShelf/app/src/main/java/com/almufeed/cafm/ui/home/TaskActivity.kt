@@ -3,7 +3,10 @@ package com.almufeed.cafm.ui.home
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,9 +15,11 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.almufeed.cafm.R
@@ -26,13 +31,18 @@ import com.almufeed.cafm.business.domain.utils.toast
 import com.almufeed.cafm.databinding.ActivityTaskBinding
 import com.almufeed.cafm.datasource.cache.database.BookDatabase
 import com.almufeed.cafm.datasource.cache.models.book.BookEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.EventsEntity
+import com.almufeed.cafm.datasource.cache.models.offlineDB.GetEventEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.GetInstructionSetEntity
 import com.almufeed.cafm.datasource.cache.models.offlineDB.TaskEntity
 import com.almufeed.cafm.datasource.network.models.bookList.BookListNetworkResponse
 import com.almufeed.cafm.datasource.network.models.tasklist.TaskListResponse
+import com.almufeed.cafm.datasource.network.models.token.CreateTokenResponse
 import com.almufeed.cafm.ui.base.BaseInterface
 import com.almufeed.cafm.ui.base.BaseViewModel
 import com.almufeed.cafm.ui.home.adapter.TaskRecyclerAdapter
+import com.almufeed.cafm.ui.home.adapter.TaskRecyclerAdapterOffline
+import com.almufeed.cafm.ui.home.events.AddEventsViewModel
 import com.almufeed.cafm.ui.home.instructionSet.CheckListViewModel
 import com.almufeed.cafm.ui.launchpad.DashboardActivity
 import com.almufeed.cafm.ui.login.LoginActivity
@@ -41,6 +51,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_task.recyclerTask
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Collections
 import java.util.Random
 
@@ -48,15 +65,18 @@ import java.util.Random
 class TaskActivity : AppCompatActivity(), BaseInterface {
     private lateinit var binding: ActivityTaskBinding
     private lateinit var taskRecyclerAdapter : TaskRecyclerAdapter
+    private lateinit var taskRecyclerAdapterOffline : TaskRecyclerAdapterOffline
     private val homeViewModel: HomeViewModel by viewModels()
     private val baseViewModel: BaseViewModel by viewModels()
+    private val addEventsViewModel: AddEventsViewModel by viewModels()
     private val checkListViewModel: CheckListViewModel by viewModels()
     private lateinit var pd : Dialog
     private lateinit var snack: Snackbar
-    private lateinit var taskListResponse: TaskListResponse
     private lateinit var taskEntity : TaskEntity
     private lateinit var getInstructionSetEntity : GetInstructionSetEntity
     private lateinit var db : BookDatabase
+    private lateinit var getEventEntity: GetEventEntity
+    private lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +90,18 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
+        pd = Dialog(this, android.R.style.Theme_Black)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.window!!.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+
         baseViewModel.isNetworkConnected.observe(this) { isNetworkAvailable ->
             showNetworkSnackBar(isNetworkAvailable)
+        }
+
+        lifecycleScope.launch {
+            userName = baseViewModel.getUsername()
         }
 
         db = Room.databaseBuilder(this@TaskActivity, BookDatabase::class.java, BookDatabase.DATABASE_NAME).allowMainThreadQueries().build()
@@ -111,17 +141,8 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
         }
 
         subscribeObservers()
-
-        binding.container.setOnRefreshListener {
-            if(isOnline(this@TaskActivity)){
-                binding.container.isRefreshing = false
-                Collections.shuffle(taskListResponse.task, Random(System.currentTimeMillis()))
-                taskRecyclerAdapter.notifyDataSetChanged()
-            }else{
-                Toast.makeText(this@TaskActivity,"No Network", Toast.LENGTH_SHORT).show()
-            }
-        }
-        //subscribeObserversForInstructionSet()
+        subscribeObserversForInstructionSet()
+        subscribeObserversForEvents()
     }
 
     private var watcher = object : TextWatcher {
@@ -190,20 +211,58 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
         }
     }
 
-
     private fun subscribeObservers() {
-
         if(isOnline(this@TaskActivity)){
             homeViewModel.myTaskDataSTate.observe(this@TaskActivity) { dataState ->
                 when (dataState) {
                     is DataState.Error -> {
                         dataState.exception.message
                         if(dataState.exception.message.equals("Authentication failed")){
-                            Toast.makeText(this@TaskActivity,dataState.exception.message, Toast.LENGTH_SHORT).show()
-                            baseViewModel.setToken("")
-                            baseViewModel.updateUsername("")
-                            Intent(this@TaskActivity, LoginActivity::class.java).apply {
-                                startActivity(this)
+                            val mediaType = APIServices.mediaType.toMediaType()
+                            val body = APIServices.body.toRequestBody(mediaType)
+                            val getToken = APIServices.create().getProducts(body)
+                            Log.d("products getToken", getToken.request().body.toString())
+                            try{
+                                getToken.enqueue(object : Callback<CreateTokenResponse> {
+                                    override fun onResponse(
+                                        call: Call<CreateTokenResponse>,
+                                        response: Response<CreateTokenResponse>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            Log.d("products", response.body().toString())
+                                            if (response.body() != null) {
+                                                var accessToken = "Bearer " + response.body()!!.access_token
+                                                baseViewModel.setToken(response.body()!!.access_token)
+                                                val sharedPreferences: SharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+                                                val myEdit: SharedPreferences.Editor = sharedPreferences.edit()
+                                                myEdit.putString("token", accessToken)
+                                                myEdit.commit()
+                                                //accessToken = "Bearer " + response.body()!!.access_token
+                                                Handler(Looper.getMainLooper()).postDelayed({
+                                                    homeViewModel.requestForTask()
+                                                }, 1000)
+                                            }
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<CreateTokenResponse>, t: Throwable) {
+                                        Log.d("failure", t.message.toString())
+                                        Toast.makeText(
+                                            this@TaskActivity,
+                                            "onFailure: " + t.message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                })
+                            }catch(e:Exception){
+                                e.printStackTrace()
+                                pd.dismiss()
+                                Toast.makeText(this@TaskActivity,dataState.exception.message, Toast.LENGTH_SHORT).show()
+                                baseViewModel.setToken("")
+                                baseViewModel.updateUsername("")
+                                Intent(this@TaskActivity, LoginActivity::class.java).apply {
+                                    startActivity(this)
+                                }
                             }
                         }else{
                             Toast.makeText(this@TaskActivity,dataState.exception.message, Toast.LENGTH_SHORT).show()
@@ -223,6 +282,9 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                             binding.recyclerTask.visibility = View.GONE
                             binding.noDataFoundTv.visibility = View.VISIBLE
                         }else{
+                            val dataTaskList = dataState.data.task
+                            val taskList = db.bookDao().getAllTask(userName)
+
                             binding.recyclerTask.visibility = View.VISIBLE
                             binding.noDataFoundTv.visibility = View.GONE
 
@@ -231,6 +293,57 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                 layoutManager = LinearLayoutManager(this@TaskActivity)
                                 recyclerTask.adapter = taskRecyclerAdapter
                             }
+
+                            addEventsViewModel.requestForEvent()
+
+                            val commonSize = minOf(dataTaskList.size, taskList.size)
+                            System.out.println("common size " + commonSize + " datasize " + dataTaskList.size + " tasksize " + taskList.size)
+                            if(taskList.size > 0){
+                                for (i in dataState.data.task.indices) {
+                                    db.bookDao().updateTask(dataState.data.task[i].LOC,dataState.data.task[i].TaskId)
+                                }
+
+                                for (i in commonSize until dataTaskList.size) {
+                                    taskEntity = TaskEntity(0,dataState.data.task[i].id,
+                                        dataState.data.task[i].hazard,
+                                        dataState.data.task[i].scheduledDate,
+                                        dataState.data.task[i].attendDate,
+                                        dataState.data.task[i].TaskId,
+                                        dataState.data.task[i].ServiceType,
+                                        dataState.data.task[i].CustAccount,
+                                        dataState.data.task[i].Email,
+                                        dataState.data.task[i].Building,
+                                        dataState.data.task[i].CustId,
+                                        dataState.data.task[i].CustName,
+                                        dataState.data.task[i].Location,
+                                        dataState.data.task[i].Problem,
+                                        dataState.data.task[i].Notes,
+                                        dataState.data.task[i].LOC,
+                                        dataState.data.task[i].Priority,
+                                        dataState.data.task[i].Contract,
+                                        dataState.data.task[i].Category,
+                                        dataState.data.task[i].Phone,
+                                        dataState.data.task[i].Discipline,
+                                        dataState.data.task[i].CostCenter,
+                                        dataState.data.task[i].Source,
+                                        dataState.data.task[i].Asset,
+                                        dataState.data.task[i].beforeCount,
+                                        dataState.data.task[i].afterCount,
+                                        userName)
+
+                                    db.bookDao().insertTask(taskEntity)
+
+                                    val eventRequest = EventsEntity(
+                                        id = 0,
+                                        taskId = dataState.data.task[i].TaskId.toString(),
+                                        resource = "",
+                                        Comments = dataState.data.task[i].LOC.toString(),
+                                        Events = dataState.data.task[i].LOC.toString(),
+                                    )
+                                    db.bookDao().insertEvents(eventRequest)
+
+                                    checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+                                }
                             //taskListResponse = dataState.data
 
                            /* val datalist = arrayListOf("item1", "item2", "item3","item4", "item5")
@@ -301,55 +414,13 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                 tasklist.indexOf(it) !in indicesInDatalist
                             }*/
 
-                            val dataTaskList = dataState.data.task
-                            val taskList = db.bookDao().getAllTask()
-
-                            val commonSize = minOf(dataTaskList.size, taskList.size)
-                            System.out.println("common size " + commonSize + " datasize " + dataTaskList.size + " tasksize " + taskList.size)
-                            if(taskList.size > 0){
-                                for (i in dataState.data.task.indices) {
-                                    db.bookDao().updateTask(dataState.data.task[i].LOC,dataState.data.task[i].TaskId)
-                                }
-
-                                for (i in commonSize until dataTaskList.size) {
-                                    // Handle remaining elements in taskList
-                                    //System.out.println("common size2 " + commonSize + " datasize " + dataTaskList.size + " tasksize " + taskList.size)
-                                    taskEntity = TaskEntity(0,dataState.data.task[i].id,
-                                        dataState.data.task[i].hazard,
-                                        dataState.data.task[i].scheduledDate,
-                                        dataState.data.task[i].attendDate,
-                                        dataState.data.task[i].TaskId,
-                                        dataState.data.task[i].ServiceType,
-                                        dataState.data.task[i].CustAccount,
-                                        dataState.data.task[i].Email,
-                                        dataState.data.task[i].Building,
-                                        dataState.data.task[i].CustId,
-                                        dataState.data.task[i].CustName,
-                                        dataState.data.task[i].Location,
-                                        dataState.data.task[i].Problem,
-                                        dataState.data.task[i].Notes,
-                                        dataState.data.task[i].LOC,
-                                        dataState.data.task[i].Priority,
-                                        dataState.data.task[i].Contract,
-                                        dataState.data.task[i].Category,
-                                        dataState.data.task[i].Phone,
-                                        dataState.data.task[i].Discipline,
-                                        dataState.data.task[i].CostCenter,
-                                        dataState.data.task[i].Source,
-                                        dataState.data.task[i].Asset)
-                                    db.bookDao().insertTask(taskEntity)
-
-                                    //checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
-                                    //subscribeObserversForInstructionSet()
-                                }
-
-                                for (i in commonSize until taskList.size) {
+                                /*for (i in commonSize until taskList.size) {
 
                                     for (i in dataTaskList.indices) {
                                         if (taskList[i].TaskId != dataTaskList[i].TaskId) {
                                             System.out.println("common size inside delete " + i + " datasize " + taskList[i].TaskId)
                                             db.bookDao().deleteTaskByColumnValue(taskList[i].TaskId)
-                                            db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
+                                            //db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
                                         }
                                     }
 
@@ -357,13 +428,7 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                     //db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
                                     System.out.println("common size inside delete1 " + taskList.size + " " + dataTaskList.size)
 
-                                    /*if(taskList[i].TaskId.equals(dataTaskList[i].TaskId)){
-
-                                    }else{
-                                        db.bookDao().deleteTaskByColumnValue(taskList[i].TaskId)
-                                        db.bookDao().deleteInstructionByColumnValue(taskList[i].TaskId)
-                                    }*/
-                                }
+                                }*/
                             }else{
                                 for (i in dataState.data.task.indices) {
                                     taskEntity = TaskEntity(0,dataState.data.task[i].id,
@@ -388,17 +453,24 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                                         dataState.data.task[i].Discipline,
                                         dataState.data.task[i].CostCenter,
                                         dataState.data.task[i].Source,
-                                        dataState.data.task[i].Asset)
+                                        dataState.data.task[i].Asset,
+                                        dataState.data.task[i].beforeCount,
+                                        dataState.data.task[i].afterCount,
+                                        userName)
                                     db.bookDao().insertTask(taskEntity)
 
-                                   // checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+                                    checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
+
+                                    val eventRequest = EventsEntity(
+                                        id = 0,
+                                        taskId = dataState.data.task[i].TaskId.toString(),
+                                        resource = "",
+                                        Comments = dataState.data.task[i].LOC.toString(),
+                                        Events = dataState.data.task[i].LOC.toString(),
+                                    )
+                                    db.bookDao().insertEvents(eventRequest)
                                     System.out.println("common size1 " + dataState.data.task[i].TaskId)
                                 }
-                              /*  for (i in dataState.data.task.indices) {
-                                    System.out.println("print size of instruction set")
-                                    checkListViewModel.requestForStep(dataState.data.task[i].TaskId.toString())
-                                    subscribeObserversForInstructionSet()
-                                }*/
                             }
 
                            // db.close()
@@ -420,106 +492,37 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
                            /* for (i in commonSize until dataTaskList.size) {
                                 // Handle remaining elements in dataTaskList
                             }*/
-
-
-
-
-//                            for (i in dataState.data.task.indices) {
-//                                if(taskList.size > 0){
-//
-//                                    if(taskList.size < dataState.data.task.size) {
-//                                        //System.out.println("printtasklist data " + taskList[i].TaskId)
-//                                        if(dataState.data.task.contains(taskList)){
-//                                                System.out.println("printtasklist data " + dataState.data.task[i].TaskId)
-//                                                //System.out.println("printtasklist task " + taskList[i].TaskId)
-//                                        }
-//
-//                                       *//* taskEntity = TaskEntity(
-//                                            0,
-//                                            dataState.data.task[i].id,
-//                                            dataState.data.task[i].hazard,
-//                                            dataState.data.task[i].scheduledDate,
-//                                            dataState.data.task[i].attendDate,
-//                                            dataState.data.task[i].TaskId,
-//                                            dataState.data.task[i].ServiceType,
-//                                            dataState.data.task[i].CustAccount,
-//                                            dataState.data.task[i].Email,
-//                                            dataState.data.task[i].Building,
-//                                            dataState.data.task[i].CustId,
-//                                            dataState.data.task[i].CustName,
-//                                            dataState.data.task[i].Location,
-//                                            dataState.data.task[i].Problem,
-//                                            dataState.data.task[i].Notes,
-//                                            dataState.data.task[i].LOC,
-//                                            dataState.data.task[i].Priority,
-//                                            dataState.data.task[i].Contract,
-//                                            dataState.data.task[i].Category,
-//                                            dataState.data.task[i].Phone,
-//                                            dataState.data.task[i].Discipline,
-//                                            dataState.data.task[i].CostCenter,
-//                                            dataState.data.task[i].Source,
-//                                            dataState.data.task[i].Asset
-//                                        )
-//                                        db.bookDao().insertTask(taskEntity)*//*
-//                                    }else{
-//                                       // System.out.println("printtasklist after " + taskList[i].TaskId + " serverlist " + dataState.data.task[i].TaskId)
-//                                    }
-//                                }else{
-//                                    taskEntity = TaskEntity(0,dataState.data.task[i].id,
-//                                        dataState.data.task[i].hazard,
-//                                        dataState.data.task[i].scheduledDate,
-//                                        dataState.data.task[i].attendDate,
-//                                        dataState.data.task[i].TaskId,
-//                                        dataState.data.task[i].ServiceType,
-//                                        dataState.data.task[i].CustAccount,
-//                                        dataState.data.task[i].Email,
-//                                        dataState.data.task[i].Building,
-//                                        dataState.data.task[i].CustId,
-//                                        dataState.data.task[i].CustName,
-//                                        dataState.data.task[i].Location,
-//                                        dataState.data.task[i].Problem,
-//                                        dataState.data.task[i].Notes,
-//                                        dataState.data.task[i].LOC,
-//                                        dataState.data.task[i].Priority,
-//                                        dataState.data.task[i].Contract,
-//                                        dataState.data.task[i].Category,
-//                                        dataState.data.task[i].Phone,
-//                                        dataState.data.task[i].Discipline,
-//                                        dataState.data.task[i].CostCenter,
-//                                        dataState.data.task[i].Source,
-//                                        dataState.data.task[i].Asset)
-//                                    db.bookDao().insertTask(taskEntity)
-//                                }
-//
-//                                if(taskId.isEmpty()){
-//                                    bookEntity = BookEntity(0,dataState.data.task[i].TaskId.toString())
-//                                    db.bookDao().insertBook(bookEntity)
-//                                }
-//                            }
-
                         }
                     }
                 }.exhaustive
             }
             db.close()
-        }else{
-            binding.noDataFoundTv.visibility = View.VISIBLE
-           /* val taskList = db.bookDao().getAllTask()
-            if(taskList.size > 0){
-                binding.recyclerTask.visibility = View.VISIBLE
-                binding.noDataFoundTv.visibility = View.GONE
-                binding.recyclerTask.apply {
-                    taskRecyclerAdapter = TaskRecyclerAdapter(taskList,this@TaskActivity)
-                    layoutManager = LinearLayoutManager(this@TaskActivity)
-                    recyclerTask.adapter = taskRecyclerAdapter
-                }
-                db.close()
-            }else{
-                binding.recyclerTask.visibility = View.GONE
-                binding.noDataFoundTv.visibility = View.VISIBLE
-            }*/
         }
     }
+    private fun subscribeObserversForEvents() {
+        addEventsViewModel.myEventDataSTate.observe(this@TaskActivity) { dataState ->
+            when (dataState) {
+                is DataState.Error -> {
+                    Toast.makeText(this@TaskActivity,"Some error, Please try later", Toast.LENGTH_SHORT).show()
+                }
+                is DataState.Loading -> {
+
+                }
+                is DataState.Success -> {
+                    Log.e("AR_MYBUSS::", "UI Details: ${dataState.data}")
+                    db.bookDao().deleteTable()
+                        for (i in dataState.data.EventList.indices) {
+                            getEventEntity = GetEventEntity(
+                                0,
+                                dataState.data.EventList[i].TaskEvent
+                            )
+                            db.bookDao().insertGetEvents(getEventEntity)
+                            System.out.println("number of times inside  " + getEventEntity)
+                        }
+                    }
+                }
+            }.exhaustive
+        }
 
     override fun showNetworkSnackBar(isNetworkAvailable: Boolean) {
         if (isNetworkAvailable) {
@@ -534,13 +537,24 @@ class TaskActivity : AppCompatActivity(), BaseInterface {
     override fun onResume() {
         super.onResume()
         if(isOnline(this@TaskActivity)){
-            pd = Dialog(this, android.R.style.Theme_Black)
-            val view: View = LayoutInflater.from(this).inflate(R.layout.remove_border, null)
-            pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            pd.window!!.setBackgroundDrawableResource(R.color.transparent)
-            pd.setContentView(view)
             pd.show()
             homeViewModel.requestForTask()
+        }else{
+            val taskList = db.bookDao().getAllTask(userName)
+            if(taskList.size > 0){
+                binding.recyclerTask.visibility = View.VISIBLE
+                binding.noDataFoundTv.visibility = View.GONE
+                binding.recyclerTask.apply {
+                    taskRecyclerAdapterOffline = TaskRecyclerAdapterOffline(taskList,this@TaskActivity)
+                    layoutManager = LinearLayoutManager(this@TaskActivity)
+                    recyclerTask.adapter = taskRecyclerAdapterOffline
+                }
+                db.close()
+            }else{
+                binding.recyclerTask.visibility = View.GONE
+                binding.noDataFoundTv.visibility = View.VISIBLE
+                binding.noDataFoundTv.text = "No Internet Connection"
+            }
         }
     }
 

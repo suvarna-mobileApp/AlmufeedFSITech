@@ -31,10 +31,30 @@ class BaseViewModel @Inject constructor(
 
     fun updateUsername(userName:String) = viewModelScope.launch {
         basePreferencesManager.updateUserName(userName)
+        if(userName.isEmpty()){
+            basePreferencesManager.setUserLogin(false)
+        }
     }
+
     suspend fun getUsername() : String{
         val userName = basePreferencesManager.getUserName().first()
         return userName
+    }
+
+    fun setBeforeCount(beforeCount:Int) = viewModelScope.launch {
+        basePreferencesManager.setBeforeCount(beforeCount)
+    }
+    suspend fun getBeforeCount() : Int{
+        val beforeCount = basePreferencesManager.getBeforeCount().first()
+        return beforeCount
+    }
+
+    fun setAfterCount(afterCount:Int) = viewModelScope.launch {
+        basePreferencesManager.setAfterCount(afterCount)
+    }
+    suspend fun getAfterCount() : Int{
+        val afterCount = basePreferencesManager.getAfterCount().first()
+        return afterCount
     }
 
     private fun setStateEvent(state: Event) {

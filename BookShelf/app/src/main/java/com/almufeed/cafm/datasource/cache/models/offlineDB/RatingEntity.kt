@@ -10,11 +10,9 @@ data class RatingEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Int,
 
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    var customerSignature: ByteArray? = null,
+    @ColumnInfo(name = "customerSignature") var customerSignature: String,
 
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    var techiSignature: ByteArray? = null,
+    @ColumnInfo(name = "techiSignature") var techiSignature: String,
 
     @ColumnInfo(name = "rating") var rating: Double,
 
