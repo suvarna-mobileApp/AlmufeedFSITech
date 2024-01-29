@@ -8,15 +8,15 @@ plugins {
 }
 
 android {
-    namespace 'com.almufeed.cafm'
+    namespace 'com.almufeed.technician'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.almufeed.cafm"
+        applicationId "com.almufeed.technician"
         minSdk 21
         targetSdk 33
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 1
+        versionName "1.0.0"
         resConfigs "en", "US"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

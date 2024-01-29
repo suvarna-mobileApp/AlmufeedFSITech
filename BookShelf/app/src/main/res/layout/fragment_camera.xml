@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toStartOf="@id/camera_capture_button"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.almufeed.cafm.ui.camera.CircleImageView
+    <com.almufeed.technician.ui.camera.CircleImageView
         android:id="@+id/camera_capture_button"
         android:layout_width="@dimen/dp108"
         android:layout_height="@dimen/dp108"

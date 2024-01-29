@@ -12,7 +12,7 @@
     android:paddingBottom="@dimen/dp16"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.almufeed.cafm.ui.camera.CircleImageView
+    <com.almufeed.technician.ui.camera.CircleImageView
         android:id="@+id/img_profile_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"

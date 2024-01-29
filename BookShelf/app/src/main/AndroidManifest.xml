@@ -135,15 +135,15 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
 
-        <receiver android:name="com.almufeed.cafm.ui.services.AlarmBrodcast"/>
+        <receiver android:name="com.almufeed.technician.ui.services.AlarmBrodcast"/>
 
         <service
-            android:name="com.almufeed.cafm.ui.services.MyService"
+            android:name="com.almufeed.technician.ui.services.MyService"
             android:exported="false"
             android:process=":remote"/>
 
         <receiver
-            android:name="com.almufeed.cafm.ui.services.AlarmReceiver"
+            android:name="com.almufeed.technician.ui.services.AlarmReceiver"
             android:process=":remote"/>
     </application>
 </manifest>
